@@ -2,6 +2,7 @@ package plant;
 
 import draw.StdDraw;
 import buffer.DrawableFruitBuffer;
+import buffer.ProductionBuffer;
 import fruit.Fruit;
 import fruit.Apple;
 import dimension.PointXY;
@@ -70,6 +71,13 @@ public class ConveyorBelt implements BufferMachine {
 	 */
 	public PointXY getStartPoint() {
 		return cbd.getStartPoint();
+	}
+	
+	/**
+	 * This method gets the underlying buffer from this machine
+	 */
+	public ProductionBuffer getProductionBuffer() {
+		return fb;
 	}
 	
 	/**

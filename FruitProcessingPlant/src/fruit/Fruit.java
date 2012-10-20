@@ -8,7 +8,7 @@ import buffer.BufferSlot;
  * 
  * @author:			Devin Barry
  * @date:			09.10.2012
- * @lastModified: 	13.10.2012
+ * @lastModified: 	21.10.2012
  * 
  * This is the superclass for all fruit in the fruit production line
  */
@@ -25,12 +25,28 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 	private FruitType fruit;
 	private boolean bad;
 	private boolean washed;
+	private boolean cutCorrect;
 	
 	public Fruit(FruitType fruit) {
 		totalFruit++;
 		this.fruit = fruit;
 		generateBadness();
 		this.washed = false;
+		this.cutCorrect = false;
+	}
+
+	public void cutFruit() {
+		double random = Math.random();
+		if(random < 0.1) {
+			cutCorrect = false;
+		}
+		else{
+			cutCorrect = true;
+		}
+	}
+	
+	public boolean getIsCutCorrect(){
+		return cutCorrect;
 	}
 	
 	/**
@@ -74,4 +90,3 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 		return new String("Abstract Fruit Type\nThere are " + totalFruit + " in the system"); 
 	}
 }
- 
