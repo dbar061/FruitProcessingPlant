@@ -12,41 +12,43 @@ package console;
  * method. All these write methods call append on the JTextArea.
  */
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import java.io.OutputStream;
-import java.io.IOException;
 
 public class TextAreaOutputStream extends OutputStream {
-	
+
 	private JTextArea textArea;
-	
+
 	public TextAreaOutputStream(JTextArea jta) {
 		this.textArea = jta;
-		//textArea.append("TextAreaOutputStream created\n");
+		// textArea.append("TextAreaOutputStream created\n");
 	}
-	
+
 	private void updateTextArea(final String text) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				textArea.append(text);
 			}
 		});
 	}
-	
+
+	@Override
 	public void write(int b) throws IOException {
 		updateTextArea(String.valueOf((char) b));
 	}
-	
+
 	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 		updateTextArea(new String(b, off, len));
 	}
-	
+
 	@Override
 	public void write(byte[] b) throws IOException {
 		write(b, 0, b.length);
 	}
-	
-	
+
 }

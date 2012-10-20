@@ -1,11 +1,8 @@
 package plant;
 
-import buffer.FruitBuffer;
-import buffer.ProductionBuffer;
 import dimension.PointXY;
 import dimension.ExtendedPlatformDimension;
 import draw.StdDraw;
-import fruit.Fruit;
 
 
 /**
@@ -19,22 +16,11 @@ import fruit.Fruit;
  */
 public class ExtendedPlatform implements Machine {
 	
-	public static final int NUM_SLOTS = 1;
 	ExtendedPlatformDimension epd;
-	private FruitBuffer fb;
+	
 	public ExtendedPlatform(PointXY start) {
 		epd = new ExtendedPlatformDimension(start);
-		fb = new FruitBuffer(NUM_SLOTS);
 	}
-	
-	public void addFruit(Fruit fruit) {
-		fb.add(fruit);
-	}
-	
-	public Fruit removeFruit() {
-		return fb.removeFruit();
-	}
-	
 	
 	/**
 	 * get the length of the Machine
@@ -71,10 +57,6 @@ public class ExtendedPlatform implements Machine {
 		//Draw the ExtendedPlatform
 		StdDraw.setPenColor(StdDraw.BOOK_BLUE);
 		StdDraw.filledDiamond(drawPoint, epd.getDrawRadius());
-	}
-	
-	public ProductionBuffer getProductionBuffer() {
-		return fb;
 	}
 
 }

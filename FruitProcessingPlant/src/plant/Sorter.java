@@ -1,11 +1,8 @@
 package plant;
 
-import buffer.FruitBuffer;
-import buffer.ProductionBuffer;
 import dimension.PointXY;
 import dimension.SorterDimension;
 import draw.StdDraw;
-import fruit.Fruit;
 
 
 /**
@@ -20,12 +17,9 @@ import fruit.Fruit;
 public class Sorter implements Machine {
 	
 	SorterDimension sd;
-	private FruitBuffer fb;
-	public static final int NUM_SLOTS = 1;
 	
 	public Sorter(PointXY start) {
 		sd = new SorterDimension(start);
-		fb = new FruitBuffer(NUM_SLOTS);
 	}
 	
 	/**
@@ -35,15 +29,6 @@ public class Sorter implements Machine {
 	public double getLength() {
 		return SorterDimension.RADIUS;
 	}
-	
-	public void addFruit(Fruit fruit) {
-		fb.add(fruit);
-	}
-	
-	public Fruit removeFruit() {
-		return fb.removeFruit();
-	}
-	
 	
 	/**
 	 * get the width of the Machine
@@ -59,10 +44,6 @@ public class Sorter implements Machine {
 	 */
 	public PointXY getStartPoint() {
 		return sd.getStartPoint();
-	}
-	
-	public ProductionBuffer getProductionBuffer() {
-		return fb;
 	}
 	
 	/**

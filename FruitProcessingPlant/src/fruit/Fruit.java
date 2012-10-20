@@ -16,7 +16,7 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 	
 	private static int totalFruit = 0;
 	
-	public enum FruitType {
+	public static enum FruitType {
 		APPLE,
 		BANANA,
 		PEAR
@@ -25,15 +25,12 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 	private FruitType fruit;
 	private boolean bad;
 	private boolean washed;
-	private boolean cutCorrect;
-	
 	
 	public Fruit(FruitType fruit) {
 		totalFruit++;
 		this.fruit = fruit;
 		generateBadness();
 		this.washed = false;
-		this.cutCorrect = false;
 	}
 	
 	/**
@@ -41,22 +38,6 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 	 * 5% of our fruit will be bad
 	 * @return
 	 */
-
-	
-	public void cutFruit() {
-		double random = Math.random();
-		if(random < 0.1) {
-			cutCorrect = false;
-		}
-		else{
-			cutCorrect = true;
-		}
-	}
-	
-	public boolean getIsCutCorrect(){
-		return cutCorrect;
-	}
-	
 	private void generateBadness() {
 		double random = Math.random();
 		if (random < 0.05) {

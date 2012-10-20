@@ -2,7 +2,6 @@ package plant;
 
 import draw.StdDraw;
 import buffer.FruitBuffer;
-import buffer.ProductionBuffer;
 import fruit.Fruit;
 import dimension.PointXY;
 import dimension.HoldingBayDimension;
@@ -69,13 +68,6 @@ public class HoldingBay implements BufferMachine {
 	 */
 	public PointXY getStartPoint() {
 		return hbd.getStartPoint();
-	}
-	
-	/**
-	 * This method gets the underlying buffer from this machine
-	 */
-	public ProductionBuffer getProductionBuffer() {
-		return fb;
 	}
 	
 	/**
