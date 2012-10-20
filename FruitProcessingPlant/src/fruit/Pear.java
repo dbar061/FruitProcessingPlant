@@ -42,7 +42,7 @@ public class Pear extends Fruit {
 	
 	@Override
 	public String toString() {
-		return new String("Pear number: " + pearID + "\n"); 
+		return new String("Pear number: " + pearID); 
 	}
 	
 	

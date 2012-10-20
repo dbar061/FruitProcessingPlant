@@ -16,7 +16,7 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 	
 	private static int totalFruit = 0;
 	
-	public enum FruitType {
+	public static enum FruitType {
 		APPLE,
 		BANANA,
 		PEAR
@@ -71,7 +71,7 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 	
 	@Override
 	public String toString() {
-		return new String("Abstract Fruit Type\nThere are " + totalFruit + " in the system\n"); 
+		return new String("Abstract Fruit Type\nThere are " + totalFruit + " in the system"); 
 	}
 }
  

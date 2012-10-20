@@ -42,7 +42,7 @@ public class Apple extends Fruit {
 	
 	@Override
 	public String toString() {
-		return new String("Apple number: " + appleID + "\n"); 
+		return new String("Apple number: " + appleID); 
 	}
 	
 	

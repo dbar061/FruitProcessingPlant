@@ -24,12 +24,12 @@ import dimension.HoldingBayDimension;
  * that define this class, and thus is passed a copy of the ConveryBeltDimension
  * class when it is instantiated.
  * 
- * ConveyorBelt implements the Machinery interface and as such also implements the
+ * ConveyorBelt implements the Machine interface and as such also implements the
  * Drawable interface. Thus it contains a draw method and can draw itself.
  */
-public class HoldingBay implements Machinery {
+public class HoldingBay implements BufferMachine {
 	
-	public static final int NUM_SLOTS = 8;
+	public static final int NUM_SLOTS = 50;
 	private FruitBuffer fb; //This buffer cannot draw itself
 	private HoldingBayDimension hbd;
 	
@@ -75,10 +75,13 @@ public class HoldingBay implements Machinery {
 	 */
 	public void draw(PointXY location) {
 		PointXY drawPoint = hbd.getDrawPoint(location);
+		Integer bufSize = new Integer(fb.getCurrentBufferSize());
 		
 		//Draw the HoldingBay (currently a dark gray square)
 		StdDraw.setPenColor(StdDraw.DARK_GRAY);
-		StdDraw.filledSquare(drawPoint, hbd.getRadius());
+		StdDraw.filledSquare(drawPoint, hbd.getDrawRadius());
+		StdDraw.setPenColor(StdDraw.WHITE);
+		StdDraw.text(drawPoint, bufSize.toString());
 	}
 	
 	@Override

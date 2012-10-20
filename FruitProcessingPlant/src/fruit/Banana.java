@@ -42,7 +42,7 @@ public class Banana extends Fruit {
 	
 	@Override
 	public String toString() {
-		return new String("Banana number: " + BananaID + "\n"); 
+		return new String("Banana number: " + BananaID); 
 	}
 	
 	

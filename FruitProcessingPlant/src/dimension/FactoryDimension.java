@@ -4,8 +4,9 @@ import dimension.PointXY;
 
 /**
  * FactoryDimension.java
- * @author Devin Barry
- * @date 12.10.2012
+ * @author:			Devin Barry
+ * @date:			12.10.2012
+ * @lastModified: 	13.10.2012
  * 
  * This interface is used by all items that can be drawn
  * on the factory floor. This interface provides useful methods

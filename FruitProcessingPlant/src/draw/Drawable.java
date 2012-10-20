@@ -13,5 +13,10 @@ import dimension.PointXY;
  */
 public interface Drawable {
 	
+	/**
+	 * This method causes the current object to draw itself
+	 * at the location specified by <location>
+	 * @param location
+	 */
 	public void draw(PointXY location);
 }
