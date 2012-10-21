@@ -1,4 +1,4 @@
-package dimension;
+package factory.dimension;
 
 import java.awt.geom.Point2D;
 
@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	13.10.2012
+ * @lastModified: 	22.10.2012
  * 
  * The only "point" of this class is to give an extra useful constructor,
  * namely the ability to construct from another PointXY or Point2D.Double
@@ -45,7 +45,7 @@ public class PointXY extends Point2D.Double {
 	}
 	
 	//Adds another point to the current point
-	//TODO this should probably return iteself??
+	//TODO this should probably return itself??
 	public void add(PointXY addend) {
 		setLocation((this.getX() + addend.getX()), (this.getY() + addend.getY()));
 	}

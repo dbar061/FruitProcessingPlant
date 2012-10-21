@@ -1,13 +1,15 @@
-package dimension;
+package factory.dimension;
 
 /**
  * ConveyorBeltDimension.java
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	13.10.2012
+ * @lastModified: 	22.10.2012
  * 
- *
+ * This class should probably extend BasicDimension. Because it is a bit
+ * complex it has not been made to extend this class yet, despite all
+ * the overlapping functionality.
  */
 public class ConveyorBeltDimension implements FactoryDimension {
 	
@@ -69,6 +71,19 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	}
 	
 	/**
+	 * Gets the end position of this item. This end position is
+	 * dependent on the size of the item. If the item is a machine
+	 * on the factory floor, then this method is used for
+	 * positioning other items that follow on in the production
+	 * line
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY getEndPoint() {
+		//we don't want our end point modified by external parties
+		return new PointXY(this.endPoint);
+	}
+	
+	/**
 	 * Gets the centre point of the first slot of the conveyor
 	 * This is the location where we will draw the first item
 	 * in the conveyor
@@ -114,14 +129,18 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	}
 	
 	/**
-	 * This method assumes conveyor belts are always
-	 * horizontal
+	 * Conveyor belts may be drawn at an angle. The end point must
+	 * take this into account. The length of the conveyor can be
+	 * thought of as the hypotenuse of a right angled triangle.
+	 * This works even if the angle is 0
 	 */
 	private void calculateEndPoint() {
 		double x = startPoint.getX();
 		double y = startPoint.getY();
-		x += (slots * SLOT_LENGTH); //conveyor is horizontal
-		endPoint = new PointXY(x, y);
+		double hypotenuse = (slots * SLOT_LENGTH); //length of conveyor
+		double dx = hypotenuse * Math.sin(Math.toRadians(angle));
+		double dy = hypotenuse * Math.cos(Math.toRadians(angle));
+		endPoint = new PointXY(x + dx, y + dy);
 	}
 	
 	/**

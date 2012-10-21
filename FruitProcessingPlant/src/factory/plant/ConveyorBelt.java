@@ -1,18 +1,18 @@
-package plant;
+package factory.plant;
 
 import draw.StdDraw;
 import buffer.DrawableFruitBuffer;
 import buffer.ProductionBuffer;
 import fruit.Fruit;
 import fruit.Apple;
-import dimension.PointXY;
-import dimension.ConveyorBeltDimension;
+import factory.dimension.PointXY;
+import factory.dimension.ConveyorBeltDimension;
 
 /**
  * ConveyorBelt.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	14.10.2012
+ * @lastModified:	22.10.2012
  *
  * ConveyorBelt is a concrete implementation of a conveyor belt for fruit in
  * a fruit processing plant. It contains a DrawableFruitBuffer to hold the fruit and
@@ -31,11 +31,12 @@ import dimension.ConveyorBeltDimension;
  */
 public class ConveyorBelt implements BufferMachine {
 	
-	public static final int NUM_SLOTS = 8;
+	public final int NUM_SLOTS; //normal ConveyorBelt is size 8, Large is size 19
 	private DrawableFruitBuffer fb; //This buffer can draw itself and must be associated with the dimensions of its parent Machine
 	private ConveyorBeltDimension cbd; //We pass it these dimensions when we create it
 	
-	public ConveyorBelt(PointXY start, double angle) {
+	public ConveyorBelt(PointXY start, int slots, double angle) {
+		NUM_SLOTS = slots;
 		//startPosition, angle, bufferSize
 		cbd = new ConveyorBeltDimension(start, angle, NUM_SLOTS);
 		fb = new DrawableFruitBuffer(cbd, NUM_SLOTS);
@@ -74,6 +75,16 @@ public class ConveyorBelt implements BufferMachine {
 	}
 	
 	/**
+	 * Gets the end position of this item. This end position is dependent
+	 * on the size of the item. It is mostly useful for positioning
+	 * other items that follow on in the production line
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY getEndPoint() {
+		return cbd.getEndPoint();
+	}
+	
+	/**
 	 * This method gets the underlying buffer from this machine
 	 */
 	public ProductionBuffer getProductionBuffer() {
@@ -105,7 +116,7 @@ public class ConveyorBelt implements BufferMachine {
 	
 	//Main method used for testing this class separately
 	public static void main(String[] args) {
-		ConveyorBelt cb = new ConveyorBelt(new PointXY(50, 50), 0);
+		ConveyorBelt cb = new ConveyorBelt(new PointXY(50, 50), 8, 0); //8 slots, 0 degrees
 		//add some fruit
 		Apple a1 = new Apple();
 		Apple a2 = new Apple();

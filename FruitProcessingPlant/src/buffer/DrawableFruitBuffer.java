@@ -2,13 +2,13 @@ package buffer;
 
 import fruit.Fruit;
 import buffer.DrawableBuffer;
-import dimension.ConveyorBeltDimension;
+import factory.dimension.ConveyorBeltDimension;
 
 /**
  * DrawableFruitBuffer.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	22.10.2012
  *
  * DrawableFruitBuffer is a concrete subclass of DrawableBuffer.
  * A DrawableFruitBuffer is specifically designed to hold Fruit and its

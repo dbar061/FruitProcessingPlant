@@ -1,11 +1,12 @@
 package factory;
 
 import java.util.*;
-import plant.*;
+
+import factory.plant.*;
 import fruit.Apple;
 import fruit.Banana;
 import fruit.Pear;
-import dimension.PointXY;
+import factory.dimension.PointXY;
 
 import draw.StdDraw;
 
@@ -14,10 +15,12 @@ import draw.StdDraw;
  * 
  * @author:			Devin Barry
  * @date:			01.10.2012
- * @lastModified: 	14.10.2012
+ * @lastModified: 	22.10.2012
  *
  * This class draws conveyors and can be manipulated by SystemJ to
  * animate the conveyors.
+ * 
+ * Some new test methods have been added recently 22.10.2012
  */
 
 /*************************************************************************
@@ -44,38 +47,38 @@ public class Factory {
 		StdDraw.setYscale(0, FACTORY_LENGTH);
 		StdDraw.show(0);
 		
-		/*double conveyorLine1Y = 100;
+		double conveyorLine1Y = 100;
 		PointXY hbl1_1Pos = new PointXY(100,conveyorLine1Y);
 		HoldingBay hbl1_1 = new HoldingBay(hbl1_1Pos);
 		productionLine.add(hbl1_1);
 		
 		PointXY cbl1_1Pos = new PointXY((hbl1_1.getStartPoint().getX() + hbl1_1.getLength() + 10),conveyorLine1Y);
-		ConveyorBelt cbl1_1 = new ConveyorBelt(cbl1_1Pos, 0);
+		ConveyorBelt cbl1_1 = new ConveyorBelt(cbl1_1Pos, 8, 0); //size 8, 0 angle
 		PointXY cbl1_2Pos = new PointXY((cbl1_1.getStartPoint().getX() + cbl1_1.getLength() + 10), conveyorLine1Y);
-		ConveyorBelt cbl1_2 = new ConveyorBelt(cbl1_2Pos, 0);
+		ConveyorBelt cbl1_2 = new ConveyorBelt(cbl1_2Pos, 8, 30); //size 8, 30 degree angle
 		PointXY cbl1_3Pos = new PointXY((cbl1_2.getStartPoint().getX() + cbl1_2.getLength() + 10), conveyorLine1Y);
-		ConveyorBelt cbl1_3 = new ConveyorBelt(cbl1_3Pos, 0);
+		ConveyorBelt cbl1_3 = new ConveyorBelt(cbl1_3Pos, 8, 0); //size 8, 0 angle
 		productionLine.add(cbl1_1);
 		productionLine.add(cbl1_2);
 		productionLine.add(cbl1_3);
 		
 		double conveyorLine2Y = 300;
 		PointXY cbl2_1Pos = new PointXY(100,conveyorLine2Y);
-		ConveyorBelt cbl2_1 = new ConveyorBelt(cbl2_1Pos, 0);
+		ConveyorBelt cbl2_1 = new ConveyorBelt(cbl2_1Pos, 8, 0); //size 8, 0 angle
 		PointXY cbl2_2Pos = new PointXY((cbl2_1.getStartPoint().getX() + cbl2_1.getLength() + 10), conveyorLine2Y);
-		ConveyorBelt cbl2_2 = new ConveyorBelt(cbl2_2Pos, 0);
+		ConveyorBelt cbl2_2 = new ConveyorBelt(cbl2_2Pos, 8, 0); //size 8, 0 angle
 		PointXY cbl2_3Pos = new PointXY((cbl2_2.getStartPoint().getX() + cbl2_2.getLength() + 10), conveyorLine2Y);
-		ConveyorBelt cbl2_3 = new ConveyorBelt(cbl2_3Pos, 0);
+		ConveyorBelt cbl2_3 = new ConveyorBelt(cbl2_3Pos, 8, 0); //size 8, 0 angle
 		productionLine.add(cbl2_1);
 		productionLine.add(cbl2_2);
 		productionLine.add(cbl2_3);
 		
 		ExtendedPlatform e1 = new ExtendedPlatform(new PointXY(600, 500));
 		productionLine.add(e1);
-		ConveyorBelt test = new ConveyorBelt(new PointXY(600, 500), 5);
+		ConveyorBelt test = new ConveyorBelt(new PointXY(600, 500), 8, 5);
 		productionLine.add(test);
 		Sorter s1 = new Sorter(new PointXY(600, 500));
-		productionLine.add(s1);*/
+		productionLine.add(s1);
 	}
 	
 	/**

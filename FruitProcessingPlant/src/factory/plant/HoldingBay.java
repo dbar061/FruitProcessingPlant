@@ -1,50 +1,52 @@
-package plant;
+package factory.plant;
 
 import draw.StdDraw;
 import buffer.FruitBuffer;
 import buffer.ProductionBuffer;
 import fruit.Fruit;
-import dimension.PointXY;
-import dimension.HoldingBayDimension;
+import factory.dimension.PointXY;
+import factory.dimension.HoldingBayDimension;
 
 /**
  * HoldingBay.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	22.10.2012
  *
- * ConveyorBelt is a concrete implementation of a conveyor belt for fruit in
- * a fruit processing plant. It contains a DrawableFruitBuffer to hold the fuit and
- * process the moving of fruit along the conveyor belt.
- * 
- * It also contains a ConveyorBeltDimension, which is a special class customised
- * for dealing with the physical placement of the conveyor belt (with respect to
- * its draw methods) on the factory floor.
- * 
- * Because the DrawableFruitBuffer can draw itself, it needs access to the dimensions
- * that define this class, and thus is passed a copy of the ConveryBeltDimension
- * class when it is instantiated.
- * 
- * ConveyorBelt implements the Machine interface and as such also implements the
- * Drawable interface. Thus it contains a draw method and can draw itself.
+ * TODO
+ * HoldingBay needs a blurb
  */
 public class HoldingBay implements BufferMachine {
 	
 	public static final int NUM_SLOTS = 50;
-	private FruitBuffer fb; //This buffer cannot draw itself
+	
 	private HoldingBayDimension hbd;
+	private FruitBuffer fb; //This buffer cannot draw itself
 	
 	public HoldingBay(PointXY start) {
 		hbd = new HoldingBayDimension(start, NUM_SLOTS); // only contains startPosition
 		fb = new FruitBuffer(NUM_SLOTS);
 	}
 	
+	/**
+	 * This method is called to add Fruit to the machine
+	 */
 	public void addFruit(Fruit fruit) {
-		fb.add(fruit);
+		fb.addFruit(fruit);
 	}
 	
+	/**
+	 * This method is called to remove from from the machine
+	 */
 	public Fruit removeFruit() {
 		return fb.removeFruit();
+	}
+	
+	/**
+	 * This method gets the underlying buffer from this machine
+	 */
+	public ProductionBuffer getProductionBuffer() {
+		return fb;
 	}
 	
 	/**
@@ -72,10 +74,15 @@ public class HoldingBay implements BufferMachine {
 	}
 	
 	/**
-	 * This method gets the underlying buffer from this machine
+	 * Gets the end position of this item. This end position is
+	 * dependent on the size of the item. If the item is a machine
+	 * on the factory floor, then this method is used for
+	 * positioning other items that follow on in the production
+	 * line
+	 * @return the point where this item ends in the factory
 	 */
-	public ProductionBuffer getProductionBuffer() {
-		return fb;
+	public PointXY getEndPoint() {
+		return hbd.getEndPoint();
 	}
 	
 	/**

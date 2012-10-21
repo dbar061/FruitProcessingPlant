@@ -1,15 +1,15 @@
 package buffer;
 
 import draw.Drawable;
-import dimension.ConveyorBeltDimension;
-import dimension.PointXY;
+import factory.dimension.ConveyorBeltDimension;
+import factory.dimension.PointXY;
 
 
 /**
  * DrawableBuffer.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	22.10.2012
  * 
  * DrawableBuffer is the abstract superclass of all machines on factory floor that
  * contain a buffer that has draw methods (where some or all of the buffer spaces 
@@ -19,6 +19,9 @@ import dimension.PointXY;
  * FactoryDimension for the machine that it is part of. It uses data from its
  * FactoryDimension to assist its draw methods.
  * 
+ * Presently, the only machine that meets these criteria is a ConveyorBelt.
+ * If more machines in the future contain DrawableBuffer then we will have to
+ * genericise the dimension class which we use.
  */
 
 public abstract class DrawableBuffer extends AbstractBuffer implements Drawable {
@@ -39,7 +42,7 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable 
 	 * @param d
 	 */
 	public DrawableBuffer(ConveyorBeltDimension d, int maxSize) {
-		super(maxSize);
+		super(maxSize); //set the maximum size of the AbstractBuffer
 		this.dimension = d;
 	}
 	

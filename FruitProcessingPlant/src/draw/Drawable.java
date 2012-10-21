@@ -1,12 +1,12 @@
 package draw;
 
-import dimension.PointXY;
+import factory.dimension.PointXY;
 
 /**
  * Drawable.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	22.10.2012
  * 
  * This interface is implemented by all objects that can be drawn
  * in the FruitProcessingPlant

@@ -1,4 +1,4 @@
-package plant;
+package factory.plant;
 
 import buffer.ProductionBuffer;
 import fruit.Fruit;

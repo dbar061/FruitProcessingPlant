@@ -1,9 +1,9 @@
-package plant;
+package factory.plant;
 
 import buffer.FruitBuffer;
 import buffer.ProductionBuffer;
-import dimension.PointXY;
-import dimension.ExtendedPlatformDimension;
+import factory.dimension.PointXY;
+import factory.dimension.ExtendedPlatformDimension;
 import draw.StdDraw;
 import fruit.Fruit;
 
@@ -12,29 +12,43 @@ import fruit.Fruit;
  * ExtendedPlatform.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	22.10.2012
  *
- * The sorter is too simple to have its own dimension support class
- * It only has a radius and a start point
+ * TODO
+ * ExtendedPlatform needs a blurb
  */
-public class ExtendedPlatform implements Machine {
+public class ExtendedPlatform implements BufferMachine {
 	
 	public static final int NUM_SLOTS = 1;
-	ExtendedPlatformDimension epd;
-	private FruitBuffer fb;
+	
+	private ExtendedPlatformDimension epd;
+	private FruitBuffer fb; //This buffer cannot draw itself
+	
 	public ExtendedPlatform(PointXY start) {
 		epd = new ExtendedPlatformDimension(start);
 		fb = new FruitBuffer(NUM_SLOTS);
 	}
 	
+	/**
+	 * This method is called to add Fruit to the machine
+	 */
 	public void addFruit(Fruit fruit) {
-		fb.add(fruit);
+		fb.addFruit(fruit);
 	}
 	
+	/**
+	 * This method is called to remove from from the machine
+	 */
 	public Fruit removeFruit() {
 		return fb.removeFruit();
 	}
 	
+	/**
+	 * This method gets the underlying buffer from this machine
+	 */
+	public ProductionBuffer getProductionBuffer() {
+		return fb;
+	}
 	
 	/**
 	 * get the length of the Machine
@@ -61,6 +75,18 @@ public class ExtendedPlatform implements Machine {
 	}
 	
 	/**
+	 * Gets the end position of this item. This end position is
+	 * dependent on the size of the item. If the item is a machine
+	 * on the factory floor, then this method is used for
+	 * positioning other items that follow on in the production
+	 * line
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY getEndPoint() {
+		return epd.getEndPoint();
+	}
+	
+	/**
 	 * This method causes the current object to draw itself
 	 * at the location specified by <location>
 	 * @param location
@@ -71,10 +97,6 @@ public class ExtendedPlatform implements Machine {
 		//Draw the ExtendedPlatform
 		StdDraw.setPenColor(StdDraw.BOOK_BLUE);
 		StdDraw.filledDiamond(drawPoint, epd.getDrawRadius());
-	}
-	
-	public ProductionBuffer getProductionBuffer() {
-		return fb;
 	}
 
 }

@@ -1,7 +1,7 @@
 package fruit;
 
 import draw.StdDraw;
-import dimension.PointXY;
+import factory.dimension.PointXY;
 
 
 /**
@@ -9,7 +9,7 @@ import dimension.PointXY;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	13.10.2012
+ * @lastModified: 	22.10.2012
  * 
  * This is a concrete subclass of Fruit representing an banana
  */
