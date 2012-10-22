@@ -21,7 +21,9 @@ import factory.dimension.PointXY;
  * 
  * Specifically the Locatable interface it is used by all machines
  * that have a start and end point on the factory floor (which is
- * all the machines on the floor).
+ * all the machines on the floor). Locatable also provides a method
+ * for a machine to indicate where the next machine in sequence 
+ * should be place.
  */
 public interface Locatable {
 	

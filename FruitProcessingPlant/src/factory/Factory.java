@@ -2,6 +2,8 @@ package factory;
 
 import java.util.*;
 
+import factory.machine.BufferMachine;
+import factory.machine.Machine;
 import factory.plant.*;
 import fruit.Apple;
 import fruit.Banana;
@@ -82,7 +84,16 @@ public class Factory {
 		c.testFactory();
 		c.addTestFruits();
 		c.paint();
-
+		
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
 	}
 	
 	/**
@@ -99,9 +110,9 @@ public class Factory {
 		productionLine.add(sl1_1);
 		
 		PointXY cbl1_1Pos = new PointXY(sl1_1.nextMachineStartPoint().getX(), sl1_1.nextMachineStartPoint().getY() + (ConveyorBeltDimension.WIDTH / 2));
-		ConveyorBelt cbl1_1 = new ConveyorBelt(cbl1_1Pos, 8, 0); //size 8, 0 angle
+		ConveyorBelt cbl1_1 = new ConveyorBelt(cbl1_1Pos, 6, 0); //size 8, 0 angle
 		PointXY cbl1_2Pos = new PointXY(cbl1_1.nextMachineStartPoint());
-		ConveyorBelt cbl1_2 = new ConveyorBelt(cbl1_2Pos, 8, 15); //size 8, 15 degree angle
+		ConveyorBelt cbl1_2 = new ConveyorBelt(cbl1_2Pos, 12, 15); //size 8, 15 degree angle
 		PointXY cbl1_3Pos = new PointXY(cbl1_2.nextMachineStartPoint());
 		ConveyorBelt cbl1_3 = new ConveyorBelt(cbl1_3Pos, 8, 0); //size 8, 0 angle
 		productionLine.add(cbl1_1);
@@ -128,7 +139,7 @@ public class Factory {
 		productionLine.add(hbl2_1);
 		
 		
-		ConveyorBelt test1 = new ConveyorBelt(new PointXY(600, 500), 8, 180);
+		ConveyorBelt test1 = new ConveyorBelt(new PointXY(600, 500), 19, 160);
 		productionLine.add(test1);
 		ConveyorBelt test2 = new ConveyorBelt(new PointXY(600, 500), 8, 0);
 		productionLine.add(test2);
@@ -153,13 +164,30 @@ public class Factory {
 			else continue;
 			
 			if (m instanceof HoldingBay) maxCount = 49;
-			else maxCount = 8;
+			else if (m instanceof ConveyorBelt) maxCount = 6;
+			else maxCount = 1;
 			
 			for (int j = 0; j < maxCount; j++) {
 				random = Math.random();
 				if (random <= 0.333) bm.addFruit(new Apple());
 				else if (random <= 0.666) bm.addFruit(new Banana());
 				else bm.addFruit(new Pear());
+			}
+		}
+	}
+	
+	private void advanceConveyors() {
+		Machine m;
+		BufferMachine bm;
+		Iterator<Machine> i = productionLine.iterator();
+		while (i.hasNext()) {
+			m = i.next();
+			if (m instanceof BufferMachine) bm = (BufferMachine)m;
+			else continue;
+			
+			if (bm instanceof ConveyorBelt) {
+				//bm.removeFruit();
+				bm.addFruit(null);
 			}
 		}
 	}

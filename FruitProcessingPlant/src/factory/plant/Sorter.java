@@ -4,6 +4,7 @@ import buffer.FruitBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
+import factory.machine.BufferMachine;
 import draw.StdDraw;
 import fruit.Fruit;
 
@@ -42,6 +43,16 @@ public class Sorter implements BufferMachine {
 	 */
 	public Fruit removeFruit() {
 		return fb.removeFruit();
+	}
+	
+	/**
+	 * This method moves the fruit along in the buffer by
+	 * a single space. This method is called instead of
+	 * adding a Fruit to the buffer. When this method is
+	 * called an empty space is added to the buffer instead
+	 */
+	public void AdvanceBuffer() {
+		fb.AdvanceBuffer();
 	}
 	
 	/**

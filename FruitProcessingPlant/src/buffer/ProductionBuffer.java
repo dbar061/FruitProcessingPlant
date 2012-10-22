@@ -7,7 +7,7 @@ package buffer;
  * 
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	23.10.2012
  * 
  * An interface to be implemented by all objects that can act as "buffers"
  * in a very loose sense of the word.
@@ -21,6 +21,11 @@ package buffer;
  * This interface will be implemented by all machinery on the factory floor
  * of our fruit processing factory. This interface is designed to unify all
  * these machines with a top level interface and a set of shared methods.
+ * 
+ * Not all ProductionBuffers need to be drawn, hence ProductionBuffer does
+ * not implement the Drawable interface. For the same reason ProductionBuffer
+ * does not contain any methods to advance the buffer forward. This is only
+ * needed when the buffer can be drawn.
  */
 public interface ProductionBuffer {
 	
@@ -37,9 +42,5 @@ public interface ProductionBuffer {
 	
 	//Remove from the front of the buffer
 	public BufferSlot remove();
-	
-	//move the fruit along in the buffer by one tick
-	//This should possibly not be here
-	public void AdvanceBuffer();
 
 }

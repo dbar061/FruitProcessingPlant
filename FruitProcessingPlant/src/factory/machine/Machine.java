@@ -1,4 +1,4 @@
-package factory.plant;
+package factory.machine;
 
 import draw.Drawable;
 import factory.dimension.Locatable;

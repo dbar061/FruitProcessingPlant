@@ -2,19 +2,24 @@ package buffer;
 
 import fruit.Fruit;
 import buffer.DrawableBuffer;
+import factory.machine.FruitConveyor;
 import factory.dimension.ConveyorBeltDimension;
 
 /**
  * DrawableFruitBuffer.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	22.10.2012
+ * @lastModified:	23.10.2012
  *
  * DrawableFruitBuffer is a concrete subclass of DrawableBuffer.
  * A DrawableFruitBuffer is specifically designed to hold Fruit and its
  * subclasses.
+ * 
+ * DrawableFruitBuffer also implements the FruitConveyor interface,
+ * requiring it to be able to add Fruit, remove Fruit and advance items
+ * along its buffer.
  */
-public class DrawableFruitBuffer extends DrawableBuffer {
+public class DrawableFruitBuffer extends DrawableBuffer implements FruitConveyor {
 	
 	//Default Fruit Buffer Size is 8
 	public DrawableFruitBuffer(ConveyorBeltDimension d) {

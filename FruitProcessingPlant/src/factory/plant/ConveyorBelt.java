@@ -7,6 +7,7 @@ import fruit.Fruit;
 import fruit.Apple;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
+import factory.machine.BufferMachine;
 
 /**
  * ConveyorBelt.java
@@ -42,12 +43,35 @@ public class ConveyorBelt implements BufferMachine {
 		dfb = new DrawableFruitBuffer(cbd, NUM_SLOTS);
 	}
 	
+	/**
+	 * This method is called to add Fruit to the machine
+	 */
 	public void addFruit(Fruit fruit) {
-		dfb.add(fruit);
+		dfb.addFruit(fruit);
 	}
 	
+	/**
+	 * This method is called to remove from from the machine
+	 */
 	public Fruit removeFruit() {
 		return dfb.removeFruit();
+	}
+	
+	/**
+	 * This method moves the fruit along in the buffer by
+	 * a single space. This method is called instead of
+	 * adding a Fruit to the buffer. When this method is
+	 * called an empty space is added to the buffer instead
+	 */
+	public void AdvanceBuffer() {
+		dfb.AdvanceBuffer();
+	}
+	
+	/**
+	 * This method gets the underlying buffer from this machine
+	 */
+	public ProductionBuffer getProductionBuffer() {
+		return dfb;
 	}
 	
 	/**
@@ -93,13 +117,6 @@ public class ConveyorBelt implements BufferMachine {
 	 */
 	public PointXY nextMachineStartPoint() {
 		return cbd.nextMachineStartPoint();
-	}
-	
-	/**
-	 * This method gets the underlying buffer from this machine
-	 */
-	public ProductionBuffer getProductionBuffer() {
-		return dfb;
 	}
 	
 	/**
