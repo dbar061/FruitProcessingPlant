@@ -69,14 +69,14 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable,
 		//an array containing all items in the buffer (for printing only)
 		BufferSlot[] items = super.getPrintArray();
 		
+		//array must be iterated in reverse
 		for (int i = (items.length-1); i >= 0; i--) {
-		//for (int i = 0; i < items.length; i++) {
 			
 			if (items[i] == null) {
 				//this slot is empty, don't draw it
 				//Draw an apple at location
-				StdDraw.setPenColor(StdDraw.WHITE);
-				StdDraw.filledCircle(itemLocation.getX(), itemLocation.getY(), 10);
+				//StdDraw.setPenColor(StdDraw.WHITE);
+				//StdDraw.filledCircle(itemLocation.getX(), itemLocation.getY(), 10);
 			}
 			else {
 				//calls the draw method of the item actually in the buffer

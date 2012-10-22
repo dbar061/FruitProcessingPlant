@@ -94,6 +94,9 @@ public class Factory {
 		try { Thread.sleep(3000); } catch (Exception e) {}
 		c.advanceConveyors();
 		c.paint();
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
 	}
 	
 	/**
@@ -186,8 +189,7 @@ public class Factory {
 			else continue;
 			
 			if (bm instanceof ConveyorBelt) {
-				//bm.removeFruit();
-				bm.addFruit(null);
+				bm.AdvanceBuffer();
 			}
 		}
 	}

@@ -56,7 +56,10 @@ public class FruitBuffer extends AbstractBuffer implements FruitConveyor {
 	 * adding a Fruit to the buffer. When this method is
 	 * called an empty space is added to the buffer instead
 	 * 
-	 * Advances the buffer forward by one
+	 * Advances the buffer forward by one. Because this method
+	 * does not actually do anything it does not need to be
+	 * synchronized. However if it did do something it should
+	 * be, thus incase I will leave it synchronized
 	 */
 	public synchronized void AdvanceBuffer() {
 		//no action occurs for AdvanceBuffer when called on  FruitBuffer.
