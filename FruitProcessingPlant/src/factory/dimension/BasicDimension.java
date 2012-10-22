@@ -13,6 +13,7 @@ import factory.dimension.PointXY;
  */
 public class BasicDimension implements FactoryDimension {
 	
+	//this is the start point. It is the top left corner of a shape object
 	private PointXY startPoint, endPoint; //the physical start and end points
 	private double radius = 20; //radius of this shape in scaled pixels
 	
@@ -79,7 +80,7 @@ public class BasicDimension implements FactoryDimension {
 		//the object always draws with its position centered on the x,y
 		//we want to draw the object based upon its start and end points
 		double x = startPoint.getX() + getDrawRadius();
-		double y = startPoint.getY() + getDrawRadius();
+		double y = startPoint.getY() - getDrawRadius();
 		PointXY drawPoint = new PointXY(x ,y);
 		return drawPoint;
 		

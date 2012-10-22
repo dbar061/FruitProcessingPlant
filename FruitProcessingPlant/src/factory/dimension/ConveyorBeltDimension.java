@@ -21,7 +21,9 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	private double length; //scaled pixels
 	private double angle; //degrees
 	
-	private PointXY startPoint, endPoint; //the physical start and end points
+	//this is the start point. We have assumed it is the top left corner of a conveyor drawn at 0 degrees
+	private PointXY startPoint;
+	private PointXY endPoint; //the physical start and end points
 	private int slots; //the number of slots in this conveyorBelt
 	
 	/**
@@ -41,6 +43,9 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	
 	/**
 	 * This constructor is here if it is needed, but it is not preferred
+	 * 
+	 * It doesnt need a slots argument because the number of slots is
+	 * calculated from the start and end points.
 	 * 
 	 * @param start
 	 * @param end
@@ -86,16 +91,47 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	/**
 	 * Gets the centre point of the first slot of the conveyor
 	 * This is the location where we will draw the first item
-	 * in the conveyor
+	 * in the conveyor.
+	 * 
+	 * Devin has a bunch of hand drawn notes that describe how
+	 * the calculations here are done. All the angles and variables
+	 * referred to here match back to the hand drawn notes and
+	 * symbols used by Devin there.
+	 * 
+	 * TODO this can be improved for speed slightly
+	 * 
 	 * @return the point where this item is located in the factory
 	 */
 	public PointXY getFirstSlotDrawPoint() {
-		//Assume all conveyors are horizontal
 		double x = startPoint.getX();
 		double y = startPoint.getY();
-		x += (SLOT_LENGTH / 2);
-		y += (WIDTH / 2);
-		return new PointXY(x, y);
+		double a = (SLOT_LENGTH / 2);
+		double b = (WIDTH / 2);
+		double c = Math.sqrt((a*a) + (b*b)); //this also equals h
+		//double theta2 = Math.atan(b / a); //radians
+		double theta2 = Math.atan2(b, a); //gives radians, args are y, x
+		double theta1 = Math.toRadians(angle);
+		double dx = c * Math.cos(theta1 + theta2);
+		double dy = c * Math.sin(theta1 + theta2);
+		//System.out.println("x is: " + x);
+		//System.out.println("y is: " + y);
+		//System.out.println("a is: " + a);
+		//System.out.println("b is: " + b);
+		//System.out.println("c is: " + c);
+		//System.out.println("theta1 is: " + theta1);
+		//System.out.println("theta2 is: " + theta2);
+		//System.out.println("dx is: " + dx);
+		//System.out.println("dy is: " + dy);
+		return new PointXY(x + dx, y - dy);
+	}
+	
+	public PointXY getNextSlotDrawPoint(PointXY previous) {
+		double x = previous.getX();
+		double y = previous.getY();
+		double hypotenuse = SLOT_LENGTH; //length of a single slot
+		double dy = hypotenuse * Math.sin(Math.toRadians(angle));
+		double dx = hypotenuse * Math.cos(Math.toRadians(angle));
+		return new PointXY(x + dx, y - dy);
 	}
 	
 	/**
@@ -138,9 +174,9 @@ public class ConveyorBeltDimension implements FactoryDimension {
 		double x = startPoint.getX();
 		double y = startPoint.getY();
 		double hypotenuse = (slots * SLOT_LENGTH); //length of conveyor
-		double dx = hypotenuse * Math.sin(Math.toRadians(angle));
-		double dy = hypotenuse * Math.cos(Math.toRadians(angle));
-		endPoint = new PointXY(x + dx, y + dy);
+		double dy = hypotenuse * Math.sin(Math.toRadians(angle));
+		double dx = hypotenuse * Math.cos(Math.toRadians(angle));
+		endPoint = new PointXY(x + dx, y - dy);
 	}
 	
 	/**
@@ -173,7 +209,7 @@ public class ConveyorBeltDimension implements FactoryDimension {
 		//the object always draws with its position centered on the x,y
 		//we want to draw the object based upon its start and end points
 		double x = startPoint.getX() + getRectHalfLength();
-		double y = startPoint.getY() + getRectHalfWidth();
+		double y = startPoint.getY() - getRectHalfWidth();
 		PointXY drawPoint = new PointXY(x ,y);
 		return drawPoint;
 		

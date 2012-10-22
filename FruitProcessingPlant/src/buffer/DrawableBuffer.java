@@ -54,11 +54,15 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable 
 		BufferSlot[] items = super.getPrintArray();
 		
 		for (int i = 0; i < items.length; i++) {
-			//TODO This assume horizontal conveyors 
-			itemLocation.x = location.x + (i * ConveyorBeltDimension.SLOT_LENGTH); //draw item in its correct slot position
+			//itemLocation.x = location.x + (i * ConveyorBeltDimension.SLOT_LENGTH); //draw item in its correct slot position
 			//System.out.println("Initial x location: " + location.x);
 			//System.out.println("Apple x co-ord: " + itemLocation.x);
+			
+			//calls the draw method of the item actually in the buffer
+			//eg. Apple
 			items[i].draw(itemLocation);
+			//fetches the centre point of the next slot
+			itemLocation = dimension.getNextSlotDrawPoint(itemLocation);
 		}
 	}
 	

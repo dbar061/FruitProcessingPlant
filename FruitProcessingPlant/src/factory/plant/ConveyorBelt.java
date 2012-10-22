@@ -32,22 +32,22 @@ import factory.dimension.ConveyorBeltDimension;
 public class ConveyorBelt implements BufferMachine {
 	
 	public final int NUM_SLOTS; //normal ConveyorBelt is size 8, Large is size 19
-	private DrawableFruitBuffer fb; //This buffer can draw itself and must be associated with the dimensions of its parent Machine
+	private DrawableFruitBuffer dfb; //This buffer can draw itself and must be associated with the dimensions of its parent Machine
 	private ConveyorBeltDimension cbd; //We pass it these dimensions when we create it
 	
 	public ConveyorBelt(PointXY start, int slots, double angle) {
 		NUM_SLOTS = slots;
 		//startPosition, angle, bufferSize
 		cbd = new ConveyorBeltDimension(start, angle, NUM_SLOTS);
-		fb = new DrawableFruitBuffer(cbd, NUM_SLOTS);
+		dfb = new DrawableFruitBuffer(cbd, NUM_SLOTS);
 	}
 	
 	public void addFruit(Fruit fruit) {
-		fb.add(fruit);
+		dfb.add(fruit);
 	}
 	
 	public Fruit removeFruit() {
-		return fb.removeFruit();
+		return dfb.removeFruit();
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class ConveyorBelt implements BufferMachine {
 	 * This method gets the underlying buffer from this machine
 	 */
 	public ProductionBuffer getProductionBuffer() {
-		return fb;
+		return dfb;
 	}
 	
 	/**
@@ -100,18 +100,18 @@ public class ConveyorBelt implements BufferMachine {
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.filledAngledRectangle(drawPoint, cbd.getDrawHalfWidth(), cbd.getDrawHalfHeight(), cbd.getAngle());
 		
-		if (cbd.getAngle() == 0) {
+		//if (cbd.getAngle() == 0) {
 			//Draw the DrawableFruitBuffer that is part of this ConyeorBelt
-			fb.draw(cbd.getFirstSlotDrawPoint());
-		}
-		else {
+			dfb.draw(cbd.getFirstSlotDrawPoint());
+		//}
+		//else {
 			//Need to figure out how to draw buffer at an angle
-		}
+		//}
 	}
 	
 	@Override
 	public String toString() {
-		return "ConveyorBelt:\n" + fb.toString(); 
+		return "ConveyorBelt:\n" + dfb.toString(); 
 	}
 	
 	//Main method used for testing this class separately
