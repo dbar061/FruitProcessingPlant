@@ -7,7 +7,7 @@ import factory.dimension.PointXY;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	22.10.2012
+ * @lastModified: 	23.10.2012
  * 
  * Generic dimension class for any basic machine
  */
@@ -56,6 +56,20 @@ public class BasicDimension implements FactoryDimension {
 	public PointXY getEndPoint() {
 		//we don't want our end point modified by external parties
 		return new PointXY(this.endPoint);
+	}
+	
+	/**
+	 * Gets the end position of this item, but factors in the
+	 * machine spacing and angle of the current machine to choose
+	 * an optimal starting position for the next machine on the
+	 * production line.
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY nextMachineStartPoint() {
+		//assumes machines are lined up along the x coordinate
+		double x = endPoint.getX();
+		double y = endPoint.getY();
+		return new PointXY(x + Locatable.SPACING, y - radius);
 	}
 	
 	/**

@@ -12,7 +12,7 @@ import factory.dimension.ConveyorBeltDimension;
  * ConveyorBelt.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	22.10.2012
+ * @lastModified:	23.10.2012
  *
  * ConveyorBelt is a concrete implementation of a conveyor belt for fruit in
  * a fruit processing plant. It contains a DrawableFruitBuffer to hold the fruit and
@@ -82,6 +82,17 @@ public class ConveyorBelt implements BufferMachine {
 	 */
 	public PointXY getEndPoint() {
 		return cbd.getEndPoint();
+	}
+	
+	/**
+	 * Gets the end position of this item, but factors in the
+	 * machine spacing and angle of the current machine to choose
+	 * an optimal starting position for the next machine on the
+	 * production line.
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY nextMachineStartPoint() {
+		return cbd.nextMachineStartPoint();
 	}
 	
 	/**

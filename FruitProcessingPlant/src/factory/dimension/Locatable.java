@@ -6,14 +6,27 @@ import factory.dimension.PointXY;
  * Locatable.java
  * @author:			Devin Barry
  * @date:			22.10.2012
- * @lastModified:	22.10.2012
+ * @lastModified:	23.10.2012
  *
- * Locatable interface is an interface shared by several
- * items in several packages. Specifically it is used by
- * all machines that have a start and end point on the 
- * factory floor (which is all the machines).
+ *
+ * The Locatable interface binds together the factory sub packages.
+ * It is used by both the Dimension sub-package as well as the plant
+ * sub package. All FactoryDimension are Locatable and all Machine
+ * are Locatable.
+ * 
+ * The reason these two sub packages share this interface is because
+ * of the intimate link between the Dimension sub-package and the
+ * plant sub-package. All machines have an associated dimension and
+ * thus both must be Locatable
+ * 
+ * Specifically the Locatable interface it is used by all machines
+ * that have a start and end point on the factory floor (which is
+ * all the machines on the floor).
  */
 public interface Locatable {
+	
+	//This is the preferred spacing between machines
+	public static final int SPACING = 5; //scaled pixels
 	
 	/**
 	 * Gets the location at which this item is positioned
@@ -30,6 +43,15 @@ public interface Locatable {
 	 * @return the point where this item ends in the factory
 	 */
 	public PointXY getEndPoint();
+	
+	/**
+	 * Gets the end position of this item, but factors in the
+	 * machine spacing and angle of the current machine to choose
+	 * an optimal starting position for the next machine on the
+	 * production line.
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY nextMachineStartPoint();
 
 }
 

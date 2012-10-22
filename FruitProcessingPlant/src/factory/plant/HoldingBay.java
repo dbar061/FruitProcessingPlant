@@ -11,7 +11,7 @@ import factory.dimension.HoldingBayDimension;
  * HoldingBay.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	22.10.2012
+ * @lastModified:	23.10.2012
  *
  * TODO
  * HoldingBay needs a blurb
@@ -83,6 +83,17 @@ public class HoldingBay implements BufferMachine {
 	 */
 	public PointXY getEndPoint() {
 		return hbd.getEndPoint();
+	}
+	
+	/**
+	 * Gets the end position of this item, but factors in the
+	 * machine spacing and angle of the current machine to choose
+	 * an optimal starting position for the next machine on the
+	 * production line.
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY nextMachineStartPoint() {
+		return hbd.nextMachineStartPoint();
 	}
 	
 	/**

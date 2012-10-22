@@ -12,7 +12,7 @@ import fruit.Fruit;
  * Sorter.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	22.10.2012
+ * @lastModified:	23.10.2012
  *
  * The sorter is a form of BufferMachine
  * Unlike a conveyor belt, it only has a small number
@@ -86,6 +86,17 @@ public class Sorter implements BufferMachine {
 	 */
 	public PointXY getEndPoint() {
 		return sd.getEndPoint();
+	}
+	
+	/**
+	 * Gets the end position of this item, but factors in the
+	 * machine spacing and angle of the current machine to choose
+	 * an optimal starting position for the next machine on the
+	 * production line.
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY nextMachineStartPoint() {
+		return sd.nextMachineStartPoint();
 	}
 	
 	/**

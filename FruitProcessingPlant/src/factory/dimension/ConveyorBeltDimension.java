@@ -5,7 +5,7 @@ package factory.dimension;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	22.10.2012
+ * @lastModified: 	23.10.2012
  * 
  * This class should probably extend BasicDimension. Because it is a bit
  * complex it has not been made to extend this class yet, despite all
@@ -89,6 +89,37 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	}
 	
 	/**
+	 * Gets the end position of this item, but factors in the
+	 * machine spacing and angle of the current machine to choose
+	 * an optimal starting position for the next machine on the
+	 * production line.
+	 * @return the point where this item ends in the factory
+	 */
+	public PointXY nextMachineStartPoint() {
+		//assumes machines are lined up along the x coordinate
+		PointXY rightMost = this.getRightMostXPoint();
+		double x = rightMost.getX();
+		double y = endPoint.getY();
+		return new PointXY(x + Locatable.SPACING, y);
+	}
+	
+	/**
+	 * Gets the length of the conveyor belt
+	 * @return the length
+	 */
+	public double getLength() {
+		return length;
+	}
+	
+	/**
+	 * Gets the angle of the conveyor belt relative to horizontal
+	 * @return the angle
+	 */
+	public double getAngle() {
+		return angle;
+	}
+	
+	/**
 	 * Gets the centre point of the first slot of the conveyor
 	 * This is the location where we will draw the first item
 	 * in the conveyor.
@@ -100,7 +131,7 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	 * 
 	 * TODO this can be improved for speed slightly
 	 * 
-	 * @return the point where this item is located in the factory
+	 * @return the centre point of the first slot in the conveyor
 	 */
 	public PointXY getFirstSlotDrawPoint() {
 		double x = startPoint.getX();
@@ -125,6 +156,18 @@ public class ConveyorBeltDimension implements FactoryDimension {
 		return new PointXY(x + dx, y - dy);
 	}
 	
+	/**
+	 * Gets the centre point of the next slot of the conveyor
+	 * based upon the position of the last slot of the conveyor.
+	 * 
+	 * This calculation is simply based upon the angle of the
+	 * conveyor. The change in position can be thought of as a
+	 * basic triangle side calculation.
+	 * 
+	 * TODO this can be improved for speed slightly
+	 * 
+	 * @return the centre point of the next slot in the conveyor
+	 */
 	public PointXY getNextSlotDrawPoint(PointXY previous) {
 		double x = previous.getX();
 		double y = previous.getY();
@@ -132,22 +175,6 @@ public class ConveyorBeltDimension implements FactoryDimension {
 		double dy = hypotenuse * Math.sin(Math.toRadians(angle));
 		double dx = hypotenuse * Math.cos(Math.toRadians(angle));
 		return new PointXY(x + dx, y - dy);
-	}
-	
-	/**
-	 * Gets the length of the conveyor belt
-	 * @return the length
-	 */
-	public double getLength() {
-		return length;
-	}
-	
-	/**
-	 * Gets the angle of the conveyor belt relative to horizontal
-	 * @return the angle
-	 */
-	public double getAngle() {
-		return angle;
 	}
 	
 	private void calculateLength() {
@@ -184,7 +211,7 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	 * where 3 O'Clock is 0 and 12 O'Clock is 270 degrees
 	 * 
 	 * @param screenPoint
-	 * @return angle in degress from 0-360.
+	 * @return angle in degrees from 0-360.
 	 */
 	private void calculateAngle() {
 		double dx = endPoint.getX() - startPoint.getX();
@@ -202,11 +229,104 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	}
 	
 	/**
+	 * Adjusts the start point to deal with angle
+	 * of the conveyor.
+	 */
+	private void AdjustStartPoint() {
+		//assumes machines are lined up along the x coordinate
+		PointXY leftMost = this.getLeftMostXPoint();
+		double leftX = leftMost.getX();
+		double startX = startPoint.getX();
+		
+		if (leftX < startX) {
+			double dx = startX - leftX;
+			startPoint = new PointXY(startX + dx, startPoint.getY());
+		}
+	}
+	
+	/**
+	 * Finds the left most x coordinate of the start of the conveyor.
+	 * This method is useful for positioning conveyors next to each
+	 * other correctly.
+	 * 
+	 * Mathematically, the start point is not the most left point for
+	 * conveyor angles between 0 and 180 degrees. Thus, this method
+	 * only performs calculations for angles between 0 and 180 degrees.
+	 * Outside this range, the start point is the left most point.
+	 * 
+	 * Technically any other angle in this range but with a full
+	 * revolution added in would make sense too. We will not consider
+	 * these angles though. ie angles less than -180 and greater
+	 * than 360.
+	 * 
+	 * From the perspective of the user, the results for this method
+	 * only make sense for angles between -90 and 90 degrees. Beyond
+	 * this range, the end of the conveyor belt occurs before the
+	 * start of the conveyor belt and there would be no reason to
+	 * find the left most start point.
+	 * 
+	 * @return the point with the smallest x coordinate  that belongs
+	 * 		to the start of this conveyor
+	 */
+	private PointXY getLeftMostXPoint() {
+		double x = startPoint.getX();
+		double y = startPoint.getY();
+		if (angle > 0 && angle < 180) {
+			double theta3 = Math.toRadians(90 - angle);
+			double dy = WIDTH * Math.sin(theta3); //here the conveyor width = hypotenuse
+			double dx = WIDTH * Math.cos(theta3);
+			return new PointXY(x - dx, y - dy);
+		}
+		else {
+			return new PointXY(x, y);
+		}
+	}
+	
+	/**
+	 * Finds the right most x coordinate of the end of the conveyor.
+	 * This method is useful for positioning conveyors next to each
+	 * other correctly.
+	 * 
+	 * Mathematically, the end point is not the most right point for
+	 * conveyor angles between -0 and -180 degrees. Thus, this method
+	 * only performs calculations for angles between -0 and -180 degrees.
+	 * Outside this range, the end point is the right most point.
+	 * 
+	 * Technically any other angle in this range but with a full
+	 * revolution added in would make sense too. We will not consider
+	 * these angles though. ie angles greater than 180 and less
+	 * than -360.
+	 * 
+	 * From the perspective of the user, the results for this method
+	 * only make sense for angles between -90 and 90 degrees. Beyond
+	 * this range, the end of the conveyor belt occurs before the
+	 * start of the conveyor belt and there would be no reason to
+	 * find the right most end point.
+	 * 
+	 * @return the point with the largest x coordinate  that belongs
+	 * 		to the end of this conveyor
+	 */
+	private PointXY getRightMostXPoint() {
+		double x = endPoint.getX();
+		double y = endPoint.getY();
+		if (angle < 0 && angle > -180) {
+			double theta4 = Math.toRadians(90 + angle);
+			double dy = WIDTH * Math.sin(theta4); //here the conveyor width = hypotenuse
+			double dx = WIDTH * Math.cos(theta4);
+			return new PointXY(x + dx, y - dy);
+		}
+		else {
+			return new PointXY(x, y);
+		}
+		
+	}
+	
+	/**
 	 * Gets the location at which to draw the item on the factory floor
 	 * @return the point at which this item should be drawn
 	 */
 	public PointXY getDrawPoint() {
-		//the object always draws with its position centered on the x,y
+		//the object always draws with its position centred on the x,y
 		//we want to draw the object based upon its start and end points
 		double x = startPoint.getX() + getRectHalfLength();
 		double y = startPoint.getY() - getRectHalfWidth();
@@ -215,9 +335,14 @@ public class ConveyorBeltDimension implements FactoryDimension {
 		
 	}
 	
+	/**
+	 * Gets the location at which to draw the item on the factory floor
+	 * relative to a base set of coordinates
+	 * @return the point at which this item should be drawn
+	 */
 	public PointXY getDrawPoint(PointXY base) {
 		PointXY drawPoint = getDrawPoint();
-		drawPoint.add(base); //add the base co-ordinates on
+		drawPoint.add(base); //add the base coordinates on
 		return drawPoint;
 	}
 	
