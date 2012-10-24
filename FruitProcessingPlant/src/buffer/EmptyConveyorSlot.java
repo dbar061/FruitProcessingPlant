@@ -1,9 +1,9 @@
 package buffer;
  
+import inventory.ProductionLineItem;
 import draw.StdDraw;
 import buffer.BufferSlot;
 import factory.dimension.PointXY;
-import fruit.ProductionLineItem;
 
 
 /**

@@ -1,13 +1,14 @@
 package factory;
 
+import inventory.Apple;
+import inventory.Banana;
+import inventory.Pear;
+
 import java.util.*;
 
 import factory.machine.BufferMachine;
 import factory.machine.Machine;
 import factory.plant.*;
-import fruit.Apple;
-import fruit.Banana;
-import fruit.Pear;
 import factory.dimension.ConveyorBeltDimension;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
@@ -126,7 +127,7 @@ public class Factory {
 		PointXY cbl2_1Pos = new PointXY(100,conveyorLine2Y);
 		ConveyorBelt cbl2_1 = new ConveyorBelt(cbl2_1Pos, 8, 0); //size 8, 0 angle
 		PointXY cbl2_2Pos = new PointXY(cbl2_1.nextMachineStartPoint());
-		ConveyorBelt cbl2_2 = new ConveyorBelt(cbl2_2Pos, 8, -15); //size 8, 30 angle
+		ConveyorBelt cbl2_2 = new ConveyorBelt(cbl2_2Pos, 8, -35); //size 8, 30 angle
 		productionLine.add(cbl2_1);
 		productionLine.add(cbl2_2);
 		
@@ -144,7 +145,7 @@ public class Factory {
 		
 		ConveyorBelt test1 = new ConveyorBelt(new PointXY(600, 500), 19, 160);
 		productionLine.add(test1);
-		ConveyorBelt test2 = new ConveyorBelt(new PointXY(600, 500), 8, 0);
+		ConveyorBelt test2 = new ConveyorBelt(new PointXY(600, 500), 3, 0);
 		productionLine.add(test2);
 		PointXY sl3_1Pos = new PointXY(test2.nextMachineStartPoint());
 		Sorter sl3_1 = new Sorter(sl3_1Pos);
@@ -179,6 +180,9 @@ public class Factory {
 		}
 	}
 	
+	/**
+	 * Tests advancing of conveyors
+	 */
 	private void advanceConveyors() {
 		Machine m;
 		BufferMachine bm;

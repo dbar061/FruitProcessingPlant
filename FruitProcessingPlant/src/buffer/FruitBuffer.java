@@ -1,6 +1,6 @@
 package buffer;
 
-import fruit.Fruit;
+import inventory.Fruit;
 import factory.machine.FruitConveyor;
 
 /**

@@ -1,6 +1,6 @@
 package buffer;
 
-import fruit.Fruit;
+import inventory.Fruit;
 import buffer.DrawableBuffer;
 import factory.machine.FruitConveyor;
 import factory.dimension.ConveyorBeltDimension;

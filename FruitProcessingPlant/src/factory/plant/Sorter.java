@@ -1,12 +1,12 @@
 package factory.plant;
 
+import inventory.Fruit;
 import buffer.FruitBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
 import factory.machine.BufferMachine;
 import draw.StdDraw;
-import fruit.Fruit;
 
 
 /**

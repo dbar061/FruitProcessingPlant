@@ -1,10 +1,10 @@
 package factory.plant;
 
+import inventory.Apple;
+import inventory.Fruit;
 import draw.StdDraw;
 import buffer.DrawableFruitBuffer;
 import buffer.ProductionBuffer;
-import fruit.Fruit;
-import fruit.Apple;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
 import factory.machine.BufferMachine;

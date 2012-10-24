@@ -1,9 +1,9 @@
 package factory.plant;
 
+import inventory.Fruit;
 import draw.StdDraw;
 import buffer.FruitBuffer;
 import buffer.ProductionBuffer;
-import fruit.Fruit;
 import factory.dimension.PointXY;
 import factory.dimension.HoldingBayDimension;
 import factory.machine.BufferMachine;

@@ -1,6 +1,6 @@
 package factory.machine;
 
-import fruit.Fruit;
+import inventory.Fruit;
 
 /**
  * FruitConveyor.java

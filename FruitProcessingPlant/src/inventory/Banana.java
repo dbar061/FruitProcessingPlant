@@ -1,4 +1,4 @@
-package fruit;
+package inventory;
 
 import draw.StdDraw;
 import factory.dimension.PointXY;
