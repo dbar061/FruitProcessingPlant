@@ -8,7 +8,7 @@ import buffer.BufferSlot;
  * 
  * @author:			Devin Barry
  * @date:			09.10.2012
- * @lastModified: 	21.10.2012
+ * @lastModified: 	24.10.2012
  * 
  * This is the superclass for all fruit in the fruit production line
  */
@@ -81,6 +81,9 @@ public abstract class Fruit implements ProductionLineItem, BufferSlot {
 		return true;
 	}
 	
+	/**
+	 * Fruit are all real items and are as such not empty
+	 */
 	public boolean isEmpty() {
 		return false;
 	}

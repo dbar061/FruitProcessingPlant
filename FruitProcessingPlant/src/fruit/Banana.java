@@ -9,13 +9,13 @@ import factory.dimension.PointXY;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	22.10.2012
+ * @lastModified: 	24.10.2012
  * 
  * This is a concrete subclass of Fruit representing an banana
  */
 public class Banana extends Fruit {
 	
-	private static final int size = 10; //scaled pixels
+	private static final int SIZE = 10; //scaled pixels
 	private static int totalBananas = 0;
 	private int BananaID;
 	 
@@ -37,7 +37,7 @@ public class Banana extends Fruit {
 	public void draw(PointXY location) {
 		//Draw a banana at location
 		StdDraw.setPenColor(StdDraw.YELLOW);
-		StdDraw.filledCircle(location.getX(), location.getY(), size);
+		StdDraw.filledCircle(location.getX(), location.getY(), SIZE);
 	}
 	
 	@Override
