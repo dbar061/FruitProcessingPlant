@@ -6,15 +6,15 @@ import factory.dimension.PointXY;
 
 
 /**
- * Fruit.java
+ * EmptyConveyorSlot.java
  * 
  * @author:			Devin Barry
  * @date:			24.10.2012
  * @lastModified: 	24.10.2012
  * 
- * This class represents an empty space in the conveyor
+ * This class represents an empty space in the conveyor belt
  */
-public class EmptyConveyorSlot implements ProductionLineItem, BufferSlot {
+public class EmptyConveyorSlot implements Inventory, BufferSlot {
 	
 	private static final int SIZE = 10; //scaled pixels
 	

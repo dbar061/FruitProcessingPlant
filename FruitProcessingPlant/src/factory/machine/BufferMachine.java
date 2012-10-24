@@ -13,14 +13,14 @@ import buffer.ProductionBuffer;
  * that get processed on the production line. In contrast the parent 
  * interface Machine can represent any machine such as a controller.
  * 
- * The other parent interface FruitConveyor is shared not only by
+ * The other parent interface InventoryConveyor is shared not only by
  * the actual machine implementations, but also by the actual buffers
  * themsevles that make up part of the machine.
  * 
  * Because all BufferMachine are Machines, they can all be drawn and
  * all have position in the factory.
  */
-public interface BufferMachine extends Machine, FruitConveyor {
+public interface BufferMachine extends Machine, InventoryConveyor {
 	
 	/**
 	 * This method gets the underlying buffer from this machine

@@ -1,5 +1,6 @@
-package inventory;
+package inventory.fruit;
  
+import inventory.Inventory;
 import buffer.BufferSlot;
 
 
@@ -12,7 +13,7 @@ import buffer.BufferSlot;
  * 
  * This is the superclass for all fruit in the fruit production line
  */
-public abstract class Fruit implements ProductionLineItem, BufferSlot {
+public abstract class Fruit implements Inventory, BufferSlot {
 	
 	private static int totalFruit = 0;
 	

@@ -1,8 +1,8 @@
 package factory;
 
-import inventory.Apple;
-import inventory.Banana;
-import inventory.Pear;
+import inventory.fruit.Apple;
+import inventory.fruit.Banana;
+import inventory.fruit.Pear;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class Factory {
 	
 	public static final int WINDOW_LENGTH = 600;
 	public static final int WINDOW_HEIGHT = 1200;
-	public static final double SCALE = 1.0; //how the factory dimensions relate to the window dimensions
+	public static final double SCALE = 2.0; //how the factory dimensions relate to the window dimensions
 	
 	private static final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
 	private static final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
@@ -173,9 +173,9 @@ public class Factory {
 			
 			for (int j = 0; j < maxCount; j++) {
 				random = Math.random();
-				if (random <= 0.333) bm.addFruit(new Apple());
-				else if (random <= 0.666) bm.addFruit(new Banana());
-				else bm.addFruit(new Pear());
+				if (random <= 0.333) bm.addInventory(new Apple());
+				else if (random <= 0.666) bm.addInventory(new Banana());
+				else bm.addInventory(new Pear());
 			}
 		}
 	}

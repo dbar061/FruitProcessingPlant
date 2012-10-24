@@ -2,7 +2,7 @@ package buffer;
 
 import draw.Drawable;
 import draw.StdDraw;
-import factory.machine.FruitConveyor;
+import factory.machine.InventoryConveyor;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
 
@@ -31,7 +31,7 @@ import factory.dimension.ConveyorBeltDimension;
  * genericise the dimension class which we use.
  */
 
-public abstract class DrawableBuffer extends AbstractBuffer implements Drawable, FruitConveyor {
+public abstract class DrawableBuffer extends AbstractBuffer implements Drawable, InventoryConveyor {
 	
 	ConveyorBeltDimension dimension;
 	

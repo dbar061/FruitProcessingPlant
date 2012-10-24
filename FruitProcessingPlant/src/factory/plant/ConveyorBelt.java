@@ -1,9 +1,9 @@
 package factory.plant;
 
-import inventory.Apple;
-import inventory.Fruit;
+import inventory.Inventory;
+import inventory.fruit.Apple;
 import draw.StdDraw;
-import buffer.DrawableFruitBuffer;
+import buffer.DrawableInventoryBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
@@ -13,17 +13,17 @@ import factory.machine.BufferMachine;
  * ConveyorBelt.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	24.10.2012
  *
  * ConveyorBelt is a concrete implementation of a conveyor belt for fruit in
- * a fruit processing plant. It contains a DrawableFruitBuffer to hold the fruit and
+ * a fruit processing plant. It contains a DrawableInventoryBuffer to hold the fruit and
  * process the moving of fruit along the conveyor belt.
  * 
  * It also contains a ConveyorBeltDimension, which is a special class customized
  * for dealing with the physical placement of the conveyor belt (with respect to
  * its draw methods) on the factory floor.
  * 
- * Because the DrawableFruitBuffer can draw itself, it needs access to the dimensions
+ * Because the DrawableInventoryBuffer can draw itself, it needs access to the dimensions
  * that define this class, and thus is passed a copy of the ConveryBeltDimension
  * class when it is instantiated.
  * 
@@ -33,34 +33,34 @@ import factory.machine.BufferMachine;
 public class ConveyorBelt implements BufferMachine {
 	
 	public final int NUM_SLOTS; //normal ConveyorBelt is size 8, Large is size 19
-	private DrawableFruitBuffer dfb; //This buffer can draw itself and must be associated with the dimensions of its parent Machine
+	private DrawableInventoryBuffer dfb; //This buffer can draw itself and must be associated with the dimensions of its parent Machine
 	private ConveyorBeltDimension cbd; //We pass it these dimensions when we create it
 	
 	public ConveyorBelt(PointXY start, int slots, double angle) {
 		NUM_SLOTS = slots;
 		//startPosition, angle, bufferSize
 		cbd = new ConveyorBeltDimension(start, angle, NUM_SLOTS);
-		dfb = new DrawableFruitBuffer(cbd, NUM_SLOTS);
+		dfb = new DrawableInventoryBuffer(cbd, NUM_SLOTS);
 	}
 	
 	/**
-	 * This method is called to add Fruit to the machine
+	 * This method is called to add Inventory to the machine
 	 */
-	public void addFruit(Fruit fruit) {
-		dfb.addFruit(fruit);
+	public void addInventory(Inventory inventory) {
+		dfb.addInventory(inventory);
 	}
 	
 	/**
-	 * This method is called to remove from from the machine
+	 * This method is called to remove Inventory from the machine
 	 */
-	public Fruit removeFruit() {
-		return dfb.removeFruit();
+	public Inventory removeInventory() {
+		return dfb.removeInventory();
 	}
 	
 	/**
-	 * This method moves the fruit along in the buffer by
+	 * This method moves the Inventory along in the buffer by
 	 * a single space. This method is called instead of
-	 * adding a Fruit to the buffer. When this method is
+	 * adding Inventory to the buffer. When this method is
 	 * called an empty space is added to the buffer instead
 	 */
 	public void AdvanceBuffer() {
@@ -129,7 +129,7 @@ public class ConveyorBelt implements BufferMachine {
 		StdDraw.filledAngledRectangle(drawPoint, cbd.getDrawHalfWidth(), cbd.getDrawHalfHeight(), cbd.getAngle());
 		
 		//if (cbd.getAngle() == 0) {
-			//Draw the DrawableFruitBuffer that is part of this ConyeorBelt
+			//Draw the DrawableInventoryBuffer that is part of this ConyeorBelt
 			dfb.draw(cbd.getFirstSlotDrawPoint());
 		//}
 		//else {
@@ -150,19 +150,19 @@ public class ConveyorBelt implements BufferMachine {
 		Apple a2 = new Apple();
 		Apple a3 = new Apple();
 		Apple a4 = new Apple();
-		cb.addFruit(a1);
-		cb.addFruit(a2);
-		cb.addFruit(a3);
-		cb.addFruit(a4);
+		cb.addInventory(a1);
+		cb.addInventory(a2);
+		cb.addInventory(a3);
+		cb.addInventory(a4);
 		//print output
 		System.out.println(cb);
-		cb.removeFruit();
+		cb.removeInventory();
 		System.out.println(cb);
-		cb.removeFruit();
+		cb.removeInventory();
 		System.out.println(cb);
-		cb.removeFruit();
+		cb.removeInventory();
 		System.out.println(cb);
-		cb.removeFruit();
+		cb.removeInventory();
 		System.out.println(cb);
 	}
 }

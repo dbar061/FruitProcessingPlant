@@ -1,7 +1,7 @@
 package factory.plant;
 
-import inventory.Fruit;
-import buffer.FruitBuffer;
+import inventory.Inventory;
+import buffer.InventoryBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.ExtendedPlatformDimension;
@@ -13,7 +13,7 @@ import draw.StdDraw;
  * ExtendedPlatform.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	24.10.2012
  *
  * TODO
  * ExtendedPlatform needs a blurb
@@ -23,31 +23,31 @@ public class ExtendedPlatform implements BufferMachine {
 	public static final int NUM_SLOTS = 1;
 	
 	private ExtendedPlatformDimension epd;
-	private FruitBuffer fb; //This buffer cannot draw itself
+	private InventoryBuffer fb; //This buffer cannot draw itself
 	
 	public ExtendedPlatform(PointXY start) {
 		epd = new ExtendedPlatformDimension(start);
-		fb = new FruitBuffer(NUM_SLOTS);
+		fb = new InventoryBuffer(NUM_SLOTS);
 	}
 	
 	/**
-	 * This method is called to add Fruit to the machine
+	 * This method is called to add Inventory to the machine
 	 */
-	public void addFruit(Fruit fruit) {
-		fb.addFruit(fruit);
+	public void addInventory(Inventory inventory) {
+		fb.addInventory(inventory);
 	}
 	
 	/**
-	 * This method is called to remove from from the machine
+	 * This method is called to remove Inventory from the machine
 	 */
-	public Fruit removeFruit() {
-		return fb.removeFruit();
+	public Inventory removeInventory() {
+		return fb.removeInventory();
 	}
 	
 	/**
-	 * This method moves the fruit along in the buffer by
+	 * This method moves the Inventory along in the buffer by
 	 * a single space. This method is called instead of
-	 * adding a Fruit to the buffer. When this method is
+	 * adding Inventory to the buffer. When this method is
 	 * called an empty space is added to the buffer instead
 	 */
 	public void AdvanceBuffer() {
