@@ -6,7 +6,16 @@ package draw;
  * @Date:				???
  * @ModifiedBy:			Devin Barry
  * @ModificationDate:	09.10.2012
- * @LastModified:		14.10.2012
+ * @LastModified:		22.10.2012
+ * 
+ * Shape drawing methods in the library have been substantially modified by
+ * Devin. At a certain point the methods became clumsy inside this massive
+ * class and I moved them into their own (also static) class called
+ * ShapeAssist. Now all the shape drawing methods from StdDraw call matching
+ * methods in ShapeAssist to generate the polygons to be drawn.
+ * 
+ * The modifications allow the drawing of several new shapes and add
+ * additional method signatures for old shapes too.
  * 
  * Devins major modifications to this library include adding all the methods
  * that draw shapes or text using using Point2D.Double rather than a set of
@@ -317,19 +326,19 @@ public final class StdDraw implements ActionListener, MouseListener,
 
 	// helper functions that scale from user coordinates to screen coordinates
 	// and back
-	private static double scaleX(double x) {
+	public static double scaleX(double x) {
 		return width * (x - xmin) / (xmax - xmin);
 	}
 
-	private static double scaleY(double y) {
+	public static double scaleY(double y) {
 		return height * (ymax - y) / (ymax - ymin);
 	}
 
-	private static double factorX(double w) {
+	public static double factorX(double w) {
 		return w * width / Math.abs(xmax - xmin);
 	}
 
-	private static double factorY(double h) {
+	public static double factorY(double h) {
 		return h * height / Math.abs(ymax - ymin);
 	}
 
@@ -489,8 +498,6 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *            the y-coordinate of the point
 	 */
 	public static void point(double x, double y) {
-		double xs = scaleX(x);
-		double ys = scaleY(y);
 		double r = penRadius; // r is the pen radius
 
 		// double ws = factorX(2*r);
@@ -499,7 +506,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 		if (r <= 1)
 			pixel(x, y);
 		else
-			offscreen.fill(new Ellipse2D.Double(xs - r / 2, ys - r / 2, r, r));
+			offscreen.fill(ShapeAssist.point(x, y, r));
 		draw();
 	}
 
@@ -516,17 +523,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *             if the radius of the circle is negative
 	 */
 	public static void circle(double x, double y, double r) {
-		if (r < 0)
-			throw new RuntimeException("circle radius can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * r);
-		double hs = factorY(2 * r);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.draw(new Ellipse2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		offscreen.draw(ShapeAssist.circle(x, y, r));
 		draw();
 	}
 
@@ -557,17 +554,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *             if the radius of the circle is negative
 	 */
 	public static void filledCircle(double x, double y, double r) {
-		if (r < 0)
-			throw new RuntimeException("circle radius can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * r);
-		double hs = factorY(2 * r);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.fill(new Ellipse2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		offscreen.fill(ShapeAssist.circle(x, y, r));
 		draw();
 	}
 
@@ -602,21 +589,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void ellipse(double x, double y, double semiMajorAxis,
 			double semiMinorAxis) {
-		if (semiMajorAxis < 0)
-			throw new RuntimeException(
-					"ellipse semimajor axis can't be negative");
-		if (semiMinorAxis < 0)
-			throw new RuntimeException(
-					"ellipse semiminor axis can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * semiMajorAxis);
-		double hs = factorY(2 * semiMinorAxis);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.draw(new Ellipse2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		
+		offscreen.draw(ShapeAssist.ellipse(x, y, semiMajorAxis, semiMinorAxis));
 		draw();
 	}
 
@@ -637,21 +611,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void filledEllipse(double x, double y, double semiMajorAxis,
 			double semiMinorAxis) {
-		if (semiMajorAxis < 0)
-			throw new RuntimeException(
-					"ellipse semimajor axis can't be negative");
-		if (semiMinorAxis < 0)
-			throw new RuntimeException(
-					"ellipse semiminor axis can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * semiMajorAxis);
-		double hs = factorY(2 * semiMinorAxis);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.fill(new Ellipse2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		
+		offscreen.fill(ShapeAssist.ellipse(x, y, semiMajorAxis, semiMinorAxis));
 		draw();
 	}
 
@@ -676,19 +637,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void arc(double x, double y, double r, double angle1,
 			double angle2) {
-		if (r < 0)
-			throw new RuntimeException("arc radius can't be negative");
-		while (angle2 < angle1)
-			angle2 += 360;
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * r);
-		double hs = factorY(2 * r);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.draw(new Arc2D.Double(xs - ws / 2, ys - hs / 2, ws, hs,
-					angle1, angle2 - angle1, Arc2D.OPEN));
+		
+		offscreen.draw(ShapeAssist.arc(x, y, r, angle1, angle2));
 		draw();
 	}
 
@@ -705,17 +655,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *             if r is negative
 	 */
 	public static void square(double x, double y, double r) {
-		if (r < 0)
-			throw new RuntimeException("square side length can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * r);
-		double hs = factorY(2 * r);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.draw(new Rectangle2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		offscreen.draw(ShapeAssist.square(x, y, r));
 		draw();
 	}
 
@@ -732,17 +672,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *             if r is negative
 	 */
 	public static void filledSquare(double x, double y, double r) {
-		if (r < 0)
-			throw new RuntimeException("square side length can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * r);
-		double hs = factorY(2 * r);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.fill(new Rectangle2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		offscreen.fill(ShapeAssist.square(x, y, r));
 		draw();
 	}
 
@@ -796,19 +726,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void rectangle(double x, double y, double halfWidth,
 			double halfHeight) {
-		if (halfWidth < 0)
-			throw new RuntimeException("half width can't be negative");
-		if (halfHeight < 0)
-			throw new RuntimeException("half height can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * halfWidth);
-		double hs = factorY(2 * halfHeight);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.draw(new Rectangle2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		
+		offscreen.draw(ShapeAssist.rectangle(x, y, halfWidth, halfHeight));
 		draw();
 	}
 
@@ -829,19 +748,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void filledRectangle(double x, double y, double halfWidth,
 			double halfHeight) {
-		if (halfWidth < 0)
-			throw new RuntimeException("half width can't be negative");
-		if (halfHeight < 0)
-			throw new RuntimeException("half height can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * halfWidth);
-		double hs = factorY(2 * halfHeight);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else
-			offscreen.fill(new Rectangle2D.Double(xs - ws / 2, ys - hs / 2, ws,
-					hs));
+		
+		offscreen.fill(ShapeAssist.rectangle(x, y, halfWidth, halfHeight));
 		draw();
 	}
 
@@ -860,6 +768,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void filledRectangle(Point2D.Double location,
 			double halfWidth, double halfHeight) {
+		
 		filledRectangle(location.getX(), location.getY(), halfWidth, halfHeight);
 	}
 	
@@ -883,23 +792,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void angledRectangle(double x, double y, double halfWidth,
 			double halfHeight, double degrees) {
-		if (halfWidth < 0)
-			throw new RuntimeException("half width can't be negative");
-		if (halfHeight < 0)
-			throw new RuntimeException("half height can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * halfWidth);
-		double hs = factorY(2 * halfHeight);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else {
-			Rectangle2D.Double rect = new Rectangle2D.Double(xs - ws / 2, ys - hs / 2, ws, hs);
-			AffineTransform tx = new AffineTransform();
-			tx.rotate(Math.toRadians(degrees), x, y);
-			Shape rotatedRect = tx.createTransformedShape(rect);
-			offscreen.draw(rotatedRect);
-		}
+		
+		offscreen.draw(ShapeAssist.angledRectangle(x, y, halfWidth, halfHeight, degrees));
 		draw();
 	}
 
@@ -923,23 +817,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void filledAngledRectangle(double x, double y, double halfWidth,
 			double halfHeight, double degrees) {
-		if (halfWidth < 0)
-			throw new RuntimeException("half width can't be negative");
-		if (halfHeight < 0)
-			throw new RuntimeException("half height can't be negative");
-		double xs = scaleX(x);
-		double ys = scaleY(y);
-		double ws = factorX(2 * halfWidth);
-		double hs = factorY(2 * halfHeight);
-		if (ws <= 1 && hs <= 1)
-			pixel(x, y);
-		else {
-			Rectangle2D.Double rect = new Rectangle2D.Double(xs - ws / 2, ys - hs / 2, ws, hs);
-			AffineTransform tx = new AffineTransform();
-			tx.rotate(Math.toRadians(degrees), x, y);
-			Shape rotatedRect = tx.createTransformedShape(rect);
-			offscreen.fill(rotatedRect);
-		}
+		
+		offscreen.fill(ShapeAssist.angledRectangle(x, y, halfWidth, halfHeight, degrees));
 		draw();
 	}
 	
@@ -961,6 +840,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 */
 	public static void filledAngledRectangle(Point2D.Double location,
 			double halfWidth, double halfHeight, double degrees) {
+		
 		filledAngledRectangle(location.getX(), location.getY(), halfWidth, halfHeight, degrees);
 	}
 
@@ -973,13 +853,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *            an array of all the y-coordindates of the polygon
 	 */
 	public static void polygon(double[] x, double[] y) {
-		int N = x.length;
-		GeneralPath path = new GeneralPath();
-		path.moveTo((float) scaleX(x[0]), (float) scaleY(y[0]));
-		for (int i = 0; i < N; i++)
-			path.lineTo((float) scaleX(x[i]), (float) scaleY(y[i]));
-		path.closePath();
-		offscreen.draw(path);
+		offscreen.draw(ShapeAssist.polygon(x, y));
 		draw();
 	}
 
@@ -992,13 +866,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 *            an array of all the y-coordindates of the polygon
 	 */
 	public static void filledPolygon(double[] x, double[] y) {
-		int N = x.length;
-		GeneralPath path = new GeneralPath();
-		path.moveTo((float) scaleX(x[0]), (float) scaleY(y[0]));
-		for (int i = 0; i < N; i++)
-			path.lineTo((float) scaleX(x[i]), (float) scaleY(y[i]));
-		path.closePath();
-		offscreen.fill(path);
+		offscreen.fill(ShapeAssist.polygon(x, y));
 		draw();
 	}
 
@@ -1559,25 +1427,34 @@ public final class StdDraw implements ActionListener, MouseListener,
 		StdDraw.filledSquare(.8, .8, .2);
 		StdDraw.circle(.8, .2, .2);
 		
-		//Black filled rectangle
-		StdDraw.filledAngledRectangle(.4, .8, .05, .2, 45);
-
-		StdDraw.setPenColor(StdDraw.BOOK_RED);
-		StdDraw.setPenRadius(.02);
-		StdDraw.arc(.8, .2, .1, 200, 45);
-
 		// draw a blue diamond
 		StdDraw.setPenRadius();
 		StdDraw.setPenColor(StdDraw.BOOK_BLUE);
 		double[] x = { .1, .2, .3, .2 };
 		double[] y = { .2, .3, .2, .1 };
 		StdDraw.filledPolygon(x, y);
+		
+		//Black filled rectangle, rotated x degrees
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.filledAngledRectangle(.4, .8, .05, .2, 90);
+		//StdDraw.filledAngledRectangle(0.2, 0.2, 0.2, 0.05, 90);
+		//StdDraw.filledAngledRectangle(0, 0, 0.2, 0.05, 0);
+
+		StdDraw.setPenColor(StdDraw.BOOK_RED);
+		StdDraw.setPenRadius(.02);
+		StdDraw.arc(.8, .2, .1, 200, 45);
 
 		// text
+		StdDraw.setPenRadius();
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.text(0.2, 0.5, "black text");
 		StdDraw.setPenColor(StdDraw.WHITE);
 		StdDraw.text(0.8, 0.8, "white text");
+		
+		//Edge testing
+		StdDraw.setPenColor(StdDraw.GRAY);
+		//StdDraw.circle(0, 0, .2);
+		StdDraw.line(0, 0, 0, 1);
 	}
 
 }

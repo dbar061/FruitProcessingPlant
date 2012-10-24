@@ -7,7 +7,7 @@ import java.util.*;
  * AbstractBuffer.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	13.10.2012
+ * @lastModified:	23.10.2012
  *
  * TODO update this blurb too
  * AbstractBuffer implements the ProductionBuffer interface and is the parent class for
@@ -78,6 +78,7 @@ public abstract class AbstractBuffer implements ProductionBuffer {
 			pq.add(bs);
 			return true;
 		}
+		//System.out.println("Buffer is full!");
 		return false;
 	}
 	
@@ -92,8 +93,9 @@ public abstract class AbstractBuffer implements ProductionBuffer {
 	
 	/**
 	 * This method returns an array containing all items in
-	 * the AbstractBuffer. The point of this method is to allow the AbstractBuffer
-	 * to be printed or drawn.
+	 * the AbstractBuffer. The objective of this method is to allow
+	 * the AbstractBuffer to be printed or drawn, if that is
+	 * required.
 	 * 
 	 * @return an array of all the items in this AbstractBuffer
 	 */
@@ -101,11 +103,6 @@ public abstract class AbstractBuffer implements ProductionBuffer {
 		BufferSlot[] items = new BufferSlot[pq.size()];
 		items = pq.toArray(items);
 		return items;
-	}
-	
-	//Advances the buffer forward by one
-	public synchronized void AdvanceBuffer() {
-		remove();
 	}
 	
 	//TODO Google the correct use of iterator here
