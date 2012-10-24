@@ -1,6 +1,5 @@
-package buffer;
+package inventory;
  
-import inventory.ProductionLineItem;
 import draw.StdDraw;
 import buffer.BufferSlot;
 import factory.dimension.PointXY;
