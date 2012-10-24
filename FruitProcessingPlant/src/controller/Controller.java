@@ -20,11 +20,12 @@ import controller.NetworkConnection.MessageType;
 
 /**
  * @file Console.java
- * @author Devin Barry
- * @date 14/10/2012
- * @lastModification 14/10/2012
+ * @author				Devin Barry
+ * @date 				14/10/2012
+ * @lastModification 	24/10/2012
  *
- * This code is based upon my code from console.Console
+ * This code is based upon recent versions of Devin's code from
+ * from console.Console
  */
 public class Controller extends JPanel implements ActionListener {
 

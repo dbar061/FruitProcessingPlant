@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class NetworkServer implements Runnable {
 	
-	private String port  = "55552";
+	private String port;
 	//private Socket socket;
 
 	@Override
@@ -21,12 +21,8 @@ public class NetworkServer implements Runnable {
 		createNetworkServer();
 	}
 	
-	public NetworkServer() {
-		//nothing
-	}
-	
 	public NetworkServer(String port) {
-		this.port = port;
+		this.port = port.trim();
 	}
 	
 	private void createNetworkServer() {
@@ -40,6 +36,7 @@ public class NetworkServer implements Runnable {
 					InputStream in = clientSocket.getInputStream();
 					byte[] data = new byte[bufferSize];
 					int count = in.read(data, 0, bufferSize);
+					System.out.println("Read " + count + " bytes from the socket");
 					Vector v = new Vector();
 					int totalLength = 0;
 					while (count != -1) {
@@ -78,9 +75,14 @@ public class NetworkServer implements Runnable {
 	
 	public static void main(String[] args) {
 		//Start server
-		NetworkServer ns = new NetworkServer();
-		Thread t = new Thread(ns);
-		t.start();
+		System.out.println("Starting network server");
+		NetworkServer ns1 = new NetworkServer("55552");
+		Thread t1 = new Thread(ns1);
+		NetworkServer ns2 = new NetworkServer("55551");
+		Thread t2 = new Thread(ns2);
+		t1.start();
+		t2.start();
+		
 	}
 
 }
