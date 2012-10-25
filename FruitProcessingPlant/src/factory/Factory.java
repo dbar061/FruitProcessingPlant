@@ -15,6 +15,8 @@ import factory.dimension.SorterDimension;
 
 import draw.StdDraw;
 
+import buffer.ProductionBuffer;
+
 /**
  * Factory.java
  * 
@@ -112,6 +114,8 @@ public class Factory {
 		PointXY sl1_1Pos = new PointXY(hbl1_1.nextMachineStartPoint().getX(), hbl1_1.nextMachineStartPoint().getY() + SorterDimension.RADIUS);
 		Sorter sl1_1 = new Sorter(sl1_1Pos);
 		productionLine.add(sl1_1);
+		ProductionBuffer s1pb = sl1_1.getProductionBuffer();
+		System.out.println("test " + s1pb.isFull());
 		
 		PointXY cbl1_1Pos = new PointXY(sl1_1.nextMachineStartPoint().getX(), sl1_1.nextMachineStartPoint().getY() + (ConveyorBeltDimension.WIDTH / 2));
 		ConveyorBelt cbl1_1 = new ConveyorBelt(cbl1_1Pos, 6, 0); //size 8, 0 angle
@@ -151,6 +155,7 @@ public class Factory {
 		Sorter sl3_1 = new Sorter(sl3_1Pos);
 		productionLine.add(sl3_1);
 		
+		System.out.println("test " + s1pb.isFull());
 	}
 	
 	/**
