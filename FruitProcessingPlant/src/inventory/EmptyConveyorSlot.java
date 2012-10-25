@@ -31,8 +31,8 @@ public class EmptyConveyorSlot implements Inventory, BufferSlot {
 	
 	public void draw(PointXY location) {
 		//Draw an empty slot
-		StdDraw.setPenColor(StdDraw.WHITE);
-		StdDraw.filledCircle(location.getX(), location.getY(), SIZE);
+		//StdDraw.setPenColor(StdDraw.WHITE);
+		//StdDraw.filledCircle(location.getX(), location.getY(), SIZE);
 	}
 	
 	@Override
