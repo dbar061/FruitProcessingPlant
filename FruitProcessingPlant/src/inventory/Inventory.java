@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	24.10.2012
+ * @lastModified:	25.10.2012
  * 
  * Interface shared by all objects that can be processed on
  * the production line. Inventory is the top level interface
