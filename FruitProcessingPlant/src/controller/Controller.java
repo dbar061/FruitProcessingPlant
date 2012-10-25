@@ -118,6 +118,7 @@ public class Controller extends JPanel implements ActionListener {
 		if (e.getSource() == pearButton) {
 			local.println("Sending pear...");
 			log.setCaretPosition(log.getDocument().getLength());
+			sendNetworkObject(new Pear(), defaultPort);
 			//sendNetworkObject(new RawGoods(0,1,0), defaultPort);
 			
 		}

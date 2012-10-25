@@ -94,6 +94,12 @@ public class Segment1 {
 	 * Create the components in their correct locations
 	 */
 	private void createSegment1() {
+		PointXY s8_Pos = new PointXY(80,325);
+		Sorter s8 = new Sorter(s8_Pos);
+		productionLine.add(s8);
+		map.put("s8", s8);
+		
+		
 		//Bottom Row
 		double conveyorLine1Y = 150;
 		
