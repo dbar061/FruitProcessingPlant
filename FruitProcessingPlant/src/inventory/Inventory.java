@@ -1,6 +1,7 @@
 package inventory;
 
 import buffer.BufferSlot;
+import java.io.Serializable;
 
 /**
  * Inventory.java
@@ -16,7 +17,7 @@ import buffer.BufferSlot;
  * space takers in the conveyor belt, used to cause the
  * conveyor belt to animate correctly.
  */
-public interface Inventory extends BufferSlot {
+public interface Inventory extends BufferSlot, Serializable {
 	
 	//Which buffer type object is this Inventory object in
 	//TODO future work
