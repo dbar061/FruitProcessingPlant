@@ -109,10 +109,10 @@ public class Controller extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Handle appleButton action.
 		if (e.getSource() == appleButton) {
-			local.println("Sending Raw goods...");
+			local.println("Sending apple...");
 			log.setCaretPosition(log.getDocument().getLength());
-			//sendNetworkObject(new Apple(), defaultPort);
-			sendNetworkObject(new RawGoods(3,0,0), test2Port);
+			sendNetworkObject(new Apple(), defaultPort);
+			//sendNetworkObject(new RawGoods(3,0,0), test2Port);
 			
 		}
 		if (e.getSource() == pearButton) {
@@ -125,6 +125,7 @@ public class Controller extends JPanel implements ActionListener {
 		if (e.getSource() == bananaButton) {
 			local.println("Sending banana...");
 			log.setCaretPosition(log.getDocument().getLength());
+			sendNetworkObject(new Banana(), defaultPort);
 			//sendNetworkObject(new RawGoods(0,0,1), defaultPort);
 			
 		}

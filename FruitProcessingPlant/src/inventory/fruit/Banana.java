@@ -38,6 +38,10 @@ public class Banana extends Fruit {
 		//Draw a banana at location
 		StdDraw.setPenColor(StdDraw.YELLOW);
 		StdDraw.filledCircle(location.getX(), location.getY(), SIZE);
+		if (super.getIsBad()) {
+			StdDraw.setPenColor(StdDraw.SADDLE_BROWN);
+			StdDraw.filledCircle(location.getX(), location.getY(), SIZE/2);
+		}
 	}
 	
 	@Override

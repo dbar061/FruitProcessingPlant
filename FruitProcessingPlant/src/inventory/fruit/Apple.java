@@ -38,6 +38,10 @@ public class Apple extends Fruit {
 		//Draw an apple at location
 		StdDraw.setPenColor(StdDraw.RED);
 		StdDraw.filledCircle(location.getX(), location.getY(), SIZE);
+		if (super.getIsBad()) {
+			StdDraw.setPenColor(StdDraw.SADDLE_BROWN);
+			StdDraw.filledCircle(location.getX(), location.getY(), SIZE/2);
+		}
 	}
 	
 	@Override

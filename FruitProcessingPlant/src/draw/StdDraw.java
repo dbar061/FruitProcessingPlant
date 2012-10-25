@@ -103,6 +103,8 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 * values are approximately (150, 35, 31).
 	 */
 	public static final Color BOOK_RED = new Color(150, 35, 31);
+	
+	public static final Color SADDLE_BROWN = new Color(139,69,19); //saddlebrown
 
 	// default colors
 	private static final Color DEFAULT_PEN_COLOR = BLACK;
