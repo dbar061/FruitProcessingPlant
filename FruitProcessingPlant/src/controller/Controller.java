@@ -17,6 +17,7 @@ import javax.swing.*;
 
 import console.TextAreaOutputStream;
 import controller.NetworkConnection.MessageType;
+import inventory.fruit.*;
 
 /**
  * @file Console.java
@@ -117,6 +118,7 @@ public class Controller extends JPanel implements ActionListener {
 		if (e.getSource() == appleButton) {
 			local.println("Sending apple...");
 			log.setCaretPosition(log.getDocument().getLength());
+			sendNetworkObject(new Apple(), defaultPort);
 			//sendNetworkObject(new RawGoods(3,0,0), defaultPort);
 			
 		}
