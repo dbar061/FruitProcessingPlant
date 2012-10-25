@@ -4,14 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.DataOutputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Vector;
 
 import javax.swing.*;
 
@@ -23,7 +16,7 @@ import inventory.fruit.*;
  * @file Console.java
  * @author				Devin Barry
  * @date 				14/10/2012
- * @lastModification 	24/10/2012
+ * @lastModification 	26/10/2012
  *
  * This code is based upon recent versions of Devin's code from
  * from console.Console
