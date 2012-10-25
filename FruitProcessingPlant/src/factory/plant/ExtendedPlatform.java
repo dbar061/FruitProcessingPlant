@@ -5,7 +5,7 @@ import buffer.InventoryBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.ExtendedPlatformDimension;
-import factory.machine.BufferMachine;
+import factory.machine.Machine;
 import draw.StdDraw;
 
 
@@ -13,52 +13,96 @@ import draw.StdDraw;
  * ExtendedPlatform.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	24.10.2012
+ * @lastModified:	25.10.2012
  *
  * TODO
- * ExtendedPlatform needs a blurb
+ * ExtendedPlatform has two inputs and one output
+ * Each input is buffered and so is the output.
+ * 
+ * Inventory arriving at each input buffer is placed
+ * into the output buffer
  */
-public class ExtendedPlatform implements BufferMachine {
-	
-	public static final int NUM_SLOTS = 1;
+public class ExtendedPlatform implements Machine {
 	
 	private ExtendedPlatformDimension epd;
-	private InventoryBuffer fb; //This buffer cannot draw itself
+	private InventoryBuffer ibInput1; //This buffer cannot draw itself
+	private InventoryBuffer ibInput2; //This buffer cannot draw itself
+	private InventoryBuffer ibOutput; //This buffer cannot draw itself
 	
 	public ExtendedPlatform(PointXY start) {
 		epd = new ExtendedPlatformDimension(start);
-		fb = new InventoryBuffer(NUM_SLOTS);
+		ibInput1 = new InventoryBuffer(10);
+		ibInput2 = new InventoryBuffer(10);
+		ibOutput = new InventoryBuffer(2);
 	}
 	
 	/**
-	 * This method is called to add Inventory to the machine
+	 * This method is called to add Inventory to the 
+	 * first input buffer
 	 */
-	public void addInventory(Inventory inventory) {
-		fb.addInventory(inventory);
+	public void addInput1(Inventory inventory) {
+		ibInput1.addInventory(inventory);
 	}
 	
 	/**
-	 * This method is called to remove Inventory from the machine
+	 * This method is called to add Inventory to the 
+	 * first input buffer
 	 */
-	public Inventory removeInventory() {
-		return fb.removeInventory();
+	public void addInput2(Inventory inventory) {
+		ibInput2.addInventory(inventory);
 	}
 	
 	/**
-	 * This method moves the Inventory along in the buffer by
-	 * a single space. This method is called instead of
-	 * adding Inventory to the buffer. When this method is
-	 * called an empty space is added to the buffer instead
+	 * This method is called to add Inventory to the 
+	 * first input buffer
 	 */
-	public void AdvanceBuffer() {
-		fb.AdvanceBuffer();
+	public void addOutput(Inventory inventory) {
+		ibOutput.addInventory(inventory);
+	}
+	
+	/**
+	 * This method is called to remove Inventory from the
+	 * first input buffer
+	 */
+	public Inventory removeInput1() {
+		return ibInput1.removeInventory();
+	}
+	
+	/**
+	 * This method is called to remove Inventory from the
+	 * first input buffer
+	 */
+	public Inventory removeInput2() {
+		return ibInput2.removeInventory();
+	}
+	
+	/**
+	 * This method is called to remove Inventory from the
+	 * first input buffer
+	 */
+	public Inventory removeOutput() {
+		return ibOutput.removeInventory();
 	}
 	
 	/**
 	 * This method gets the underlying buffer from this machine
 	 */
-	public ProductionBuffer getProductionBuffer() {
-		return fb;
+	public ProductionBuffer getPBInput1() {
+		return ibInput1;
+	}
+	
+	/**
+	 * This method gets the underlying buffer from this machine
+	 */
+	public ProductionBuffer getPBInput2() {
+		return ibInput2;
+	}
+	
+	/**
+	 * This method gets the underlying buffer from this machine
+	 */
+	public ProductionBuffer getPBOutput() {
+		return ibOutput;
 	}
 	
 	/**
