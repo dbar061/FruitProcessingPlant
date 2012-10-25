@@ -32,22 +32,21 @@
 package console;
 
 /**
- * Console.java
+ * DevinConsole.java
  * 
  * @author				Devin Barry
- * @date 				01/10/2012
+ * @date 				25/10/2012
  * @lastModification	25/10/2012
  *  
- * Console is a class that creates a separate output window which
+ * DevinConsole is a class that creates a separate output window which
  * is designed to act just like a console output.
  * It can print messages which are sent it, just like System.out.
  * This class was especially designed for use with SystemJ code.
  * This makes it easier to see certain messages from the huge list of
  * others that are auto-printed by SystemJ.
  * 
- * This code is very loosely based upon code created for COMPSYS.705
- * Assignment 1, which in turn is constructed around a java example
- * from Oracle for a file chooser app. 
+ * Code here is almost identical to Console, but there is no static
+ * output.
  */
 
 import java.awt.BorderLayout;
@@ -64,17 +63,16 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-public class Console extends JPanel implements ActionListener {
+public class DevinConsole extends JPanel implements ActionListener {
 
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
-
-	public static PrintStream out; //output PrintStream has class access
+	private PrintStream out; //the output stream to print to
 
 	private JButton resetButton, testButton;
 	JTextArea log;
 
-	public Console() {
+	public DevinConsole() {
 		super(new BorderLayout());
 
 		// Create the log first, because the action listeners need to refer to
@@ -127,8 +125,7 @@ public class Console extends JPanel implements ActionListener {
 		JFrame frame = new JFrame("Devin Console");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// Add content to the window.
-		//frame.add(new Console());
+		// Add the console to the window.
 		frame.add(this);
 
 		// Display the window.
@@ -148,11 +145,23 @@ public class Console extends JPanel implements ActionListener {
 			}
 		});
 	}
+	
+	/**
+	 * Get the PrintStream for this DevinConsole
+	 * @return
+	 */
+	public PrintStream getPrintStream() {
+		return out;
+	}
 
 	// Main method used for testing this class separately
 	public static void main(String[] args) {
-		Console dc = new Console();
-		dc.createConsole();
+		DevinConsole dc1 = new DevinConsole();
+		dc1.createConsole();
+		DevinConsole dc2 = new DevinConsole();
+		dc2.createConsole();
+		PrintStream basic1 = dc1.getPrintStream();
+		PrintStream basic2 = dc2.getPrintStream();
 		// Sleep for 5s to give console time to show
 		try {
 			Thread.sleep(5000);
@@ -160,8 +169,10 @@ public class Console extends JPanel implements ActionListener {
 		}
 
 		System.out.println("First Test Print");
-		Console.out.println("Hello World From SystemJ");
-		Console.out.println("LineTest");
+		basic1.println("Hello World From SystemJ");
+		basic1.println("LineTest");
+		basic2.println("Hello World From SystemJ");
+		basic2.println("LineTest");
 		// DevinConsole.console.flush();
 		// DevinConsole.console.close();
 		// System.out.println("Closed");
