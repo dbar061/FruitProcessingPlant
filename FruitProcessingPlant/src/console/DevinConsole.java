@@ -74,12 +74,19 @@ public class DevinConsole extends JPanel implements ActionListener {
 	private JButton resetButton, testButton;
 	JTextArea log;
 	
+	/**
+	 * Constructor which allows window name to be customized
+	 * @param windowName
+	 */
 	public DevinConsole(String windowName) {
 		this(); //call the default constructor
 		//then set the window name
 		this.windowName = windowName;
 	}
 
+	/**
+	 * Default constructor
+	 */
 	public DevinConsole() {
 		super(new BorderLayout());
 

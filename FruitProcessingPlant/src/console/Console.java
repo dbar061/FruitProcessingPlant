@@ -65,6 +65,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class Console extends JPanel implements ActionListener {
+	
+	private String windowName = "Devin Console";
 
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
@@ -73,7 +75,20 @@ public class Console extends JPanel implements ActionListener {
 
 	private JButton resetButton, testButton;
 	JTextArea log;
+	
+	/**
+	 * Constructor which allows window name to be customized
+	 * @param windowName
+	 */
+	public Console(String windowName) {
+		this(); //call the default constructor
+		//then set the window name
+		this.windowName = windowName;
+	}
 
+	/**
+	 * Default constructor
+	 */
 	public Console() {
 		super(new BorderLayout());
 
@@ -124,7 +139,7 @@ public class Console extends JPanel implements ActionListener {
 	 */
 	private void createAndShowGUI() {
 		// Create and set up the window.
-		JFrame frame = new JFrame("Devin Console");
+		JFrame frame = new JFrame(windowName);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Add content to the window.
