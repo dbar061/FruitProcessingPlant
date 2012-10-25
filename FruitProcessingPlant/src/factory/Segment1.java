@@ -10,6 +10,7 @@ import factory.machine.BufferMachine;
 import factory.machine.Machine;
 import factory.plant.*;
 import factory.dimension.ConveyorBeltDimension;
+import factory.dimension.HoldingBayDimension;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
 
@@ -37,12 +38,14 @@ public class Segment1 {
 	
 	public static final int WINDOW_LENGTH = 600;
 	public static final int WINDOW_HEIGHT = 1200;
-	public static final double SCALE = 2.0; //how the factory dimensions relate to the window dimensions
+	public static final double SCALE = 1.0; //how the factory dimensions relate to the window dimensions
 	
 	private static final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
 	private static final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
 	
 	public static List<Machine> productionLine = new ArrayList<Machine>(20); //initial capacity of 20
+	public static Map<String,Machine> map = new HashMap<String,Machine>(20);
+	
 	public static final PointXY base = new PointXY(0, 0);
 	
 	public Segment1() {
@@ -81,17 +84,23 @@ public class Segment1 {
 	 */
 	public static void main(String[] args) {
 		final Segment1 c = new Segment1();
-		c.testFactory();
+		c.createSegment1();
 		c.addTestFruits();
 		c.paint();
 	}
 	
 	/**
-	 * Tests a mock factory setup
+	 * Create the components in their correct locations
 	 */
-	private void testFactory() {
+	private void createSegment1() {
 		double conveyorLine1Y = 150;
-		PointXY hbl1_1Pos = new PointXY(100,conveyorLine1Y);
+		PointXY cbl1_4Pos = new PointXY(100,conveyorLine1Y);
+		ConveyorBelt cbl1_4 = new ConveyorBelt(cbl1_4Pos, 8, 15); //size 8, 0 angle
+		productionLine.add(cbl1_4);
+		map.put("cb19", cbl1_4);
+		
+		double hbl1_1_y = cbl1_4.nextMachineStartPoint().getY() + HoldingBayDimension.RADIUS; // + ConveyorBeltDimension.WIDTH;
+		PointXY hbl1_1Pos = new PointXY(cbl1_4.nextMachineStartPoint().getX(), hbl1_1_y);
 		HoldingBay hbl1_1 = new HoldingBay(hbl1_1Pos);
 		
 		PointXY sl1_1Pos = new PointXY(hbl1_1.nextMachineStartPoint().getX(), hbl1_1.nextMachineStartPoint().getY() + SorterDimension.RADIUS);
@@ -102,39 +111,34 @@ public class Segment1 {
 		ConveyorBelt cbl1_1 = new ConveyorBelt(cbl1_1Pos, 8, 0); //size 8, 0 angle
 		PointXY cbl1_2Pos = new PointXY(sl1_1.nextMachineStartPoint().getX(), yPosL1 - 30);
 		ConveyorBelt cbl1_2 = new ConveyorBelt(cbl1_2Pos, 8, 0); //size 8, 15 degree angle
-		PointXY cbl1_3Pos = new PointXY(cbl1_2.nextMachineStartPoint());
-		ConveyorBelt cbl1_3 = new ConveyorBelt(cbl1_3Pos, 8, 0); //size 8, 0 angle
 		
 		productionLine.add(hbl1_1);
 		productionLine.add(sl1_1);
 		productionLine.add(cbl1_1);
 		productionLine.add(cbl1_2);
-		productionLine.add(cbl1_3);
+		
 		
 		double conveyorLine2Y = 300;
-		PointXY hbl2_1Pos = new PointXY(100,conveyorLine2Y);
+		PointXY cbl2_4Pos = new PointXY(100,conveyorLine2Y);
+		ConveyorBelt cbl2_4 = new ConveyorBelt(cbl2_4Pos, 8, -15); //size 8, 0 angle
+		productionLine.add(cbl2_4);
+		
+		double hbl2_1_y = cbl2_4.nextMachineStartPoint().getY() + HoldingBayDimension.RADIUS; //+ ConveyorBeltDimension.WIDTH;
+		PointXY hbl2_1Pos = new PointXY(cbl2_4.nextMachineStartPoint().getX(), hbl2_1_y);
 		HoldingBay hbl2_1 = new HoldingBay(hbl2_1Pos);
 		
 		PointXY sl2_1Pos = new PointXY(hbl2_1.nextMachineStartPoint().getX(), hbl2_1.nextMachineStartPoint().getY() + SorterDimension.RADIUS);
 		Sorter sl2_1 = new Sorter(sl2_1Pos);
 		
 		double yPosL2 = sl2_1.nextMachineStartPoint().getY() + (ConveyorBeltDimension.WIDTH / 2);
-		PointXY cbl2_1Pos = new PointXY(sl1_1.nextMachineStartPoint().getX(), yPosL2 + 30);
+		PointXY cbl2_1Pos = new PointXY(sl2_1.nextMachineStartPoint().getX(), yPosL2 + 30);
 		ConveyorBelt cbl2_1 = new ConveyorBelt(cbl2_1Pos, 8, 0); //size 8, 0 angle
-		PointXY cbl2_2Pos = new PointXY(sl1_1.nextMachineStartPoint().getX(), yPosL2 - 30);
+		PointXY cbl2_2Pos = new PointXY(sl2_1.nextMachineStartPoint().getX(), yPosL2 - 30);
 		ConveyorBelt cbl2_2 = new ConveyorBelt(cbl2_2Pos, 8, 0); //size 8, 30 angle
 		productionLine.add(hbl2_1);
 		productionLine.add(sl2_1);
 		productionLine.add(cbl2_1);
 		productionLine.add(cbl2_2);
-		
-		PointXY el2_1Pos = new PointXY(cbl2_2.nextMachineStartPoint());
-		ExtendedPlatform el2_1 = new ExtendedPlatform(el2_1Pos);
-		productionLine.add(el2_1);
-		
-		PointXY cbl2_3Pos = new PointXY(el2_1.nextMachineStartPoint());
-		ConveyorBelt cbl2_3 = new ConveyorBelt(cbl2_3Pos, 8, 15); //size 8, 0 angle
-		productionLine.add(cbl2_3);
 		
 	}
 	
