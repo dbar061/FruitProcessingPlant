@@ -64,6 +64,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class DevinConsole extends JPanel implements ActionListener {
+	
+	private String windowName = "Devin Console";
 
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
@@ -71,12 +73,17 @@ public class DevinConsole extends JPanel implements ActionListener {
 
 	private JButton resetButton, testButton;
 	JTextArea log;
+	
+	public DevinConsole(String windowName) {
+		this(); //call the default constructor
+		//then set the window name
+		this.windowName = windowName;
+	}
 
 	public DevinConsole() {
 		super(new BorderLayout());
 
-		// Create the log first, because the action listeners need to refer to
-		// it.
+		// Create the log first, because the action listeners need to refer to it.
 		log = new JTextArea(10, 50);
 		log.setMargin(new Insets(5, 5, 5, 5));
 		log.setEditable(false);
@@ -122,7 +129,7 @@ public class DevinConsole extends JPanel implements ActionListener {
 	 */
 	private void createAndShowGUI() {
 		// Create and set up the window.
-		JFrame frame = new JFrame("Devin Console");
+		JFrame frame = new JFrame(windowName);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Add the console to the window.
