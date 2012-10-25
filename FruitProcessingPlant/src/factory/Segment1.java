@@ -53,6 +53,7 @@ public class Segment1 {
 		StdDraw.setXscale(0, FACTORY_HEIGHT);
 		StdDraw.setYscale(0, FACTORY_LENGTH);
 		StdDraw.show(0);
+		this.createSegment1();
 	}
 	
 	public void paint() {
@@ -84,7 +85,7 @@ public class Segment1 {
 	 */
 	public static void main(String[] args) {
 		final Segment1 c = new Segment1();
-		c.createSegment1();
+		//c.createSegment1();
 		c.addTestFruits();
 		c.paint();
 	}
