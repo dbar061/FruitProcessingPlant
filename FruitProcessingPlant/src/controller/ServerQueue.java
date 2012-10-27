@@ -32,15 +32,14 @@ public class ServerQueue<E> {
 	 * 
 	 * @return
 	 */
-	public synchronized E get() {
+	public E get() {
 		E e = null;
 		try {
 			e = q.take();
 		} catch (InterruptedException ie) {
 			System.out.println("InterruptedException caught");
 		}
-		//System.out.println("Got: " + e);
-		notifyAll(); //notify all sleeping threads that something has been removed
+		System.out.println("Got: " + e);
 		return e;
 	}
 
@@ -52,7 +51,7 @@ public class ServerQueue<E> {
 	 * 
 	 * @param e
 	 */
-	public synchronized void put(E e) {
+	public void put(E e) {
 		try {
 			//if it is full, sleep thread
 			q.put(e);
@@ -60,7 +59,6 @@ public class ServerQueue<E> {
 			System.out.println("InterruptedException caught");
 		}
 		//System.out.println("Put: " + e);
-		notifyAll(); //notify all sleeping threads that something new is in queue
 	}
 
 }
