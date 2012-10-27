@@ -7,9 +7,8 @@ import java.util.*;
  * AbstractBuffer.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	28.10.2012
  *
- * TODO update this blurb too
  * AbstractBuffer implements the ProductionBuffer interface and is the parent class for
  * any piece of machinery that can hold "fruit" (actually BufferSlot).
  * 
@@ -23,14 +22,8 @@ import java.util.*;
  * There is however an access method that is required for drawing that is exposed in this
  * class, which is the getPrintArray() method.
  * 
- * 
- * TODO Below this is out of date
- * This abstract class uses a Queue in the form of a LinkedList (LinkedList implements
- * the Queue interface) as the buffer slots in which fruit is stored.
- * 
- * AbstractBuffer represents the top level class of a piece of machinery that can hold fruit
- * in any form, and thus it has a fixed number of slots (because a machine always
- * has a fixed size).
+ * This class uses a PrintableQueue class as its underlying buffer. It makes calls to
+ * this PrintableQueue to implement its functionality.
  */
 
 public abstract class AbstractBuffer implements ProductionBuffer {
@@ -62,13 +55,13 @@ public abstract class AbstractBuffer implements ProductionBuffer {
 		return pq.size();
 	}
 	
-	public boolean isFull() {
+	public synchronized boolean isFull() {
 		//get current size
 		if (pq.size() == MAX_SIZE) return true;
 		return false;
 	}
 	
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return pq.isEmpty();
 	}
 	
@@ -89,6 +82,11 @@ public abstract class AbstractBuffer implements ProductionBuffer {
 			return pq.remove();
 		}
 		throw new RuntimeException("trying to remove from empty Buffer!");
+	}
+	
+	//empties the buffer
+	public synchronized void clear() {
+		pq.clear();
 	}
 	
 	/**

@@ -7,7 +7,7 @@ package buffer;
  * 
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	28.10.2012
  * 
  * An interface to be implemented by all objects that can act as "buffers"
  * in a very loose sense of the word.
@@ -42,5 +42,8 @@ public interface ProductionBuffer {
 	
 	//Remove from the front of the buffer
 	public BufferSlot remove();
+	
+	//empties the buffer
+	public void clear();
 
 }
