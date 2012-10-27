@@ -14,7 +14,7 @@ import java.util.Vector;
 public class StringReceiveServer implements Runnable {
 	
 	private String port;
-	//private Socket socket;
+	private ServerQueue<String> q;
 
 	@Override
 	public void run() {
@@ -22,8 +22,9 @@ public class StringReceiveServer implements Runnable {
 		createStringReceiveServer();
 	}
 	
-	public StringReceiveServer(String port) {
+	public StringReceiveServer(String port, ServerQueue<String> q) {
 		this.port = port.trim();
+		this.q = q;
 	}
 	
 	private void createStringReceiveServer() {
@@ -56,8 +57,12 @@ public class StringReceiveServer implements Runnable {
 								currLen);
 						currPos = currPos + currLen;
 					}
-					// print out the received data
-					System.out.println(new String(data));
+					//Add the received data to the ServerQueue
+					String receiveString = new String(data);
+					q.put(receiveString);
+					System.out.println(receiveString);
+					
+					//Close everything down
 					in.close();
 					clientSocket.close();
 				}

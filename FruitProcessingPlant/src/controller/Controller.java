@@ -24,7 +24,7 @@ import inventory.fruit.*;
  * This code creats a window with buttons and an output console.
  * It is used to send signals to SystemJ
  */
-public class Controller extends JPanel implements ActionListener {
+public class Controller extends JPanel implements ActionListener, Runnable {
 
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
@@ -40,7 +40,6 @@ public class Controller extends JPanel implements ActionListener {
 
 	private PrintStream local;
 	
-
 	private JButton appleButton, pearButton, bananaButton;
 	private JButton emptyWasteButton, emptyBinButton;
 	private JButton integerButton, testButton1, testButton2;
@@ -48,11 +47,12 @@ public class Controller extends JPanel implements ActionListener {
 
 	JTextArea log;
 	
-	public Controller() {
+	ServerQueue<String> fullQueue;
+	
+	public Controller(ServerQueue<String> fullQueue) {
 		super(new BorderLayout());
 
-		// Create the log first, because the action listeners need to refer to
-		// it.
+		// Create the log first, because the action listeners need to refer to it.
 		log = new JTextArea(10, 50);
 		log.setMargin(new Insets(5, 5, 5, 5));
 		log.setEditable(false);
@@ -60,7 +60,10 @@ public class Controller extends JPanel implements ActionListener {
 
 		// Create the PrintStream and make sure it auto-flushes
 		local = new PrintStream(new TextAreaOutputStream(log), true);
+		
+		this.fullQueue = fullQueue; //reference to the fullQueue
 
+		//Create all the buttons
 		appleButton = new JButton("Send Apple");
 		appleButton.addActionListener(this);
 		pearButton = new JButton("Send Pear");
@@ -173,6 +176,14 @@ public class Controller extends JPanel implements ActionListener {
 		}
 		log.setCaretPosition(log.getDocument().getLength());
 	}
+	
+	@Override
+	public void run() {
+		for (;;) {
+			local.println(fullQueue.get());
+			log.setCaretPosition(log.getDocument().getLength());
+		}
+	}
 
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
@@ -214,13 +225,16 @@ public class Controller extends JPanel implements ActionListener {
 		//This allows the use of wait and notify
 		ServerQueue<String> bq = new ServerQueue<String>();
 				
-		Controller sjc = new Controller();
+		Controller sjc = new Controller(bq);
 		sjc.createConsole();
 				
-		//Start server
-		StringReceiveServer ns = new StringReceiveServer("55580");
-		Thread t = new Thread(ns);
-		t.start();
+		//Start server (producer)
+		StringReceiveServer ns = new StringReceiveServer("55580", bq);
+		Thread producer = new Thread(ns);
+		producer.start();
+		//Start the consumer thread
+		Thread serverUpdate = new Thread(sjc);
+		serverUpdate.start();
 	}
 	
 	private void sendNetworkObject(Object object, String port) {
