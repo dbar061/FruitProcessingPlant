@@ -29,9 +29,7 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
 	
-	private String ipAddress = "sfsdf"; //Red laptop
-	//private String ipAddress = "192.168.252.102"; //Red laptop
-	//private String ipAddress = "192.168.252.104"; //Black laptop
+	private String ipAddress = "192.168.252.104"; //Default IP Address
 	
 	private String defaultPort = "44442";
 	private String integerPort = "44442";
@@ -39,6 +37,11 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 	private String test2Port = "6665";
 
 	private PrintStream local;
+	
+	//For ip address
+	private JLabel ipLabel;
+	private JTextField ipField;
+	private JButton ipSetButton;
 	
 	private JButton appleButton, pearButton, bananaButton;
 	private JButton emptyWasteButton, emptyBinButton;
@@ -62,6 +65,12 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 		local = new PrintStream(new TextAreaOutputStream(log), true);
 		
 		this.fullQueue = fullQueue; //reference to the fullQueue
+		
+		//create the IP address area
+		ipLabel = new JLabel("IP Address:");
+		ipField = new JTextField(ipAddress);
+		ipSetButton = new JButton("Set IP");
+		ipSetButton.addActionListener(this);
 
 		//Create all the buttons
 		appleButton = new JButton("Send Apple");
@@ -92,14 +101,19 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 		
-		//These two children panels each hold a row of buttons
+		//These children panels each hold a row of buttons or labels
+		JPanel ipChildPanel = new JPanel(); // use FlowLayout
 		JPanel topChildPanel = new JPanel(); // use FlowLayout
 		JPanel midChildPanel = new JPanel(); // use FlowLayout
 		JPanel botChildPanel = new JPanel(); // use FlowLayout
+		buttonPanel.add(ipChildPanel);
 		buttonPanel.add(topChildPanel);
 		buttonPanel.add(midChildPanel);
 		buttonPanel.add(botChildPanel);
 		
+		ipChildPanel.add(ipLabel);
+		ipChildPanel.add(ipField);
+		ipChildPanel.add(ipSetButton);
 		topChildPanel.add(appleButton);
 		topChildPanel.add(pearButton);
 		topChildPanel.add(bananaButton);
@@ -121,6 +135,12 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 	// here
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//Set ip address
+		if (e.getSource() == ipSetButton) {
+			ipAddress = ipField.getText().trim();
+			local.println("IP Address set to: " + ipAddress);
+			log.setCaretPosition(log.getDocument().getLength());
+		}
 		// Handle appleButton action.
 		if (e.getSource() == appleButton) {
 			local.println("Sending apple...");
@@ -228,10 +248,17 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 		Controller sjc = new Controller(bq);
 		sjc.createConsole();
 				
-		//Start server (producer)
-		StringReceiveServer ns = new StringReceiveServer("55580", bq);
-		Thread producer = new Thread(ns);
-		producer.start();
+		//Start server (producer1)
+		StringReceiveServer srs1 = new StringReceiveServer("55580", bq);
+		Thread producer1 = new Thread(srs1);
+		producer1.start();
+		
+		//Start server (producer1)
+		StringReceiveServer srs2 = new StringReceiveServer("55570", bq);
+		Thread producer2 = new Thread(srs2);
+		producer2.start();
+		
+		
 		//Start the consumer thread
 		Thread serverUpdate = new Thread(sjc);
 		serverUpdate.start();
