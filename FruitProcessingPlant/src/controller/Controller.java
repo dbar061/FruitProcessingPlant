@@ -29,7 +29,8 @@ public class Controller extends JPanel implements ActionListener {
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
 	
-	private String ipAddress = "192.168.252.102"; //Red laptop
+	private String ipAddress = "sfsdf"; //Red laptop
+	//private String ipAddress = "192.168.252.102"; //Red laptop
 	//private String ipAddress = "192.168.252.104"; //Black laptop
 	
 	private String defaultPort = "44442";
