@@ -16,17 +16,22 @@ import inventory.fruit.*;
  * @file Console.java
  * @author				Devin Barry
  * @date 				14/10/2012
- * @lastModification 	26/10/2012
+ * @lastModification 	28/10/2012
  *
  * This code is based upon recent versions of Devin's code from
  * from console.Console
+ * 
+ * This code creats a window with buttons and an output console.
+ * It is used to send signals to SystemJ
  */
 public class Controller extends JPanel implements ActionListener {
 
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
 	
-	private String ipAddress = "192.168.252.109";
+	private String ipAddress = "192.168.252.102"; //Red laptop
+	//private String ipAddress = "192.168.252.104"; //Black laptop
+	
 	private String defaultPort = "44442";
 	private String integerPort = "44442";
 	private String test1Port = "44441";
@@ -36,6 +41,7 @@ public class Controller extends JPanel implements ActionListener {
 	
 
 	private JButton appleButton, pearButton, bananaButton;
+	private JButton emptyWasteButton, emptyBinButton;
 	private JButton integerButton, testButton1, testButton2;
 	private JLabel integerLabel, test1Label, test2Label;
 
@@ -61,6 +67,11 @@ public class Controller extends JPanel implements ActionListener {
 		bananaButton = new JButton("Send Banana");
 		bananaButton.addActionListener(this);
 		
+		emptyWasteButton = new JButton("Empty Waste Bin");
+		emptyWasteButton.addActionListener(this);
+		emptyBinButton = new JButton("Empty Cut Fruit Bin");
+		emptyBinButton.addActionListener(this);
+		
 		integerButton = new JButton("Send Integer");
 		integerButton.addActionListener(this);
 		testButton1 = new JButton("test1");
@@ -73,19 +84,23 @@ public class Controller extends JPanel implements ActionListener {
 		test2Label = new JLabel("to port " + test2Port);
 		
 		// For layout purposes, put the buttons in a separate panel
-		// which consists of two children panels in BoxLayout
+		// which consists of three children panels in BoxLayout
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 		
 		//These two children panels each hold a row of buttons
 		JPanel topChildPanel = new JPanel(); // use FlowLayout
+		JPanel midChildPanel = new JPanel(); // use FlowLayout
 		JPanel botChildPanel = new JPanel(); // use FlowLayout
 		buttonPanel.add(topChildPanel);
+		buttonPanel.add(midChildPanel);
 		buttonPanel.add(botChildPanel);
 		
 		topChildPanel.add(appleButton);
 		topChildPanel.add(pearButton);
 		topChildPanel.add(bananaButton);
+		midChildPanel.add(emptyWasteButton);
+		midChildPanel.add(emptyBinButton);
 		botChildPanel.add(integerButton);
 		botChildPanel.add(integerLabel);
 		botChildPanel.add(testButton1);
@@ -127,6 +142,18 @@ public class Controller extends JPanel implements ActionListener {
 			log.setCaretPosition(log.getDocument().getLength());
 			sendNetworkObject(new Banana(), defaultPort);
 			//sendNetworkObject(new RawGoods(0,0,1), defaultPort);
+			
+		}
+		if (e.getSource() == emptyWasteButton) {
+			local.println("Emptying waste bin...");
+			log.setCaretPosition(log.getDocument().getLength());
+			sendNetworkString("emptyWaste", "44474"); //44474 is the waste port
+			
+		}
+		if (e.getSource() == emptyBinButton) {
+			local.println("Emptying cut fruit bin...");
+			log.setCaretPosition(log.getDocument().getLength());
+			sendNetworkString("emptyFruit", "44462"); //44462 is the fruit bin port
 			
 		}
 		if (e.getSource() == integerButton) {
