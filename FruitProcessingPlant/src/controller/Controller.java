@@ -184,7 +184,7 @@ public class Controller extends JPanel implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Add content to the window.
-		frame.add(new Controller());
+		frame.add(this);
 
 		// Display the window.
 		frame.pack();
@@ -210,14 +210,13 @@ public class Controller extends JPanel implements ActionListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		//Shared object for producer/consumer queue
+		//This allows the use of wait and notify
+		ServerQueue<String> bq = new ServerQueue<String>();
+				
 		Controller sjc = new Controller();
 		sjc.createConsole();
-		// DevinConsole.console.flush();
-		// DevinConsole.console.close();
-		// System.out.println("Closed");
-		//try { Thread.sleep(5000); } catch (Exception e) {}
-		//System.out.println("Network Controller!");
-		
+				
 		//Start server
 		StringReceiveServer ns = new StringReceiveServer("55580");
 		Thread t = new Thread(ns);
