@@ -111,11 +111,6 @@ public class Controller extends JPanel implements ActionListener {
 		// Add the buttons and the log to the main panel.
 		add(buttonPanel, BorderLayout.PAGE_START);
 		add(logScrollPane, BorderLayout.CENTER);
-		
-		//Start server
-		//NetworkServer ns = new NetworkServer();
-		//Thread t = new Thread(ns);
-		//t.start();
 	}
 
 	// When the user clicks on the various buttons, these events are handled
@@ -221,6 +216,11 @@ public class Controller extends JPanel implements ActionListener {
 		// System.out.println("Closed");
 		//try { Thread.sleep(5000); } catch (Exception e) {}
 		//System.out.println("Network Controller!");
+		
+		//Start server
+		StringReceiveServer ns = new StringReceiveServer("55580");
+		Thread t = new Thread(ns);
+		t.start();
 	}
 	
 	private void sendNetworkObject(Object object, String port) {
