@@ -5,11 +5,11 @@ import inventory.Inventory;
 public class ReceiveServer {
 
 	/**
-	 * ServerQueue.java
+	 * ReceiveServer.java
 	 * 
 	 * @author			Devin Barry
 	 * @date			25.10.2012
-	 * @lastModified	25.10.2012
+	 * @lastModified	28.10.2012
 	 * 
 	 * This is the main class for the various server
 	 * implementations.
@@ -21,8 +21,8 @@ public class ReceiveServer {
 	}
 	
 	private static void testDevinsStuff() {
-		ServerQueue<Boolean> bq = new ServerQueue<Boolean>();
-		ServerQueue<Integer> iq = new ServerQueue<Integer>();
+		SimpleServerQueue<Boolean> bq = new SimpleServerQueue<Boolean>();
+		SimpleServerQueue<Integer> iq = new SimpleServerQueue<Integer>();
 		//Start server
 		System.out.println("Starting Main Server");
 		
@@ -48,7 +48,7 @@ public class ReceiveServer {
 	}
 	
 	private static void testBlocking() {
-		ServerQueue<Boolean> bq = new ServerQueue<Boolean>();
+		SimpleServerQueue<Boolean> bq = new SimpleServerQueue<Boolean>();
 		//Start server
 		System.out.println("Starting Main Server");
 		
@@ -69,7 +69,7 @@ public class ReceiveServer {
 	}
 	
 	private static void testGetInventory() {
-		ServerQueue<Inventory> bq = new ServerQueue<Inventory>();
+		SimpleServerQueue<Inventory> bq = new SimpleServerQueue<Inventory>();
 		//Start server
 		System.out.println("Starting Main Server");
 		

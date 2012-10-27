@@ -26,7 +26,7 @@ public class ObjectReceiveServer<E> implements Runnable {
 	Class<E> type; 
 	private E objectOut;
 	private String port;
-	private ServerQueue<E> q;
+	private SimpleServerQueue<E> q;
 	//private Socket socket;
 
 	@Override
@@ -35,7 +35,7 @@ public class ObjectReceiveServer<E> implements Runnable {
 		createObjectReceiveServer();
 	}
 	
-	public ObjectReceiveServer(String port, ServerQueue<E> q, Class<E> type) {
+	public ObjectReceiveServer(String port, SimpleServerQueue<E> q, Class<E> type) {
 		this.port = port.trim();
 		this.q = q;
 		this.type = type;
@@ -43,7 +43,7 @@ public class ObjectReceiveServer<E> implements Runnable {
 	}
 	
 	//Static factory pattern for storing Type inside this object
-	public static <T> ObjectReceiveServer<T> createMyObject(String port, ServerQueue<T> q, Class<T> type) {
+	public static <T> ObjectReceiveServer<T> createMyObject(String port, SimpleServerQueue<T> q, Class<T> type) {
 		return new ObjectReceiveServer<T>(port, q, type);
 	}
 	

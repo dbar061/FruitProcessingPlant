@@ -1,8 +1,5 @@
 package controller;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ArrayBlockingQueue;
-
 /**
  * ServerQueue.java
  * 
@@ -16,12 +13,13 @@ import java.util.concurrent.ArrayBlockingQueue;
  * waiting for producer threads to put an item into the queue.
  *
  */
-public class ServerQueue<E> {
+public class SimpleServerQueue<E> {
+
+	E e; //The single item "queue"
+	boolean valueSet;
 	
-	BlockingQueue<E> q;
-	
-	public ServerQueue() {
-		q = new ArrayBlockingQueue<E>(10);
+	public SimpleServerQueue() {
+		valueSet = false;
 	}
 
 	/**
@@ -33,14 +31,16 @@ public class ServerQueue<E> {
 	 * @return
 	 */
 	public synchronized E get() {
-		E e = null;
-		try {
-			e = q.take();
-		} catch (InterruptedException ie) {
-			System.out.println("InterruptedException caught");
+		if (!valueSet) {
+			try {
+				wait();
+			} catch (InterruptedException ie) {
+				System.out.println("InterruptedException caught");
+			}
 		}
 		//System.out.println("Got: " + e);
-		notifyAll(); //notify all sleeping threads that something has been removed
+		valueSet = false;
+		notify();
 		return e;
 	}
 
@@ -53,14 +53,17 @@ public class ServerQueue<E> {
 	 * @param e
 	 */
 	public synchronized void put(E e) {
-		try {
-			//if it is full, sleep thread
-			q.put(e);
-		} catch (InterruptedException ie) {
-			System.out.println("InterruptedException caught");
+		if (valueSet) {
+			try {
+				wait();
+			} catch (InterruptedException ie) {
+				System.out.println("InterruptedException caught");
+			}
 		}
+		this.e = e;
+		valueSet = true;
 		//System.out.println("Put: " + e);
-		notifyAll(); //notify all sleeping threads that something new is in queue
+		notify();
 	}
 
 }
