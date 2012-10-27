@@ -43,11 +43,16 @@ public class Apple extends Fruit {
 			StdDraw.filledCircle(location.getX(), location.getY(), SIZE/2);
 		}
 		if (super.getIsCut()) {
-			//StdDraw.setPenRadius();
-			StdDraw.setPenColor(StdDraw.BLACK);
-			StdDraw.text(location.getX(), location.getY(), "X");
-			//StdDraw.setPenColor(StdDraw.WHITE);
-			//StdDraw.text(0.8, 0.8, "white text");
+			//fruit is cut correctly
+			if (super.getIsCutCorrect()) {
+				StdDraw.setPenColor(StdDraw.WHITE);
+				StdDraw.text(location.getX(), location.getY(), "X");
+			}
+			//fruit is cut incorrectly
+			else {
+				StdDraw.setPenColor(StdDraw.BLACK);
+				StdDraw.text(location.getX(), location.getY(), "\\");
+			}
 		}
 	}
 	
