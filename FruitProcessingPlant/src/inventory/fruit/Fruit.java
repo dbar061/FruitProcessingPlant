@@ -9,7 +9,7 @@ import buffer.BufferSlot;
  * 
  * @author:			Devin Barry
  * @date:			09.10.2012
- * @lastModified: 	24.10.2012
+ * @lastModified: 	28.10.2012
  * 
  * This is the superclass for all fruit in the fruit production line
  */
@@ -26,6 +26,7 @@ public abstract class Fruit implements Inventory, BufferSlot {
 	private FruitType fruit;
 	private boolean bad;
 	private boolean washed;
+	private boolean cut;
 	private boolean cutCorrect;
 	
 	public Fruit(FruitType fruit) {
@@ -33,10 +34,25 @@ public abstract class Fruit implements Inventory, BufferSlot {
 		this.fruit = fruit;
 		generateBadness();
 		this.washed = false;
+		this.cut = false;
 		this.cutCorrect = false;
 	}
+	
+	/**
+	 * Washes the fruit.
+	 * @return
+	 */
+	public void washFruit() {
+		washed = true;
+	}
 
+	/**
+	 * All fruit gets cut, but a small proportion
+	 * ends up being cut incorrectly
+	 */
 	public void cutFruit() {
+		cut = true; //all fruit gets cut
+		//some gets cut incorrectly
 		double random = Math.random();
 		if(random < 0.1) {
 			cutCorrect = false;
@@ -46,18 +62,14 @@ public abstract class Fruit implements Inventory, BufferSlot {
 		}
 	}
 	
-	public boolean getIsCutCorrect(){
-		return cutCorrect;
-	}
-	
 	/**
 	 * Determines whether the fruit is bad or not
-	 * 5% of our fruit will be bad
+	 * 10% of our fruit will be bad
 	 * @return
 	 */
 	private void generateBadness() {
 		double random = Math.random();
-		if (random < 0.05) {
+		if (random < 0.1) {
 			bad = true;
 		}
 		else {
@@ -77,9 +89,12 @@ public abstract class Fruit implements Inventory, BufferSlot {
 		return washed;
 	}
 	
-	public boolean washFruit() {
-		washed = true;
-		return true;
+	public boolean getIsCut() {
+		return cut;
+	}
+	
+	public boolean getIsCutCorrect(){
+		return cutCorrect;
 	}
 	
 	/**

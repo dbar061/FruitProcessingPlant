@@ -42,6 +42,10 @@ public class Pear extends Fruit {
 			StdDraw.setPenColor(StdDraw.SADDLE_BROWN);
 			StdDraw.filledCircle(location.getX(), location.getY(), SIZE/2);
 		}
+		if (super.getIsCut()) {
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.text(location.getX(), location.getY(), "X");
+		}
 	}
 	
 	@Override
