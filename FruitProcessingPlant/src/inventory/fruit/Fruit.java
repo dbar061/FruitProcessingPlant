@@ -9,11 +9,16 @@ import buffer.BufferSlot;
  * 
  * @author:			Devin Barry
  * @date:			09.10.2012
- * @lastModified: 	28.10.2012
+ * @lastModified: 	30.10.2012
  * 
  * This is the superclass for all fruit in the fruit production line
  */
 public abstract class Fruit implements Inventory, BufferSlot {
+	
+	/**
+	 * All serializable classes must declare serialVersionUID
+	 */
+	private static final long serialVersionUID = -8577691659172441404L;
 	
 	private static int totalFruit = 0;
 	
@@ -69,7 +74,7 @@ public abstract class Fruit implements Inventory, BufferSlot {
 	 */
 	private void generateBadness() {
 		double random = Math.random();
-		if (random < 0.1) {
+		if (random < 0.4) { //probability is especially modified here for the demo
 			bad = true;
 		}
 		else {

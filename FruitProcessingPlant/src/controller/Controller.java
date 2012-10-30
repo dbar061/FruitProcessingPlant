@@ -16,7 +16,7 @@ import inventory.fruit.*;
  * @file Console.java
  * @author				Devin Barry
  * @date 				14/10/2012
- * @lastModification 	28/10/2012
+ * @lastModification 	30/10/2012
  *
  * This code is based upon recent versions of Devin's code from
  * from console.Console
@@ -29,7 +29,9 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 	// All serializable objects need a serialVersionUID
 	private static final long serialVersionUID = 1L;
 	
-	private String ipAddress = "192.168.252.104"; //Default IP Address
+	private String ipAddress = "192.168.252.110"; //Default IP Address
+	//black laptop 192.168.252.110
+	private String redLaptopIP =  "192.168.252.104";
 	
 	private String defaultPort = "44442";
 	private String integerPort = "44442";
@@ -166,7 +168,8 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 		if (e.getSource() == emptyWasteButton) {
 			local.println("Emptying waste bin...");
 			log.setCaretPosition(log.getDocument().getLength());
-			sendNetworkString("emptyWaste", "44474"); //44474 is the waste port
+			sendNetworkStringIP("emptyWaste", redLaptopIP, "44474");
+			//sendNetworkString("emptyWaste", "44474"); //44474 is the waste port
 			
 		}
 		if (e.getSource() == emptyBinButton) {
@@ -276,6 +279,16 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 	
 	private void sendNetworkString(String string, String port) {
 		NetworkConnection network = new NetworkConnection(ipAddress);
+		network.setMessageType(MessageType.STRING);
+		network.setPortNumber(port);
+		network.setSendString(string);
+		//Start network stuff in a new thread
+		Thread t = new Thread(network);
+		t.start();
+	}
+	
+	private void sendNetworkStringIP(String string, String ip, String port) {
+		NetworkConnection network = new NetworkConnection(ip);
 		network.setMessageType(MessageType.STRING);
 		network.setPortNumber(port);
 		network.setSendString(string);
