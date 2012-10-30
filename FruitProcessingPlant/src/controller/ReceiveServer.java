@@ -2,17 +2,23 @@ package controller;
 
 import inventory.Inventory;
 
+
+/**
+ * ReceiveServer.java
+ * 
+ * @author			Devin Barry
+ * @date			25.10.2012
+ * @lastModified	28.10.2012
+ * 
+ * This is the main class for the various server
+ * implementations.
+ *
+ * @param args
+ */
 public class ReceiveServer {
 
 	/**
-	 * ReceiveServer.java
-	 * 
-	 * @author			Devin Barry
-	 * @date			25.10.2012
-	 * @lastModified	28.10.2012
-	 * 
-	 * This is the main class for the various server
-	 * implementations.
+	 * Main method to start the receive server
 	 *
 	 * @param args
 	 */

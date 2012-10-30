@@ -1,18 +1,33 @@
 package controller;
 
 import java.io.DataOutputStream;
-import java.io.InputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
 
+/**
+ * NetworkConnection.java
+ * 
+ * @author			Devin Barry
+ * @date			25.10.2012
+ * @lastModified	28.10.2012
+ * 
+ * This class represents an outgoing network connection capable
+ * of sending several different types of message over the
+ * network.
+ * 
+ * It implements the runnable interface, allowing the run method
+ * to be started in a new thread. This is useful because when we
+ * send items from a GUI, we want to return immediately, not wait
+ * until the send operation has completed successfully.
+ *
+ * @param args
+ */
 public class NetworkConnection implements Runnable {
 	
+	//identify the type of message we want to send
 	public static enum MessageType {
 		OBJECT,
 		STRING,
@@ -83,7 +98,7 @@ public class NetworkConnection implements Runnable {
 		System.out.println("Sending message to " + ipAddress + ":" + port);
 		try {
 			socket = new Socket(ipAddress, Integer.parseInt(port));
-			remote = new PrintWriter(socket.getOutputStream(), true);
+			remote = new PrintWriter(socket.getOutputStream(), true); //autoflush
 			remote.println(sendMessage); //netcat
 			remote.close();
 			socket.close();
