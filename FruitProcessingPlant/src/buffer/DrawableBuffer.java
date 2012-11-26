@@ -63,6 +63,8 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable,
 	}
 	
 	//Draws all the objects in the buffer
+	//This method is called with the location argument being
+	//the point where the first slot is located
 	public synchronized void draw(PointXY location) {
 		//the location for each item in the buffer
 		PointXY itemLocation = new PointXY(location);
