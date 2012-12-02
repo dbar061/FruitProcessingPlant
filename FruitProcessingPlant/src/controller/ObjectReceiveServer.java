@@ -21,6 +21,8 @@ import java.util.Vector;
  * receive objects of a specific type.
  *
  */
+
+//TODO rename type<E> to type type<T> and rename use of T further down by <S>
 public class ObjectReceiveServer<E> implements Runnable {
 	
 	Class<E> type; 
