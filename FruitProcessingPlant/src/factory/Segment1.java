@@ -73,7 +73,7 @@ public class Segment1 {
 		//Draw all machines in the factory
 		Iterator<Machine> i = productionLine.iterator();
 		while (i.hasNext()) {
-			i.next().draw(base);
+			//i.next().draw(base);
 		}
 		
 		//Show everything that has been drawn

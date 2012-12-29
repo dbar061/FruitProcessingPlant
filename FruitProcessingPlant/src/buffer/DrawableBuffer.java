@@ -1,7 +1,7 @@
 package buffer;
 
 import draw.Drawable;
-import draw.StdDraw;
+import draw.server.DrawCommandList;
 import factory.machine.InventoryConveyor;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
@@ -11,7 +11,7 @@ import factory.dimension.ConveyorBeltDimension;
  * DrawableBuffer.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	30.12.2012
  * 
  * DrawableBuffer is the abstract superclass of all machines on factory floor that
  * contain a buffer that has draw methods (where some or all of the buffer spaces 
@@ -65,7 +65,7 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable,
 	//Draws all the objects in the buffer
 	//This method is called with the location argument being
 	//the point where the first slot is located
-	public synchronized void draw(PointXY location) {
+	public synchronized void draw(DrawCommandList dcl, PointXY location) {
 		//the location for each item in the buffer
 		PointXY itemLocation = new PointXY(location);
 		//an array containing all items in the buffer (for printing only)
@@ -73,17 +73,10 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable,
 		
 		//array must be iterated in reverse
 		for (int i = (items.length-1); i >= 0; i--) {
-			
-			if (items[i] == null) {
-				//this slot is empty, don't draw it
-				//Draw an apple at location
-				//StdDraw.setPenColor(StdDraw.WHITE);
-				//StdDraw.filledCircle(itemLocation.getX(), itemLocation.getY(), 10);
-			}
-			else {
+			//dont draw empty slots
+			if (items[i] != null) {
 				//calls the draw method of the item actually in the buffer
-				//eg. Apple.draw()
-				items[i].draw(itemLocation);
+				items[i].draw(dcl, itemLocation);
 			}
 			
 			//fetches the centre point of the next slot

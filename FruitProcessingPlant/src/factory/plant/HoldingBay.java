@@ -1,18 +1,19 @@
 package factory.plant;
 
 import inventory.Inventory;
-import draw.StdDraw;
 import buffer.InventoryBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.HoldingBayDimension;
 import factory.machine.BufferMachine;
+import draw.StdDraw;
+import draw.server.DrawCommandList;
 
 /**
  * HoldingBay.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	24.10.2012
+ * @lastModified:	30.12.2012
  *
  * TODO
  * HoldingBay needs a blurb
@@ -110,15 +111,15 @@ public class HoldingBay implements BufferMachine {
 	/**
 	 * All classes that implement the Drawable Interface must be able to draw themselves
 	 */
-	public void draw(PointXY location) {
+	public void draw(DrawCommandList dcl, PointXY location) {
 		PointXY drawPoint = hbd.getDrawPoint(location);
 		Integer bufSize = new Integer(fb.getCurrentBufferSize());
 		
 		//Draw the HoldingBay (currently a dark gray square)
-		StdDraw.setPenColor(StdDraw.DARK_GRAY);
-		StdDraw.filledSquare(drawPoint, hbd.getDrawRadius());
-		StdDraw.setPenColor(StdDraw.WHITE);
-		StdDraw.text(drawPoint, bufSize.toString());
+		dcl.addCommand("setPenColor", StdDraw.DARK_GRAY);
+		dcl.addCommand("filledSquare", drawPoint, hbd.getDrawRadius());
+		dcl.addCommand("setPenColor", StdDraw.WHITE);
+		dcl.addCommand("text", drawPoint, bufSize.toString());
 	}
 	
 	@Override

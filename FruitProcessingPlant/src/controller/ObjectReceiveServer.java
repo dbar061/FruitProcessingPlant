@@ -12,7 +12,7 @@ import java.util.Vector;
  * 
  * @author			Devin Barry
  * @date			24.10.2012
- * @lastModified	25.10.2012
+ * @lastModified	30.12.2012
  * 
  * A basic object receive server, modified from code provided for
  * COMPSYS.704 Assignment 1 (during the labs).
@@ -65,7 +65,7 @@ public class ObjectReceiveServer<E> implements Runnable {
 					//System.out.println(this.type.isAssignableFrom(o.getClass()));
 					
 					if (o != null && this.type.isAssignableFrom(o.getClass())) {
-						//This cast is unchecked and could be improved by looking into object output stream
+						//This cast is unchecked and could be improved by looking into object input stream
 						objectOut = (E) o;
 						q.put(objectOut);
 						//System.out.println("Received with value of " + output);
@@ -96,7 +96,7 @@ public class ObjectReceiveServer<E> implements Runnable {
 			byte[] data = new byte[bufferSize];
 			int count = in.read(data, 0, bufferSize);
 			System.out.println("Read " + count + " bytes");
-			//Vector cannot be parameterized because it stores primitive types
+			//Vector cannot be parameterized because it stores primitive type arrays
 			Vector v = new Vector();
 			int totalLength = 0;
 			while (count != -1) {

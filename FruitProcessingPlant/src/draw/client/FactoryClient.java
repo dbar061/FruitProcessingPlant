@@ -1,4 +1,4 @@
-package factory;
+package draw.client;
 
 import inventory.fruit.Apple;
 import inventory.fruit.Banana;
@@ -13,46 +13,32 @@ import factory.dimension.ConveyorBeltDimension;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
 
-import draw.StdDraw;
-
 import buffer.ProductionBuffer;
 
+import draw.server.DrawCommand;
+import draw.server.DrawCommandList;
+import draw.server.StdDrawServer;
+
 /**
- * Factory.java
+ * FactoryClient.java
  * 
  * @author:			Devin Barry
- * @date:			01.10.2012
- * @lastModified: 	23.10.2012
+ * @date:			29.12.2012
+ * @lastModified: 	30.12.2012
  *
- * This class draws conveyors and can be manipulated by SystemJ to
- * animate the conveyors.
+ * This class is based from code in factory.Factory.java
  * 
- * Some new test methods have been added recently 22.10.2012
+ * This class serves as a test client for the draw server
  */
-
-/*************************************************************************
- * Dependecies: StdDraw.java
- * 
- *************************************************************************/
-
-public class Factory {
-	
-	public static final int WINDOW_LENGTH = 600;
-	public static final int WINDOW_HEIGHT = 1200;
-	public static final double SCALE = 2.0; //how the factory dimensions relate to the window dimensions
-	
-	private static final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
-	private static final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
-	
+public class FactoryClient {
 	
 	public static List<Machine> productionLine = new ArrayList<Machine>(20); //initial capacity of 20
-	static final PointXY base = new PointXY(0, 0);
+	private static final PointXY base = new PointXY(0, 0);
+	private DrawCommandList dcl;
+	private StdDrawServer sdServer;
 	
-	public Factory() {
-		StdDraw.setCanvasSize(WINDOW_HEIGHT, WINDOW_LENGTH); //pixel size of window
-		StdDraw.setXscale(0, FACTORY_HEIGHT);
-		StdDraw.setYscale(0, FACTORY_LENGTH);
-		StdDraw.show(0);
+	public FactoryClient() {
+		sdServer = new StdDrawServer();
 	}
 	
 	public void paint() {
@@ -65,29 +51,48 @@ public class Factory {
 	 * @param delay
 	 */
 	public void paint(int delay) {
+		dcl = new DrawCommandList(); //start with a new list each time
+		
 		// clear the background
-		//StdDraw.clear(StdDraw.GRAY);
-		StdDraw.clear();
+		dcl.addCommand(new DrawCommand("clear", new Object()));
 		
 		//Draw all machines in the factory
 		Iterator<Machine> i = productionLine.iterator();
 		while (i.hasNext()) {
-			//i.next().draw(base);
+			i.next().draw(dcl, base);
 		}
 		
 		//Show everything that has been drawn
-		StdDraw.show(delay);
+		dcl.addCommand("show", delay);
+		
+		//Send the draw commands to the draw server
+		//Here is where we need to write a client
+		//which sends the dcl over the network to
+		//the draw server
+		sdServer.drawItems(dcl);
 	}
 
 	/**
 	 * a test client for the factory
 	 */
 	public static void main(String[] args) {
-		final Factory c = new Factory();
+		final FactoryClient c = new FactoryClient();
 		c.testFactory();
 		c.addTestFruits();
 		c.paint();
 		
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
+		try { Thread.sleep(3000); } catch (Exception e) {}
+		c.advanceConveyors();
+		c.paint();
 		try { Thread.sleep(3000); } catch (Exception e) {}
 		c.advanceConveyors();
 		c.paint();

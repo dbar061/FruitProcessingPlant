@@ -2,18 +2,18 @@ package draw.server;
 
 import draw.StdDraw;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.awt.Color;
 import java.util.List;
 import java.util.ArrayList;
 
 public class StdDrawServer {
+	
+	public StdDrawServer() {
+		initialiseWindow();
+	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	private void initialiseWindow() {
+		
 		final int WINDOW_LENGTH = 600;
 		final int WINDOW_HEIGHT = 600;
 		final double SCALE = 2.0; //how the factory dimensions relate to the window dimensions
@@ -26,125 +26,252 @@ public class StdDrawServer {
 		StdDraw.setYscale(0, FACTORY_LENGTH);
 		StdDraw.show(0);
 		
-		//testStuff();
-		paint();
+		
 	}
 	
-	public static void paint() {
+	/***********************************************************************************
+	 * Server Test methods
+	 ***********************************************************************************/
+	//main method used for testing draw server
+	public static void main(String[] args) {
+		StdDrawServer sdserver = new StdDrawServer();
+		
+		//testDrawCmdProcessing();
+		
+		DrawCommandList dcl = createDrawCommands();
+		//execute test draw commands
+		sdserver.drawItems(dcl);
+	}
+	
+	//Create a DrawCommandList with commands to draw two circles
+	private static DrawCommandList createDrawCommands() {
+		DrawCommandList dcl = new DrawCommandList();
+		
+		//clear the background
+		//StdDraw.clear();
+		dcl.addCommand("clear");
+		
+		//StdDraw.setPenColor(StdDraw.CYAN);
+		dcl.addCommand("setPenColor", StdDraw.CYAN);
+		
+		//StdDraw.filledCircle(100, 100, 100);
+		List<Double> args2 = new ArrayList<>();
+		args2.add(100.0);
+		args2.add(100.0);
+		args2.add(100.0);
+		dcl.addCommand("filledCircle", args2);
+		
+		//StdDraw.setPenColor(StdDraw.BLUE);
+		dcl.addCommand("setPenColor", StdDraw.BLUE);
+		
+		//StdDraw.circle(200, 200, 100);
+		List<Double> args4 = new ArrayList<>();
+		args4.add(200.0);
+		args4.add(200.0);
+		args4.add(100.0);
+		dcl.addCommand("circle", args4);
+		
+		//Show everything that has been drawn
+		//StdDraw.show(30);
+		dcl.addCommand("show", 30);
+		
+		return dcl;
+	}
+	
+	
+	
+	/***********************************************************************************
+	 * DrawCommand processing
+	 ***********************************************************************************/
+	@SuppressWarnings("unused")
+	private void paint() {
 		paint(30);
 	}
 	
-	/**
-	 * This should probably be made to be thread safe
-	 * TODO
-	 * @param delay
-	 */
-	public static void paint(int delay) {
+	private void paint(int delay) {
 		// clear the background
 		StdDraw.clear();
-		
 		//execute all the draw commands received
-		testStuff();
-		
 		//Show everything that has been drawn
 		StdDraw.show(delay);
 	}
 	
-	public static void drawItems(DrawCommand command) {
-		//iterate through command
-		//Im pretty sure that because StdDraw is static and only one exists
-		//We can simply access it from JavaScript as normal
-		//eg
-		//interpret(StdDraw.someshit());
-		//interpret(StdDraw.someothershit());
+	//Iterates through all commands in the command list and draws them
+	public void drawItems(DrawCommandList commands) {
+		List<DrawCommand> ldc = commands.getAllCommands();
+		for (DrawCommand dc : ldc) {
+			if (dc.getIsList()) {
+				processDrawCommand(dc.getCommandString(), dc.getListArgs());
+			}
+			else {
+				processDrawCommand(dc.getCommandString(), dc.getObjectArgs());
+			}
+		}
 	}
 	
-	public static void testStuff() {
+	/***********************************************************************************
+	 * VARARGS
+	 * Note Object... arguments should be thought of as Object[] arguments
+	 ***********************************************************************************/
+	
+	@SuppressWarnings("unused")
+	private static void testDrawCmdProcessing() {
+		//processDrawCommand("show", 3000);
+		
+		//clear the background
+		//StdDraw.clear();
+		processDrawCommand("clear");
+		
+		
 		//StdDraw.setPenColor(StdDraw.CYAN);
-		List<Color> args1 = new ArrayList<Color>();
-		args1.add(StdDraw.CYAN);
-		StdDrawServer.<Color>stdDrawMethod("setPenColor", args1);
+		processDrawCommand("setPenColor", StdDraw.CYAN);
 		
 		//StdDraw.filledCircle(100, 100, 100);
-		List<Double> args2 = new ArrayList<Double>();
+		List<Double> args2 = new ArrayList<>();
 		args2.add(100.0);
 		args2.add(100.0);
 		args2.add(100.0);
-		stdDrawMethod("filledCircle", args2);
+		processDrawCommand("filledCircle", args2);
 		
 		//StdDraw.setPenColor(StdDraw.BLUE);
-		List<Color> args3 = new ArrayList<Color>();
-		args3.add(StdDraw.BLUE);
-		stdDrawMethod("setPenColor", args3);
+		processDrawCommand("setPenColor", StdDraw.BLUE);
 		
 		//StdDraw.circle(200, 200, 100);
-		List<Double> args4 = new ArrayList<Double>();
+		List<Double> args4 = new ArrayList<>();
 		args4.add(200.0);
 		args4.add(200.0);
 		args4.add(100.0);
-		stdDrawMethod("circle", args4);
+		processDrawCommand("circle", args4);
+		
+		//Show everything that has been drawn
+		//StdDraw.show(30);
+		//processDrawCommand("show", 3000);
+		processDrawCommand("show");
 	}
 	
-	private static void reflectiveCall() {
-		
-		//Reflection
-		//http://stackoverflow.com/questions/37628/what-is-reflection-and-why-is-it-useful
-		Class<StdDraw> sdclas = StdDraw.class;
-		Method method = null;
-		try {
-			method = StdDraw.class.getMethod("filledCircle", double.class, double.class, double.class);
-		}
-		catch (NoSuchMethodException nsme) {
-			nsme.printStackTrace();
-			return;
-		}
-		try {
-			method.invoke(null, 100, 100, 100); //null because method is static
-		}
-		catch (IllegalAccessException iae) {
-			iae.printStackTrace();
-		}
-		catch (InvocationTargetException ite) {
-			ite.printStackTrace();
-		}
-		
-	}
-	
-	//Things to do here
-	//Use type inference or something from generic methods to pass the correct types
-	//with this varags method
-	//http://docs.oracle.com/javase/tutorial/java/generics/methods.html
-	
-	//When we know the correct type, there will be no need to do all kinds of wierd casting
-	private static <K> void stdDrawMethod(String methodName, List<K> arguments) {
+	/**
+	 * processDrawCommand
+	 * 
+	 * This method interprets a draw command by executing the matching method
+	 * All arguments in this method come as an array of Object
+	 * 
+	 * @param methodName
+	 * @param arguments - The arguments passed to the method
+	 */
+	private static void processDrawCommand(String methodName, Object... arguments) {
 		switch (methodName) {
-			case "setPenColor":
-				//StdDraw.setPenColor(StdDraw.CYAN);
-				Color arg = (Color)arguments.get(0);
-				StdDraw.setPenColor(arg);
-				break;
-			case "filledCircle":
-				//StdDraw.filledCircle(100, 100, 100);
-				Double arg1 = (Double)arguments.get(0);
-				Double arg2 = (Double)arguments.get(1);
-				Double arg3 = (Double)arguments.get(2);
-				stdFilledCircle(arguments);
-				//StdDraw.filledCircle(arg1.doubleValue(), arg2.doubleValue(), arg3.doubleValue());
-				break;
-			case "circle":
-				arg1 = (Double)arguments.get(0);
-				arg2 = (Double)arguments.get(1);
-				arg3 = (Double)arguments.get(2);
-				StdDraw.circle(arg1.doubleValue(), arg2.doubleValue(), arg3.doubleValue());
-				break;
+		case "clear":
+			StdDraw.clear();
+			break;
+		case "show":
+			if (arguments.length > 0) StdDraw.show((Integer)arguments[0]);
+			else StdDraw.show();
+			break;
+		case "setPenColor":
+			Color arg = (Color)arguments[0];
+			StdDraw.setPenColor(arg);
+			break;
+		case "circle":
+			ServerSupport.circle(arguments[0], arguments[1]);
+			break;
+		case "filledCircle":
+			ServerSupport.filledCircle(arguments[0], arguments[1]);
+			break;
+		case "filledSquare":
+			ServerSupport.filledSquare(arguments[0], arguments[1]);
+			break;
+		case "filledDiamond":
+			ServerSupport.filledDiamond(arguments[0], arguments[1]);
+			break;
+		case "filledRectangle":
+			ServerSupport.filledRectangle(arguments[0], arguments[1], arguments[2]);
+			break;
+		case "filledAngledRectangle":
+			ServerSupport.filledAngledRectangle(arguments[0], arguments[1], arguments[2], arguments[3]);
+			break;
+		case "polygon":
+			ServerSupport.polygon(arguments[0], arguments[1]);
+			break;
+		case "filledPolygon":
+			ServerSupport.filledPolygon(arguments[0], arguments[1]);
+			break;
+		case "text":
+			if (arguments.length == 2) ServerSupport.text(arguments[0], arguments[1]);
+			else if (arguments.length == 3) ServerSupport.text(arguments[0], arguments[1], arguments[2]);
+			else System.err.println("Error - Unsupported text method!");
+			break;
+		default:
+			System.err.println("Error - Unknown Object method name: " + methodName);
+			break;
 		}
 	}
 	
-	//private static void stdFilledCircle(Double arg1, Double arg2, Double arg3) {
-	private static void stdFilledCircle(List<Double> arguments) {
-		Double arg1 = (Double)arguments.get(0);
-		Double arg2 = (Double)arguments.get(1);
-		Double arg3 = (Double)arguments.get(2);
-		StdDraw.filledCircle(arg1.doubleValue(), arg2.doubleValue(), arg3.doubleValue());
+	
+	/**
+	 * processDrawCommand
+	 * 
+	 * This method interprets a draw command by executing the matching method
+	 * All arguments in this method come as a List<Double>
+	 * 
+	 * @param methodName
+	 * @param arguments - The arguments passed to the method
+	 */
+	private static void processDrawCommand(String methodName, List<Double> arguments) {
+		switch (methodName) {
+		case "line":
+			ServerSupport.line(arguments);
+			break;
+		case "point":
+			ServerSupport.point(arguments);
+			break;
+		case "circle":
+			ServerSupport.circle(arguments);
+			break;
+		case "filledCircle":
+			ServerSupport.filledCircle(arguments);
+			break;
+		case "ellipse":
+			ServerSupport.ellipse(arguments);
+			break;
+		case "filledEllipse":
+			ServerSupport.filledEllipse(arguments);
+			break;
+		case "arc":
+			ServerSupport.arc(arguments);
+			break;
+		case "square":
+			ServerSupport.square(arguments);
+			break;
+		case "filledSquare":
+			ServerSupport.filledSquare(arguments);
+			break;
+		case "diamond":
+			ServerSupport.diamond(arguments);
+			break;
+		case "filledDiamond":
+			ServerSupport.filledDiamond(arguments);
+			break;
+		case "triangle":
+			ServerSupport.triangle(arguments);
+			break;
+		case "filledTriangle":
+			ServerSupport.filledTriangle(arguments);
+			break;
+		case "rectangle":
+			ServerSupport.rectangle(arguments);
+			break;
+		case "filledRectangle":
+			ServerSupport.filledRectangle(arguments);
+			break;
+		case "angledRectangle":
+			ServerSupport.angledRectangle(arguments);
+			break;
+		case "filledAngledRectangle":
+			ServerSupport.filledAngledRectangle(arguments);
+			break;
+		default:
+			System.err.println("Error - Unknown List method name: " + methodName);
+			break;
+		}
 	}
 }

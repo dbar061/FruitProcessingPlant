@@ -2,18 +2,20 @@ package inventory.fruit;
 
 import draw.StdDraw;
 import factory.dimension.PointXY;
-
+import draw.server.DrawCommandList;
 
 /**
  * Banana.java
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	24.10.2012
+ * @lastModified: 	30.12.2012
  * 
  * This is a concrete subclass of Fruit representing an banana
  */
 public class Banana extends Fruit {
+	
+	private static final long serialVersionUID = 4333788593694534036L;
 	
 	private static final int SIZE = 10; //scaled pixels
 	private static int totalBananas = 0;
@@ -34,24 +36,24 @@ public class Banana extends Fruit {
 		return totalBananas;
 	}
 	
-	public void draw(PointXY location) {
+	public void draw(DrawCommandList dcl, PointXY location) {
 		//Draw a banana at location
-		StdDraw.setPenColor(StdDraw.YELLOW);
-		StdDraw.filledCircle(location.getX(), location.getY(), SIZE);
+		dcl.addCommand("setPenColor", StdDraw.YELLOW);
+		dcl.addCommand("filledCircle", location.getX(), location.getY(), SIZE);
 		if (super.getIsBad()) {
-			StdDraw.setPenColor(StdDraw.SADDLE_BROWN);
-			StdDraw.filledCircle(location.getX(), location.getY(), SIZE/2);
+			dcl.addCommand("setPenColor", StdDraw.SADDLE_BROWN);
+			dcl.addCommand("filledCircle", location.getX(), location.getY(), SIZE/2);
 		}
 		if (super.getIsCut()) {
 			//fruit is cut correctly
 			if (super.getIsCutCorrect()) {
-				StdDraw.setPenColor(StdDraw.WHITE);
-				StdDraw.text(location.getX(), location.getY(), "X");
+				dcl.addCommand("setPenColor", StdDraw.WHITE);
+				dcl.addCommand("text", location.getX(), location.getY(), "X");
 			}
 			//fruit is cut incorrectly
 			else {
-				StdDraw.setPenColor(StdDraw.BLACK);
-				StdDraw.text(location.getX(), location.getY(), "\\");
+				dcl.addCommand("setPenColor", StdDraw.BLACK);
+				dcl.addCommand("text", location.getX(), location.getY(), "\\");
 			}
 		}
 	}

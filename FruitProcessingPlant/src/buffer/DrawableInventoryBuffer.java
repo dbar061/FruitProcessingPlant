@@ -1,7 +1,6 @@
 package buffer;
 
 import inventory.Inventory;
-import inventory.fruit.Fruit;
 import buffer.DrawableBuffer;
 import factory.machine.InventoryConveyor;
 import factory.dimension.ConveyorBeltDimension;
@@ -10,7 +9,7 @@ import factory.dimension.ConveyorBeltDimension;
  * DrawableInventoryBuffer.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	24.10.2012
+ * @lastModified:	30.12.2012
  *
  * DrawableInventoryBuffer is a concrete subclass of DrawableBuffer.
  * A DrawableInventoryBuffer is specifically designed to hold Inventory and its

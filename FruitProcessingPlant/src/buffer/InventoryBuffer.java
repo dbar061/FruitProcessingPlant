@@ -1,14 +1,13 @@
 package buffer;
 
 import inventory.Inventory;
-import inventory.fruit.Fruit;
 import factory.machine.InventoryConveyor;
 
 /**
  * InventoryBuffer.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	30.12.2012
  *
  * InventoryBuffer is a concrete subclass of AbstractBuffer and the close cousin
  * of DrawableInventoryBuffer.
@@ -16,7 +15,7 @@ import factory.machine.InventoryConveyor;
  * Unlike DrawableInventoryBuffer, InventoryBuffer cannot draw itself and it is used
  * in machines where the InventoryBuffer does not draw.
  * 
- * A InventoryBuffer is specifically designed to hold Invenotory and its subclasses.
+ * A InventoryBuffer is specifically designed to hold Inventory and its subclasses.
  * 
  * Unlike DrawableInventoryBuffer, InventoryBuffer never stores null elements. This
  * buffer actually works as a buffer (to buffer real items) and is not part
@@ -57,13 +56,12 @@ public class InventoryBuffer extends AbstractBuffer implements InventoryConveyor
 	 * adding a Fruit to the buffer. When this method is
 	 * called an empty space is added to the buffer instead
 	 * 
-	 * Advances the buffer forward by one. Because this method
-	 * does not actually do anything it does not need to be
-	 * synchronized. However if it did do something it should
-	 * be, thus incase I will leave it synchronized
+	 * Advances the buffer forward by one.
 	 */
 	public synchronized void AdvanceBuffer() {
-		//no action occurs for AdvanceBuffer when called on  InventoryBuffer.
-		//We dont store null objects in the Buffer when it cannot draw
+		//no action occurs for AdvanceBuffer when called on InventoryBuffer.
+		//We don't store null objects in the Buffer when it cannot draw
+		//30.12.2012 - Not sure what is going on here
+		//TODO
 	}
 }

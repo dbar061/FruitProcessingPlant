@@ -232,6 +232,7 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	 * Adjusts the start point to deal with angle
 	 * of the conveyor.
 	 */
+	@SuppressWarnings("unused")
 	private void AdjustStartPoint() {
 		//assumes machines are lined up along the x coordinate
 		PointXY leftMost = this.getLeftMostXPoint();

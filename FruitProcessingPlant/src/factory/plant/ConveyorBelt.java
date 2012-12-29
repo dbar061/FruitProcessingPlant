@@ -2,18 +2,21 @@ package factory.plant;
 
 import inventory.Inventory;
 import inventory.fruit.Apple;
-import draw.StdDraw;
 import buffer.DrawableInventoryBuffer;
 import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
 import factory.machine.BufferMachine;
+import draw.StdDraw;
+import draw.server.DrawCommandList;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * ConveyorBelt.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	24.10.2012
+ * @lastModified:	30.12.2012
  *
  * ConveyorBelt is a concrete implementation of a conveyor belt for fruit in
  * a fruit processing plant. It contains a DrawableInventoryBuffer to hold the fruit and
@@ -122,19 +125,22 @@ public class ConveyorBelt implements BufferMachine {
 	/**
 	 * All classes that implement the Drawable Interface must be able to draw themselves
 	 */
-	public void draw(PointXY location) {
+	public void draw(DrawCommandList dcl, PointXY location) {
 		PointXY drawPoint = cbd.getDrawPoint(location);
-		//Draw the conveyer belt (currently a black rectangle)
-		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.filledAngledRectangle(drawPoint, cbd.getDrawHalfWidth(), cbd.getDrawHalfHeight(), cbd.getAngle());
+		//Create args list
+		List<Double> args = new ArrayList<>();
+		args.add(drawPoint.x);
+		args.add(drawPoint.y);
+		args.add(cbd.getDrawHalfWidth());
+		args.add(cbd.getDrawHalfHeight());
+		args.add(cbd.getAngle());
 		
-		//if (cbd.getAngle() == 0) {
-			//Draw the DrawableInventoryBuffer that is part of this ConyeorBelt
-			dfb.draw(cbd.getFirstSlotDrawPoint());
-		//}
-		//else {
-			//Need to figure out how to draw buffer at an angle
-		//}
+		//Draw the conveyer belt (currently a black rectangle)
+		dcl.addCommand("setPenColor", StdDraw.BLACK);
+		dcl.addCommand("filledAngledRectangle", args);
+		
+		//Draw the DrawableInventoryBuffer that is part of this ConyeorBelt
+		dfb.draw(dcl, cbd.getFirstSlotDrawPoint());
 	}
 	
 	@Override
