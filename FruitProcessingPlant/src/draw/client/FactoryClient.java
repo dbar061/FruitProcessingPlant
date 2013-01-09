@@ -74,7 +74,7 @@ public class FactoryClient {
 		//to the server
 		
 		//right now we will just send item straight to server
-		ObjectSocketClient osc = new ObjectSocketClient("localhost", "55551");
+		ObjectSocketClient osc = new ObjectSocketClient("192.168.252.104", "55551");
 		osc.setSendObject(dcl);
 		//start the ObjectSocketClient in a new thread
 		Thread t = new Thread(osc);

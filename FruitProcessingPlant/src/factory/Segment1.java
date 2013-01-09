@@ -4,7 +4,13 @@ import inventory.fruit.Apple;
 import inventory.fruit.Banana;
 import inventory.fruit.Pear;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import network.ObjectSocketClient;
 
 import factory.machine.BufferMachine;
 import factory.machine.Machine;
@@ -14,7 +20,7 @@ import factory.dimension.HoldingBayDimension;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
 
-import draw.StdDraw;
+import draw.server.DrawCommandList;
 
 /**
  * Segment1.java
@@ -29,23 +35,24 @@ import draw.StdDraw;
 
 public class Segment1 {
 	
-	public static final int WINDOW_LENGTH = 600;
-	public static final int WINDOW_HEIGHT = 1200;
-	public static final double SCALE = 1.0; //how the factory dimensions relate to the window dimensions
+	//public static final int WINDOW_LENGTH = 600;
+	//public static final int WINDOW_HEIGHT = 1200;
+	//public static final double SCALE = 1.0; //how the factory dimensions relate to the window dimensions
 	
-	private static final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
-	private static final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
+	//private static final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
+	//private static final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
 	
 	public static List<Machine> productionLine = new ArrayList<Machine>(20); //initial capacity of 20
 	public static Map<String,Machine> map = new HashMap<String,Machine>(20);
 	
 	public static final PointXY base = new PointXY(0, 0);
+	private DrawCommandList dcl;
 	
 	public Segment1() {
-		StdDraw.setCanvasSize(WINDOW_HEIGHT, WINDOW_LENGTH); //pixel size of window
-		StdDraw.setXscale(0, FACTORY_HEIGHT);
-		StdDraw.setYscale(0, FACTORY_LENGTH);
-		StdDraw.show(0);
+		//StdDraw.setCanvasSize(WINDOW_HEIGHT, WINDOW_LENGTH); //pixel size of window
+		//StdDraw.setXscale(0, FACTORY_HEIGHT);
+		//StdDraw.setYscale(0, FACTORY_LENGTH);
+		//StdDraw.show(0);
 		this.createSegment1();
 	}
 	
@@ -54,23 +61,39 @@ public class Segment1 {
 	}
 	
 	/**
-	 * This should probably be made to be thread safe
+	 * This should probably be made to be thread safe because
+	 * this paint method may be called from multiple different
+	 * threads inside the SystemJ program
 	 * TODO
+	 * 
 	 * @param delay
 	 */
 	public void paint(int delay) {
-		// clear the background
-		//StdDraw.clear(StdDraw.GRAY);
-		StdDraw.clear();
+		dcl = new DrawCommandList(); //start with a new list each time
+		
+		//clearing the background is not actually required
+		//the machines draw over all the previous content
+		//dcl.addCommand(new DrawCommand("clear"));
 		
 		//Draw all machines in the factory
 		Iterator<Machine> i = productionLine.iterator();
 		while (i.hasNext()) {
-			//i.next().draw(base);
+			i.next().draw(dcl, base);
 		}
 		
 		//Show everything that has been drawn
-		StdDraw.show(delay);
+		dcl.addCommand("show", delay);
+		
+		//optimally, we create a queue and we put the new dcl on the queue
+		//the network client reads from the queue and send items on queue
+		//to the server
+		
+		//right now we will just send item straight to server
+		ObjectSocketClient osc = new ObjectSocketClient("192.168.252.104", "55551");
+		osc.setSendObject(dcl);
+		//start the ObjectSocketClient in a new thread
+		Thread t = new Thread(osc);
+		t.start();
 	}
 
 	/**
