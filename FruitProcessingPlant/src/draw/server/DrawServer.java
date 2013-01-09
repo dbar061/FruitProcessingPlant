@@ -1,8 +1,23 @@
 package draw.server;
 
 import network.ObjectSocketServer;
-import network.SimpleServerQueue;
+import network.ServerQueue;
 
+/**
+ * DrawServer.java
+ * 
+ * @author			Devin Barry
+ * @date			06.01.2013
+ * @lastModified	10.01.2013
+ * 
+ * This is the main class for executing the draw server.
+ * The main method in this class starts the draw server.
+ * 
+ * The draw server has been upgraded to use a blocking queue
+ * implementation as the queue onto which received objects are
+ * placed.
+ *
+ */
 public class DrawServer {
 
 	/**
@@ -12,7 +27,7 @@ public class DrawServer {
 		StdDrawServer sdServer = new StdDrawServer(); //Create the draw server
 		
 		//create the queue onto which the network server will dump draw command lists
-		SimpleServerQueue<DrawCommandList> drawQ = new SimpleServerQueue<DrawCommandList>();
+		ServerQueue<DrawCommandList> drawQ = new ServerQueue<DrawCommandList>();
 		
 		//Create the network server to receive DrawCommandList
 		ObjectSocketServer<DrawCommandList> dclServer = ObjectSocketServer.createServer("55551", drawQ, DrawCommandList.class);

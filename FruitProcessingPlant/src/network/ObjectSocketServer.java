@@ -10,7 +10,7 @@ import java.net.Socket;
  * 
  * @author			Devin Barry
  * @date			06.01.2013
- * @lastModified	07.01.2013
+ * @lastModified	10.01.2013
  * 
  * This server listens on a port and expects to receive a Java Object
  * over the socket.
@@ -24,7 +24,7 @@ public class ObjectSocketServer<T> implements Runnable {
 	
 	Class<T> type; 
 	private String port;
-	private SimpleServerQueue<T> q;
+	private ServerQueue<T> q;
 
 	@Override
 	public void run() {
@@ -32,7 +32,7 @@ public class ObjectSocketServer<T> implements Runnable {
 		createObjectReceiveServer();
 	}
 	
-	public ObjectSocketServer(String port, SimpleServerQueue<T> q, Class<T> type) {
+	public ObjectSocketServer(String port, ServerQueue<T> q, Class<T> type) {
 		this.port = port.trim();
 		this.q = q;
 		this.type = type;
@@ -40,7 +40,7 @@ public class ObjectSocketServer<T> implements Runnable {
 	}
 	
 	//Static factory pattern for storing Type inside this object
-	public static <S> ObjectSocketServer<S> createServer(String port, SimpleServerQueue<S> q, Class<S> type) {
+	public static <S> ObjectSocketServer<S> createServer(String port, ServerQueue<S> q, Class<S> type) {
 		return new ObjectSocketServer<S>(port, q, type);
 	}
 	
@@ -66,7 +66,7 @@ public class ObjectSocketServer<T> implements Runnable {
 				if (objectOut != null && this.type.isAssignableFrom(objectOut.getClass())) {
 					//This cast is guaranteed because of the if statement above
 					q.put((T)objectOut);
-					System.out.println("Received new object " + objectOut.getClass() + " and put it on the queue");
+					//System.out.println("Received new object " + objectOut.getClass() + " and put it on the queue");
 				}
 				
 				ois.close();

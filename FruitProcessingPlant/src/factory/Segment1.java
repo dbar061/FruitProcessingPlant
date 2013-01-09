@@ -1,9 +1,5 @@
 package factory;
 
-import inventory.fruit.Apple;
-import inventory.fruit.Banana;
-import inventory.fruit.Pear;
-
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -12,7 +8,6 @@ import java.util.Iterator;
 
 import network.ObjectSocketClient;
 
-import factory.machine.BufferMachine;
 import factory.machine.Machine;
 import factory.plant.*;
 import factory.dimension.ConveyorBeltDimension;
@@ -35,24 +30,12 @@ import draw.server.DrawCommandList;
 
 public class Segment1 {
 	
-	//public static final int WINDOW_LENGTH = 600;
-	//public static final int WINDOW_HEIGHT = 1200;
-	//public static final double SCALE = 1.0; //how the factory dimensions relate to the window dimensions
-	
-	//private static final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
-	//private static final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
-	
 	public static List<Machine> productionLine = new ArrayList<Machine>(20); //initial capacity of 20
 	public static Map<String,Machine> map = new HashMap<String,Machine>(20);
-	
 	public static final PointXY base = new PointXY(0, 0);
 	private DrawCommandList dcl;
 	
 	public Segment1() {
-		//StdDraw.setCanvasSize(WINDOW_HEIGHT, WINDOW_LENGTH); //pixel size of window
-		//StdDraw.setXscale(0, FACTORY_HEIGHT);
-		//StdDraw.setYscale(0, FACTORY_LENGTH);
-		//StdDraw.show(0);
 		this.createSegment1();
 	}
 	
@@ -71,10 +54,6 @@ public class Segment1 {
 	public void paint(int delay) {
 		dcl = new DrawCommandList(); //start with a new list each time
 		
-		//clearing the background is not actually required
-		//the machines draw over all the previous content
-		//dcl.addCommand(new DrawCommand("clear"));
-		
 		//Draw all machines in the factory
 		Iterator<Machine> i = productionLine.iterator();
 		while (i.hasNext()) {
@@ -91,21 +70,12 @@ public class Segment1 {
 		//right now we will just send item straight to server
 		ObjectSocketClient osc = new ObjectSocketClient("192.168.252.104", "55551");
 		osc.setSendObject(dcl);
+		
 		//start the ObjectSocketClient in a new thread
 		Thread t = new Thread(osc);
 		t.start();
 	}
 
-	/**
-	 * a test client for the factory
-	 */
-	public static void main(String[] args) {
-		final Segment1 c = new Segment1();
-		//c.createSegment1();
-		c.addTestFruits();
-		c.paint();
-	}
-	
 	/**
 	 * Create the components in their correct locations
 	 */
@@ -179,50 +149,4 @@ public class Segment1 {
 		productionLine.add(cbl2_2);
 		map.put("cb3", cbl2_2);
 	}
-	
-	/**
-	 * Add various test fruits to the machines for testing
-	 */
-	private void addTestFruits() {
-		int maxCount;
-		double random;
-		Machine m;
-		BufferMachine bm;
-		Iterator<Machine> i = productionLine.iterator();
-		while (i.hasNext()) {
-			m = i.next();
-			if (m instanceof BufferMachine) bm = (BufferMachine)m;
-			else continue;
-			
-			if (m instanceof HoldingBay) maxCount = 49;
-			else if (m instanceof ConveyorBelt) maxCount = 6;
-			else maxCount = 1;
-			
-			for (int j = 0; j < maxCount; j++) {
-				random = Math.random();
-				if (random <= 0.333) bm.addInventory(new Apple());
-				else if (random <= 0.666) bm.addInventory(new Banana());
-				else bm.addInventory(new Pear());
-			}
-		}
-	}
-	
-	/**
-	 * Tests advancing of conveyors
-	 */
-	private void advanceConveyors() {
-		Machine m;
-		BufferMachine bm;
-		Iterator<Machine> i = productionLine.iterator();
-		while (i.hasNext()) {
-			m = i.next();
-			if (m instanceof BufferMachine) bm = (BufferMachine)m;
-			else continue;
-			
-			if (bm instanceof ConveyorBelt) {
-				bm.AdvanceBuffer();
-			}
-		}
-	}
-
 }

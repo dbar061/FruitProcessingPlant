@@ -33,8 +33,9 @@ public class StdDrawServer {
 	private void initialiseWindow() {
 		
 		final int WINDOW_LENGTH = 600;
-		final int WINDOW_HEIGHT = 600;
-		final double SCALE = 2.0; //how the factory dimensions relate to the window dimensions
+		final int WINDOW_HEIGHT = 1200; //sometimes 600
+		//sometimes 2.0
+		final double SCALE = 1.0; //how the factory dimensions relate to the window dimensions
 		
 		final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
 		final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
