@@ -69,6 +69,8 @@ public class ObjectSocketServer<T> implements Runnable {
 					//System.out.println("Received new object " + objectOut.getClass() + " and put it on the queue");
 				}
 				
+				//It may be that we don't need to close the stream or the socket
+				//TODO
 				ois.close();
 				clientSocket.close();
 			}

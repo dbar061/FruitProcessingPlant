@@ -1,6 +1,7 @@
 package controller;
 
 import network.SimpleServerQueue;
+import network.ServerQueue;
 import network.ObjectReceiveServer;
 import network.ObjectSocketServer;
 import inventory.Inventory;
@@ -63,7 +64,7 @@ public class ReceiveServer {
 	 * Test the ObjectSocketServer
 	 */
 	private static void testObjectSocketServer() {
-		SimpleServerQueue<String> stringQ = new SimpleServerQueue<String>();
+		ServerQueue<String> stringQ = new ServerQueue<String>();
 		
 		//Start server
 		System.out.println("Starting ObjectSocketServer test...");

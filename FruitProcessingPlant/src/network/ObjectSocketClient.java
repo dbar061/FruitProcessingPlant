@@ -12,7 +12,7 @@ import java.net.Socket;
  * 
  * @author			Devin Barry
  * @date			31.12.2012
- * @lastModified	08.01.2013
+ * @lastModified	10.01.2013
  * 
  * This class is the network client used to send draw commands to
  * the draw server.
@@ -54,9 +54,9 @@ public class ObjectSocketClient implements Runnable {
 	private void sendNetworkObject() {
 		Integer portNum = Integer.parseInt(port);
 		
-		Class<?> objectClass = sendObject.getClass();
-		String outString = new String("Sending " + objectClass.toString() + " to " + ipAddress + ":" + portNum.intValue());
-		System.out.println(outString);
+		//Class<?> objectClass = sendObject.getClass();
+		//String outString = new String("Sending " + objectClass.toString() + " to " + ipAddress + ":" + portNum.intValue());
+		//System.out.println(outString);
 		
 		ObjectOutputStream oostream = null;
 		
@@ -116,7 +116,7 @@ public class ObjectSocketClient implements Runnable {
 			ioe.printStackTrace();
 			return;
 		}
-		System.out.println("completed sending " + objectClass.toString());
+		//System.out.println("completed sending " + objectClass.toString());
 	}
 	
 	/**
