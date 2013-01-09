@@ -2,11 +2,12 @@ package draw;
 
 /*************************************************************************
  * @OriginalAuthor: 	Robert Sedgewick and Kevin Wayne
+ * @author:				Devin Barry
  * @location:			introcs.cs.princeton.edu
  * @Date:				???
  * @ModifiedBy:			Devin Barry
- * @ModificationDate:	09.10.2012
- * @LastModified:		28.10.2012
+ * @FirstModified:		09.10.2012
+ * @LastModified:		09.01.2013
  * 
  * Shape drawing methods in the library have been substantially modified by
  * Devin. At a certain point the methods became clumsy inside this massive
@@ -31,8 +32,10 @@ package draw;
  * Changed the polygon method from using the legacy GeneralPath class to
  * using the newer Path2D.Double class, which implements the Shape interface.
  * 
+ * Removed static colour references to their own static class draw.Colors
+ * 
  * Additional comments and formatting. Changing of spelling to New Zealand
- * English. ie centre and centred
+ * English. i.e. centre and centred
  * 
  * ************************************************************************
  * 
@@ -56,9 +59,27 @@ package draw;
  *       it can cause flicker
  *
  *************************************************************************/
+import draw.Colors;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.FileDialog;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
@@ -79,44 +100,13 @@ import javax.swing.*;
  * <i>Introduction to Programming in Java: An Interdisciplinary Approach</i> by
  * Robert Sedgewick and Kevin Wayne.
  */
-public final class StdDraw implements ActionListener, MouseListener,
-		MouseMotionListener, KeyListener {
+public final class StdDraw implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
 
-	// pre-defined colours. No need to import Color class
-	public static final Color BLACK = Color.BLACK;
-	public static final Color BLUE = Color.BLUE;
-	public static final Color CYAN = Color.CYAN;
-	public static final Color DARK_GRAY = Color.DARK_GRAY;
-	public static final Color GRAY = Color.GRAY;
-	public static final Color GREEN = Color.GREEN;
-	public static final Color LIGHT_GRAY = Color.LIGHT_GRAY;
-	public static final Color MAGENTA = Color.MAGENTA;
-	public static final Color ORANGE = Color.ORANGE;
-	public static final Color PINK = Color.PINK;
-	public static final Color RED = Color.RED;
-	public static final Color WHITE = Color.WHITE;
-	public static final Color YELLOW = Color.YELLOW;
+	// default colours
+	private static final Color DEFAULT_PEN_COLOR = Colors.BLACK;
+	private static final Color DEFAULT_CLEAR_COLOR = Colors.WHITE;
 
-	/**
-	 * Shade of blue used in Introduction to Programming in Java. It is Pantone
-	 * 300U. The RGB values are approximately (9, 90, 166).
-	 */
-	public static final Color BOOK_BLUE = new Color(9, 90, 166);
-	public static final Color BOOK_LIGHT_BLUE = new Color(103, 198, 243);
-
-	/**
-	 * Shade of red used in Algorithms 4th edition. It is Pantone 1805U. The RGB
-	 * values are approximately (150, 35, 31).
-	 */
-	public static final Color BOOK_RED = new Color(150, 35, 31);
-	
-	public static final Color SADDLE_BROWN = new Color(139,69,19); //saddle brown
-
-	// default colors
-	private static final Color DEFAULT_PEN_COLOR = BLACK;
-	private static final Color DEFAULT_CLEAR_COLOR = WHITE;
-
-	// current pen color
+	// current pen colour
 	private static Color penColor;
 
 	// default canvas size is DEFAULT_SIZE-by-DEFAULT_SIZE
@@ -141,7 +131,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	private static final double DEFAULT_YMAX = 1.0;
 	private static double xmin, ymin, xmax, ymax;
 
-	// for synchronization
+	// for synchronisation
 	private static Object mouseLock = new Object();
 	private static Object keyLock = new Object();
 
@@ -177,7 +167,7 @@ public final class StdDraw implements ActionListener, MouseListener,
 	private StdDraw() {
 	}
 
-	// static initializer
+	// static initialiser
 	static {
 		init();
 	}
@@ -209,13 +199,11 @@ public final class StdDraw implements ActionListener, MouseListener,
 
 	// init
 	private static void init() {
-		if (frame != null)
-			frame.setVisible(false);
+		if (frame != null) frame.setVisible(false);
+		
 		frame = new JFrame();
-		offscreenImage = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_ARGB);
-		onscreenImage = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_ARGB);
+		offscreenImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		onscreenImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		offscreen = offscreenImage.createGraphics();
 		onscreen = onscreenImage.createGraphics();
 		setXscale();
@@ -227,12 +215,9 @@ public final class StdDraw implements ActionListener, MouseListener,
 		setFont();
 		clear();
 
-		// add antialiasing
-		RenderingHints hints = new RenderingHints(
-				RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		hints.put(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+		// add anti-aliasing
+		RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		hints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		offscreen.addRenderingHints(hints);
 
 		// frame stuff
@@ -261,11 +246,10 @@ public final class StdDraw implements ActionListener, MouseListener,
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
 		menuBar.add(menu);
-		JMenuItem menuItem1 = new JMenuItem(" Save...   ");
-		menuItem1.addActionListener(std);
-		menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit
-				.getDefaultToolkit().getMenuShortcutKeyMask()));
-		menu.add(menuItem1);
+		JMenuItem saveItem = new JMenuItem(" Save...   ");
+		saveItem.addActionListener(std);
+		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		menu.add(saveItem);
 		return menuBar;
 	}
 
@@ -359,14 +343,14 @@ public final class StdDraw implements ActionListener, MouseListener,
 	}
 
 	/**
-	 * Clear the screen to the default color (white).
+	 * Clear the screen to the default colour (white).
 	 */
 	public static void clear() {
 		clear(DEFAULT_CLEAR_COLOR);
 	}
 
 	/**
-	 * Clear the screen to the given color.
+	 * Clear the screen to the given colour.
 	 * 
 	 * @param color
 	 *            the Color to make the background
@@ -405,28 +389,27 @@ public final class StdDraw implements ActionListener, MouseListener,
 			throw new RuntimeException("pen radius must be positive");
 		penRadius = r;
 		float scaledPenRadius = (float) (r * DEFAULT_SIZE);
-		BasicStroke stroke = new BasicStroke(scaledPenRadius,
-				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		BasicStroke stroke = new BasicStroke(scaledPenRadius, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		// BasicStroke stroke = new BasicStroke(scaledPenRadius);
 		offscreen.setStroke(stroke);
 	}
 
 	/**
-	 * Get the current pen color.
+	 * Get the current pen colour.
 	 */
 	public static Color getPenColor() {
 		return penColor;
 	}
 
 	/**
-	 * Set the pen color to the default color (black).
+	 * Set the pen colour to the default colour (black).
 	 */
 	public static void setPenColor() {
 		setPenColor(DEFAULT_PEN_COLOR);
 	}
 
 	/**
-	 * Set the pen color to the given color. The available pen colors are BLACK,
+	 * Set the pen colour to the given colour. The available pen colours are BLACK,
 	 * BLUE, CYAN, DARK_GRAY, GRAY, GREEN, LIGHT_GRAY, MAGENTA, ORANGE, PINK,
 	 * RED, WHITE, and YELLOW.
 	 * 
@@ -519,12 +502,12 @@ public final class StdDraw implements ActionListener, MouseListener,
 	}
 
 	/**
-	 * Draw a circle of radius r, centered on (x, y).
+	 * Draw a circle of radius r, centred on (x, y).
 	 * 
 	 * @param x
-	 *            the x-coordinate of the center of the circle
+	 *            the x-coordinate of the centre of the circle
 	 * @param y
-	 *            the y-coordinate of the center of the circle
+	 *            the y-coordinate of the centre of the circle
 	 * @param r
 	 *            the radius of the circle
 	 * @throws RuntimeException
@@ -536,10 +519,10 @@ public final class StdDraw implements ActionListener, MouseListener,
 	}
 
 	/**
-	 * Draw a circle of radius r, centered at <location>.
+	 * Draw a circle of radius r, centred at <location>.
 	 * 
 	 * @param location
-	 *            the Point at the center of the circle
+	 *            the Point at the centre of the circle
 	 * @param r
 	 *            the radius of the circle
 	 * @throws RuntimeException
@@ -550,12 +533,12 @@ public final class StdDraw implements ActionListener, MouseListener,
 	}
 
 	/**
-	 * Draw filled circle of radius r, centered on (x, y).
+	 * Draw filled circle of radius r, centred on (x, y).
 	 * 
 	 * @param x
-	 *            the x-coordinate of the center of the circle
+	 *            the x-coordinate of the centre of the circle
 	 * @param y
-	 *            the y-coordinate of the center of the circle
+	 *            the y-coordinate of the centre of the circle
 	 * @param r
 	 *            the radius of the circle
 	 * @throws RuntimeException
@@ -567,10 +550,10 @@ public final class StdDraw implements ActionListener, MouseListener,
 	}
 
 	/**
-	 * Draw filled circle of radius r, centered at <location>.
+	 * Draw filled circle of radius r, centred at <location>.
 	 * 
 	 * @param location
-	 *            the Point at the center of the circle
+	 *            the Point at the centre of the circle
 	 * @param r
 	 *            the radius of the circle
 	 * @throws RuntimeException
@@ -585,9 +568,9 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 * y).
 	 * 
 	 * @param x
-	 *            the x-coordinate of the center of the ellipse
+	 *            the x-coordinate of the centre of the ellipse
 	 * @param y
-	 *            the y-coordinate of the center of the ellipse
+	 *            the y-coordinate of the centre of the ellipse
 	 * @param semiMajorAxis
 	 *            is the semimajor axis of the ellipse
 	 * @param semiMinorAxis
@@ -607,9 +590,9 @@ public final class StdDraw implements ActionListener, MouseListener,
 	 * centred on (x, y).
 	 * 
 	 * @param x
-	 *            the x-coordinate of the center of the ellipse
+	 *            the x-coordinate of the centre of the ellipse
 	 * @param y
-	 *            the y-coordinate of the center of the ellipse
+	 *            the y-coordinate of the centre of the ellipse
 	 * @param semiMajorAxis
 	 *            is the semimajor axis of the ellipse
 	 * @param semiMinorAxis
@@ -1504,39 +1487,39 @@ public final class StdDraw implements ActionListener, MouseListener,
 		
 		//draw a blue diamond, radius 0.1 (old method)
 		StdDraw.setPenRadius(); //default radius
-		StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+		StdDraw.setPenColor(Colors.BOOK_BLUE);
 		double[] x = { .1, .2, .3, .2 };
 		double[] y = { .2, .3, .2, .1 };
 		StdDraw.filledPolygon(x, y);
 		
 		//draw a cyandiamond, radius 0.1 (new method)
-		StdDraw.setPenColor(StdDraw.CYAN);
+		StdDraw.setPenColor(Colors.CYAN);
 		StdDraw.filledDiamond(.45, .2, 0.1);
 		
 		//draw a magenta triangle, radius 0.1
-		StdDraw.setPenColor(StdDraw.MAGENTA);
+		StdDraw.setPenColor(Colors.MAGENTA);
 		StdDraw.filledTriangle(.45, 0.4, 0.1);
 		
 		//Green filled rectangle, rotated x degrees
-		StdDraw.setPenColor(StdDraw.GREEN);
+		StdDraw.setPenColor(Colors.GREEN);
 		StdDraw.filledAngledRectangle(.45, .8, .05, .2, 10);
 		//StdDraw.filledAngledRectangle(0.2, 0.2, 0.2, 0.05, 90);
 		//StdDraw.filledAngledRectangle(0, 0, 0.2, 0.05, 0);
 
-		StdDraw.setPenColor(StdDraw.BOOK_RED);
+		StdDraw.setPenColor(Colors.BOOK_RED);
 		StdDraw.setPenRadius(.02);
 		StdDraw.arc(.8, .2, .1, 120, 60);
 		StdDraw.line(0.8, 0.2, 0.8, 0.3);
 
 		// text
 		StdDraw.setPenRadius();
-		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.setPenColor(Colors.BLACK);
 		StdDraw.text(0.2, 0.5, "black text");
-		StdDraw.setPenColor(StdDraw.WHITE);
+		StdDraw.setPenColor(Colors.WHITE);
 		StdDraw.text(0.8, 0.8, "white text");
 		
 		//Edge testing
-		StdDraw.setPenColor(StdDraw.GRAY);
+		StdDraw.setPenColor(Colors.GRAY);
 		//StdDraw.circle(0, 0, .2);
 		StdDraw.line(0, 0, 0, 1);
 	}

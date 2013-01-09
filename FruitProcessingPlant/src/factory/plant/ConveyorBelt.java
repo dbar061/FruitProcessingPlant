@@ -7,7 +7,7 @@ import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.ConveyorBeltDimension;
 import factory.machine.BufferMachine;
-import draw.StdDraw;
+import draw.Colors;
 import draw.server.DrawCommandList;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * ConveyorBelt.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	30.12.2012
+ * @lastModified:	09.01.2013
  *
  * ConveyorBelt is a concrete implementation of a conveyor belt for fruit in
  * a fruit processing plant. It contains a DrawableInventoryBuffer to hold the fruit and
@@ -136,7 +136,7 @@ public class ConveyorBelt implements BufferMachine {
 		args.add(cbd.getAngle());
 		
 		//Draw the conveyer belt (currently a black rectangle)
-		dcl.addCommand("setPenColor", StdDraw.BLACK);
+		dcl.addCommand("setPenColor", Colors.BLACK);
 		dcl.addCommand("filledAngledRectangle", args);
 		
 		//Draw the DrawableInventoryBuffer that is part of this ConyeorBelt

@@ -8,6 +8,8 @@ import java.io.PrintStream;
 
 import javax.swing.*;
 
+import network.ServerQueue;
+
 import console.TextAreaOutputStream;
 import controller.NetworkConnection.MessageType;
 import inventory.fruit.*;
@@ -21,7 +23,7 @@ import inventory.fruit.*;
  * This code is based upon recent versions of Devin's code from
  * from console.Console
  * 
- * This code creats a window with buttons and an output console.
+ * This code creates a window with buttons and an output console.
  * It is used to send signals to SystemJ
  */
 public class Controller extends JPanel implements ActionListener, Runnable {

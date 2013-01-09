@@ -1,4 +1,4 @@
-package controller;
+package network;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -8,16 +8,17 @@ import java.util.concurrent.ArrayBlockingQueue;
  * 
  * @author			Devin Barry
  * @date			25.10.2012
- * @lastModified	28.10.2012
+ * @lastModified	31.12.2012
  * 
- * A very simply wait / notify queue implementation used to
+ * A very simple wait / notify queue implementation used to
  * pass elements of type E from different socket threads between
  * themselves. This class allows consumer threads to sleep while
  * waiting for producer threads to put an item into the queue.
  * 
  * This queue implementation is different from SimpleServeQueue
- * in that it implements a queue of large size than 1. Presently
- * this class has a default queue size of 10.
+ * in that it implements a queue whose size is larger than one.
+ * It is not just a single space buffer. Presently this class
+ * has a default queue size of 10.
  * 
  * No explicit calls to wait and notify are needed, as these are
  * dealt with by the underlying <BlockingQueue> instance. This
@@ -37,7 +38,7 @@ public class ServerQueue<E> {
 	}
 
 	/**
-	 * This get methods get an object from the Queue
+	 * This get method gets an object from the Queue.
 	 * Synchronisation is dealt with automatically
 	 * @return
 	 */

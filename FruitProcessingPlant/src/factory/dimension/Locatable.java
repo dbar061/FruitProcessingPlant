@@ -6,7 +6,7 @@ import factory.dimension.PointXY;
  * Locatable.java
  * @author:			Devin Barry
  * @date:			22.10.2012
- * @lastModified:	23.10.2012
+ * @lastModified:	08.01.2013
  *
  *
  * The Locatable interface binds together the factory sub packages.
@@ -17,13 +17,13 @@ import factory.dimension.PointXY;
  * The reason these two sub packages share this interface is because
  * of the intimate link between the Dimension sub-package and the
  * plant sub-package. All machines have an associated dimension and
- * thus both must be Locatable
+ * thus both must be Locatable.
  * 
  * Specifically the Locatable interface it is used by all machines
  * that have a start and end point on the factory floor (which is
  * all the machines on the floor). Locatable also provides a method
  * for a machine to indicate where the next machine in sequence 
- * should be place.
+ * should be placed.
  */
 public interface Locatable {
 	

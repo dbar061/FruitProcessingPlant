@@ -1,10 +1,12 @@
 package draw.client;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import inventory.fruit.Apple;
 import inventory.fruit.Banana;
 import inventory.fruit.Pear;
-
-import java.util.*;
 
 import factory.machine.BufferMachine;
 import factory.machine.Machine;
@@ -15,16 +17,16 @@ import factory.dimension.SorterDimension;
 
 import buffer.ProductionBuffer;
 
-import draw.server.DrawCommand;
+//import draw.server.DrawCommand;
 import draw.server.DrawCommandList;
-import draw.server.StdDrawServer;
+import network.ObjectSocketClient;
 
 /**
  * FactoryClient.java
  * 
  * @author:			Devin Barry
  * @date:			29.12.2012
- * @lastModified: 	30.12.2012
+ * @lastModified: 	09.01.2013
  *
  * This class is based from code in factory.Factory.java
  * 
@@ -35,10 +37,8 @@ public class FactoryClient {
 	public static List<Machine> productionLine = new ArrayList<Machine>(20); //initial capacity of 20
 	private static final PointXY base = new PointXY(0, 0);
 	private DrawCommandList dcl;
-	private StdDrawServer sdServer;
 	
 	public FactoryClient() {
-		sdServer = new StdDrawServer();
 	}
 	
 	public void paint() {
@@ -46,15 +46,19 @@ public class FactoryClient {
 	}
 	
 	/**
-	 * This should probably be made to be thread safe
+	 * This should probably be made to be thread safe because
+	 * this paint method may be called from multiple different
+	 * threads inside the SystemJ program
 	 * TODO
+	 * 
 	 * @param delay
 	 */
 	public void paint(int delay) {
 		dcl = new DrawCommandList(); //start with a new list each time
 		
-		// clear the background
-		dcl.addCommand(new DrawCommand("clear", new Object()));
+		//clearing the background is not actually required
+		//the machines draw over all the previous content
+		//dcl.addCommand(new DrawCommand("clear"));
 		
 		//Draw all machines in the factory
 		Iterator<Machine> i = productionLine.iterator();
@@ -65,11 +69,16 @@ public class FactoryClient {
 		//Show everything that has been drawn
 		dcl.addCommand("show", delay);
 		
-		//Send the draw commands to the draw server
-		//Here is where we need to write a client
-		//which sends the dcl over the network to
-		//the draw server
-		sdServer.drawItems(dcl);
+		//optimally, we create a queue and we put the new dcl on the queue
+		//the network client reads from the queue and send items on queue
+		//to the server
+		
+		//right now we will just send item straight to server
+		ObjectSocketClient osc = new ObjectSocketClient("localhost", "55551");
+		osc.setSendObject(dcl);
+		//start the ObjectSocketClient in a new thread
+		Thread t = new Thread(osc);
+		t.start();
 	}
 
 	/**
@@ -81,30 +90,18 @@ public class FactoryClient {
 		c.addTestFruits();
 		c.paint();
 		
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
-		try { Thread.sleep(3000); } catch (Exception e) {}
-		c.advanceConveyors();
-		c.paint();
+		for (int i = 0; i < 5; i++) {
+			//wait then advance conveyers and repaint
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException ie) {
+				System.out.println(ie);
+				System.out.println("Continuing...");
+			}
+			c.advanceConveyors();
+			c.paint();
+		}
+		
 	}
 	
 	/**
@@ -191,7 +188,7 @@ public class FactoryClient {
 	}
 	
 	/**
-	 * Tests advancing of conveyors
+	 * Tests advancing of conveyers
 	 */
 	private void advanceConveyors() {
 		Machine m;

@@ -6,7 +6,7 @@ import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.SorterDimension;
 import factory.machine.BufferMachine;
-import draw.StdDraw;
+import draw.Colors;
 import draw.server.DrawCommandList;
 
 
@@ -14,7 +14,7 @@ import draw.server.DrawCommandList;
  * Sorter.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	30.12.2012
+ * @lastModified:	09.01.2013
  *
  * The sorter is a form of BufferMachine
  * Unlike a conveyor belt, it only has a small number
@@ -120,9 +120,9 @@ public class Sorter implements BufferMachine {
 		PointXY drawPoint = sd.getDrawPoint(location);
 		
 		//Draw the Sorter
-		dcl.addCommand("setPenColor", StdDraw.CYAN);
+		dcl.addCommand("setPenColor", Colors.CYAN);
 		dcl.addCommand("filledCircle", drawPoint, sd.getDrawRadius());
-		dcl.addCommand("setPenColor", StdDraw.BLUE);
+		dcl.addCommand("setPenColor", Colors.BLUE);
 		dcl.addCommand("circle", drawPoint, sd.getDrawRadius());
 	}
 

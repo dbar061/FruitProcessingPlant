@@ -1,23 +1,35 @@
 package draw.server;
 
 import java.util.List;
+//import java.io.IOException;
+import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
 
 /**
- * This class represents a single draw command
- * @author Devin Barry
- * @last modified 30/12/2012
+ * DrawCommand.java
+ * 
+ * @author:			Devin Barry
+ * @date:			28.11.2012
+ * @lastModified: 	10.01.2013
  *
+ * This class represents a single draw command, whose intention
+ * it is to be sent over the network.
+ * 
  */
-public class DrawCommand {
+public class DrawCommand implements Serializable {
+	
+	//This ID number helps identify this class and its version during serialisation
+	private static final long serialVersionUID = 3669441916092604118L;
+	
 	
 	/**
 	 * Either args1 or args2 are used. Not both
 	 */
-	
 	private String command; //the operation to perform
 	private List<Double> args1; //the arguments for the operation
 	private Object[] args2; //the arguments for the operation
-	private boolean isList;
+	private boolean isList; //true when args1 is used, false otherwise
 	
 	public DrawCommand() {
 		command = null;
@@ -68,5 +80,24 @@ public class DrawCommand {
 	public boolean getIsList() {
 		return isList;
 	}
+	
+	//These functions are needed for custom serialization
+	/*
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		CommandArguments ca = (CommandArguments)stream.readObject();
+		args2 = ca.retrieveObjectArgs();
+		
+		stream.defaultReadObject();
+		//read the object array back here
+		System.out.println("Successfully retrieved Object[] from stream!");
+	}
+	
+	private void writeObject(ObjectOutputStream stream) throws IOException {
+		stream.defaultWriteObject();
+		//write the object array here
+		CommandArguments ca = new CommandArguments(args2);
+		stream.writeObject(ca);
+	}
+	*/
 
 }

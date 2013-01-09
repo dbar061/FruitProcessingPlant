@@ -73,7 +73,7 @@ public abstract class DrawableBuffer extends AbstractBuffer implements Drawable,
 		
 		//array must be iterated in reverse
 		for (int i = (items.length-1); i >= 0; i--) {
-			//dont draw empty slots
+			//don't draw empty slots
 			if (items[i] != null) {
 				//calls the draw method of the item actually in the buffer
 				items[i].draw(dcl, itemLocation);

@@ -1,13 +1,13 @@
-package controller;
+package network;
 
 /**
  * ServerQueue.java
  * 
  * @author			Devin Barry
  * @date			25.10.2012
- * @lastModified	28.10.2012
+ * @lastModified	31.12.2012
  * 
- * A very simply wait / notify queue implementation used to
+ * A very simple wait / notify queue implementation used to
  * pass elements of type E from different socket threads between
  * themselves. This class allows consumer threads to sleep while
  * waiting for producer threads to put an item into the queue.

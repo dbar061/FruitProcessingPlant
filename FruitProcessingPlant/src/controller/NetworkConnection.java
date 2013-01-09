@@ -22,8 +22,6 @@ import java.net.Socket;
  * to be started in a new thread. This is useful because when we
  * send items from a GUI, we want to return immediately, not wait
  * until the send operation has completed successfully.
- *
- * @param args
  */
 public class NetworkConnection implements Runnable {
 	

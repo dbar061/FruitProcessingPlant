@@ -3,17 +3,23 @@ package draw.server;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
+ * DrawCommandList.java
+ * 
+ * @author:			Devin Barry
+ * @date:			15.12.2012
+ * @lastModified: 	08.01.2013
+ *
  * This class represents a list of draw commands for the draw server.
  * Draw commands are ordered in the order in which they are put into
  * the command list
  * 
- * @author Devin Barry
- * @last modified 30/12/2012
- *
  */
-public class DrawCommandList {
+public class DrawCommandList implements Serializable {
+	
+	private static final long serialVersionUID = 778925784896344441L;
 	
 	private List<DrawCommand> commands;
 	

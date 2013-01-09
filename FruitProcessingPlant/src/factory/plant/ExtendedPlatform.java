@@ -6,7 +6,7 @@ import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.ExtendedPlatformDimension;
 import factory.machine.BufferMachine;
-import draw.StdDraw;
+import draw.Colors;
 import draw.server.DrawCommandList;
 
 
@@ -14,7 +14,7 @@ import draw.server.DrawCommandList;
  * ExtendedPlatform.java
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified:	30.12.2012
+ * @lastModified:	09.01.2013
  *
  * TODO
  * ExtendedPlatform has two inputs and one output
@@ -120,7 +120,7 @@ public class ExtendedPlatform implements BufferMachine {
 		PointXY drawPoint = epd.getDrawPoint(location);
 		
 		//Draw the ExtendedPlatform
-		dcl.addCommand("setPenColor", StdDraw.BOOK_BLUE);
+		dcl.addCommand("setPenColor", Colors.BOOK_BLUE);
 		dcl.addCommand("filledDiamond", drawPoint, epd.getDrawRadius());
 	}
 

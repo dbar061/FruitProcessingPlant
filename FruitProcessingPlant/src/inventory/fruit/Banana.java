@@ -1,15 +1,16 @@
 package inventory.fruit;
 
-import draw.StdDraw;
 import factory.dimension.PointXY;
 import draw.server.DrawCommandList;
+import draw.Colors;
+
 
 /**
  * Banana.java
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	30.12.2012
+ * @lastModified: 	09.01.2013
  * 
  * This is a concrete subclass of Fruit representing an banana
  */
@@ -38,21 +39,21 @@ public class Banana extends Fruit {
 	
 	public void draw(DrawCommandList dcl, PointXY location) {
 		//Draw a banana at location
-		dcl.addCommand("setPenColor", StdDraw.YELLOW);
+		dcl.addCommand("setPenColor", Colors.YELLOW);
 		dcl.addCommand("filledCircle", location.getX(), location.getY(), SIZE);
 		if (super.getIsBad()) {
-			dcl.addCommand("setPenColor", StdDraw.SADDLE_BROWN);
+			dcl.addCommand("setPenColor", Colors.SADDLE_BROWN);
 			dcl.addCommand("filledCircle", location.getX(), location.getY(), SIZE/2);
 		}
 		if (super.getIsCut()) {
 			//fruit is cut correctly
 			if (super.getIsCutCorrect()) {
-				dcl.addCommand("setPenColor", StdDraw.WHITE);
+				dcl.addCommand("setPenColor", Colors.WHITE);
 				dcl.addCommand("text", location.getX(), location.getY(), "X");
 			}
 			//fruit is cut incorrectly
 			else {
-				dcl.addCommand("setPenColor", StdDraw.BLACK);
+				dcl.addCommand("setPenColor", Colors.BLACK);
 				dcl.addCommand("text", location.getX(), location.getY(), "\\");
 			}
 		}

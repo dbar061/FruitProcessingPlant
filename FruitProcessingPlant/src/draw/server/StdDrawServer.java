@@ -1,11 +1,29 @@
 package draw.server;
 
 import draw.StdDraw;
+import draw.Colors;
 
 import java.awt.Color;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * StdDrawServer.java
+ * 
+ * @author:			Devin Barry
+ * @date:			15.11.2012
+ * @lastModified: 	09.01.2013
+ * 
+ * This class is the core of the Drawing server that can be run by
+ * executing DrawServer.java.
+ * 
+ * DrawServer.java instantiates a copy of StdDrawServer and it is
+ * in this class that the translating of DrawCommands into visible
+ * drawn objects in the frame occurs.
+ * 
+ * StdDrawServer uses its assist class (ServerSupport) to call StdDraw
+ * commands, which actually draw the items required.
+ */
 public class StdDrawServer {
 	
 	public StdDrawServer() {
@@ -25,8 +43,6 @@ public class StdDrawServer {
 		StdDraw.setXscale(0, FACTORY_HEIGHT);
 		StdDraw.setYscale(0, FACTORY_LENGTH);
 		StdDraw.show(0);
-		
-		
 	}
 	
 	/***********************************************************************************
@@ -52,7 +68,7 @@ public class StdDrawServer {
 		dcl.addCommand("clear");
 		
 		//StdDraw.setPenColor(StdDraw.CYAN);
-		dcl.addCommand("setPenColor", StdDraw.CYAN);
+		dcl.addCommand("setPenColor", Colors.CYAN);
 		
 		//StdDraw.filledCircle(100, 100, 100);
 		List<Double> args2 = new ArrayList<>();
@@ -62,7 +78,7 @@ public class StdDrawServer {
 		dcl.addCommand("filledCircle", args2);
 		
 		//StdDraw.setPenColor(StdDraw.BLUE);
-		dcl.addCommand("setPenColor", StdDraw.BLUE);
+		dcl.addCommand("setPenColor", Colors.BLUE);
 		
 		//StdDraw.circle(200, 200, 100);
 		List<Double> args4 = new ArrayList<>();
@@ -124,7 +140,7 @@ public class StdDrawServer {
 		
 		
 		//StdDraw.setPenColor(StdDraw.CYAN);
-		processDrawCommand("setPenColor", StdDraw.CYAN);
+		processDrawCommand("setPenColor", Colors.CYAN);
 		
 		//StdDraw.filledCircle(100, 100, 100);
 		List<Double> args2 = new ArrayList<>();
@@ -134,7 +150,7 @@ public class StdDrawServer {
 		processDrawCommand("filledCircle", args2);
 		
 		//StdDraw.setPenColor(StdDraw.BLUE);
-		processDrawCommand("setPenColor", StdDraw.BLUE);
+		processDrawCommand("setPenColor", Colors.BLUE);
 		
 		//StdDraw.circle(200, 200, 100);
 		List<Double> args4 = new ArrayList<>();
@@ -164,7 +180,7 @@ public class StdDrawServer {
 			StdDraw.clear();
 			break;
 		case "show":
-			if (arguments.length > 0) StdDraw.show((Integer)arguments[0]);
+			if (arguments.length > 0) StdDraw.show((int)arguments[0]);
 			else StdDraw.show();
 			break;
 		case "setPenColor":

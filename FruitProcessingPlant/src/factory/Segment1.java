@@ -17,22 +17,15 @@ import factory.dimension.SorterDimension;
 import draw.StdDraw;
 
 /**
- * Factory.java
+ * Segment1.java
  * 
  * @author:			Devin Barry
  * @date:			01.10.2012
- * @lastModified: 	23.10.2012
+ * @lastModified: 	10.01.2013
  *
- * This class draws conveyors and can be manipulated by SystemJ to
- * animate the conveyors.
- * 
- * Some new test methods have been added recently 22.10.2012
+ * This class contains the machines required to draw segment1
+ * of the production line.
  */
-
-/*************************************************************************
- * Dependecies: StdDraw.java
- * 
- *************************************************************************/
 
 public class Segment1 {
 	

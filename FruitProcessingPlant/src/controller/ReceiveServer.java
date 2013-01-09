@@ -1,5 +1,8 @@
 package controller;
 
+import network.SimpleServerQueue;
+import network.ObjectReceiveServer;
+import network.ObjectSocketServer;
 import inventory.Inventory;
 
 
@@ -8,13 +11,15 @@ import inventory.Inventory;
  * 
  * @author			Devin Barry
  * @date			25.10.2012
- * @lastModified	28.10.2012
+ * @lastModified	07.01.2013
  * 
  * This is the main class for the various server
  * implementations.
- *
- * @param args
+ * 
+ * This class is also used to test new server code
+ * 
  */
+@SuppressWarnings("unused")
 public class ReceiveServer {
 
 	/**
@@ -23,8 +28,9 @@ public class ReceiveServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		testBlocking();
+		testObjectSocketServer();
 	}
+	
 	
 	private static void testDevinsStuff() {
 		SimpleServerQueue<Boolean> bq = new SimpleServerQueue<Boolean>();
@@ -53,6 +59,29 @@ public class ReceiveServer {
 		}
 	}
 	
+	/**
+	 * Test the ObjectSocketServer
+	 */
+	private static void testObjectSocketServer() {
+		SimpleServerQueue<String> stringQ = new SimpleServerQueue<String>();
+		
+		//Start server
+		System.out.println("Starting ObjectSocketServer test...");
+		
+		//These call are not super elegant but they get the job done.
+		ObjectSocketServer<String> stringOSS = ObjectSocketServer.createServer("55551", stringQ, String.class);
+		
+		Thread serverThread = new Thread(stringOSS);
+		serverThread.start(); //this runs a while loop that never ends
+		
+		for (int i = 0; i < 999; i++) {
+			String nextString = stringQ.get();
+			System.out.println("Number: " + i + " :We got a String from server: " + nextString);
+		}
+	}
+	
+	
+	
 	private static void testBlocking() {
 		SimpleServerQueue<Boolean> bq = new SimpleServerQueue<Boolean>();
 		//Start server
@@ -73,6 +102,7 @@ public class ReceiveServer {
 			System.out.println("We got a boolean of " + nextB);
 		}
 	}
+	
 	
 	private static void testGetInventory() {
 		SimpleServerQueue<Inventory> bq = new SimpleServerQueue<Inventory>();

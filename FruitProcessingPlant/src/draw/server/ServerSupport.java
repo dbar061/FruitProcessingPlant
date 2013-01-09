@@ -6,15 +6,18 @@ import java.util.List;
 import draw.StdDraw;
 
 /**
- * This class is a helper class for the StdDraw Server
- * It allows arguments for shapes to be passed as List<Double> or
- * to as Object
+ * ServerSupport.java
  * 
- * @author Devin Barry
- * @last modified 30/12/2012
- *
+ * @author:			Devin Barry
+ * @date:			18.12.2012
+ * @lastModified: 	30.12.2012
+ * 
+ * This class is a helper class for the StdDrawServer.
+ * 
+ * It allows arguments for the various shape methods from StdDraw
+ * to be passed as List<Double> or to as Object (instead of the usual
+ * sequence of doubles, Color etc).
  */
-
 public class ServerSupport {
 	
 	/*************************************************************************

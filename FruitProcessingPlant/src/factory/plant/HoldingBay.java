@@ -6,14 +6,14 @@ import buffer.ProductionBuffer;
 import factory.dimension.PointXY;
 import factory.dimension.HoldingBayDimension;
 import factory.machine.BufferMachine;
-import draw.StdDraw;
+import draw.Colors;
 import draw.server.DrawCommandList;
 
 /**
  * HoldingBay.java
  * @author:			Devin Barry
  * @date:			12.10.2012
- * @lastModified:	30.12.2012
+ * @lastModified:	09.01.2013
  *
  * TODO
  * HoldingBay needs a blurb
@@ -116,9 +116,9 @@ public class HoldingBay implements BufferMachine {
 		Integer bufSize = new Integer(fb.getCurrentBufferSize());
 		
 		//Draw the HoldingBay (currently a dark gray square)
-		dcl.addCommand("setPenColor", StdDraw.DARK_GRAY);
+		dcl.addCommand("setPenColor", Colors.DARK_GRAY);
 		dcl.addCommand("filledSquare", drawPoint, hbd.getDrawRadius());
-		dcl.addCommand("setPenColor", StdDraw.WHITE);
+		dcl.addCommand("setPenColor", Colors.WHITE);
 		dcl.addCommand("text", drawPoint, bufSize.toString());
 	}
 	
