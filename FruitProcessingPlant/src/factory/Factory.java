@@ -28,6 +28,8 @@ import buffer.ProductionBuffer;
  * animate the conveyors.
  * 
  * Some new test methods have been added recently 22.10.2012
+ * 
+ * This class is now legacy! Do not use.
  */
 
 /*************************************************************************

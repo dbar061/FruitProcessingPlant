@@ -127,8 +127,9 @@ public class ConveyorBelt implements BufferMachine {
 	 */
 	public void draw(DrawCommandList dcl, PointXY location) {
 		PointXY drawPoint = cbd.getDrawPoint(location);
-		//Create args list
-		List<Double> args = new ArrayList<>();
+		
+		//Create the DrawCommandList argument list
+		List<Double> args = new ArrayList<>(6);
 		args.add(drawPoint.x);
 		args.add(drawPoint.y);
 		args.add(cbd.getDrawHalfWidth());

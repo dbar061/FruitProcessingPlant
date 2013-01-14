@@ -5,11 +5,15 @@ package factory.dimension;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	23.10.2012
+ * @lastModified: 	14.01.2013
  * 
  * This class should probably extend BasicDimension. Because it is a bit
  * complex it has not been made to extend this class yet, despite all
  * the overlapping functionality.
+ * 
+ * A conveyor belt is drawn from the top left corner.
+ * A conveyor belt will now be drawn from middle of the width and the far left
+ * of its length
  */
 public class ConveyorBeltDimension implements FactoryDimension {
 	
@@ -44,7 +48,7 @@ public class ConveyorBeltDimension implements FactoryDimension {
 	/**
 	 * This constructor is here if it is needed, but it is not preferred
 	 * 
-	 * It doesnt need a slots argument because the number of slots is
+	 * It doesn't need a slots argument because the number of slots is
 	 * calculated from the start and end points.
 	 * 
 	 * @param start
@@ -331,6 +335,7 @@ public class ConveyorBeltDimension implements FactoryDimension {
 		//we want to draw the object based upon its start and end points
 		double x = startPoint.getX() + getRectHalfLength();
 		double y = startPoint.getY() - getRectHalfWidth();
+		//double y = startPoint.getY(); //This causes the conveyor to be drawn from y-centre
 		PointXY drawPoint = new PointXY(x ,y);
 		return drawPoint;
 		

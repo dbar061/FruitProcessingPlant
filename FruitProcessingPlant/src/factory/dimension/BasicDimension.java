@@ -7,13 +7,22 @@ import factory.dimension.PointXY;
  * 
  * @author:			Devin Barry
  * @date:			13.10.2012
- * @lastModified: 	23.10.2012
+ * @lastModified: 	15.01.2013
  * 
- * Generic dimension class for any basic machine
+ * Generic dimension class for any basic machine. This class
+ * refers to machine/shape because at this level of abstraction
+ * we are only really considering the drawing of the machines
+ * and hence all machines are actually simple shapes.
+ * 
+ * All the dimension calculations supported by this class are in
+ * essence methods for determining graphical parameters of the
+ * shapes that we are drawing, so that the entire production line
+ * can be semi-automatically assembled.
  */
 public class BasicDimension implements FactoryDimension {
 	
-	//this is the start point. It is the top left corner of a shape object
+	//The start point is the top left corner of a shape/machine
+	//The end point is the top right corner of a shape/machine
 	private PointXY startPoint, endPoint; //the physical start and end points
 	private double radius = 20; //radius of this shape in scaled pixels
 	
@@ -73,12 +82,23 @@ public class BasicDimension implements FactoryDimension {
 	}
 	
 	/**
-	 * Basic shapes such as circles are
-	 * only considered to take space in the x
-	 * dimension. This is because new items will
-	 * be lined up in the x dimension. Thus
-	 * twice the radius of the shape is how far
-	 * it extends in the x dimension.
+	 * Basic machines/shapes such as circles, squares and diamonds should
+	 * be thought of as only taking up space in the x dimension. This is
+	 * because the machines are lined up along the x dimension. The
+	 * beginning of the machine/shape (usually the left most x-coordinate)
+	 * should be nearly touching the last machines end (usually the right
+	 * most x-coordinate). Machines almost never line up using their y
+	 * position. The y-coordinate of a shape is just to determine what
+	 * "row" of machines it is in.
+	 * 
+	 * Therefore the "end point" of a machine has an identical y-coordinate
+	 * as its start point and the x-coordinate is the start x plus twice
+	 * the radius of the shape. This how far it extends in the x-dimension.
+	 * 
+	 * This "end point" is used when lining new machines/shapes up with
+	 * others already on the floor. In this circumstance we want to put the
+	 * next machine in the same "row" (i.e. identical y-coordinate), but we
+	 * want it to start where the last machine ends. 
 	 */
 	private void calculateEndPoint() {
 		double x = startPoint.getX();
@@ -91,7 +111,7 @@ public class BasicDimension implements FactoryDimension {
 	 * @return the point at which this item should be drawn
 	 */
 	public PointXY getDrawPoint() {
-		//the object always draws with its position centered on the x,y
+		//the object always draws with its position centred on the x,y
 		//we want to draw the object based upon its start and end points
 		double x = startPoint.getX() + getDrawRadius();
 		double y = startPoint.getY() - getDrawRadius();
@@ -107,7 +127,7 @@ public class BasicDimension implements FactoryDimension {
 	 */
 	public PointXY getDrawPoint(PointXY base) {
 		PointXY drawPoint = getDrawPoint();
-		drawPoint.add(base); //add the base co-ordinates on
+		drawPoint.add(base); //add the base coordinates on
 		return drawPoint;
 	}
 	
