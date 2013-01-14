@@ -17,6 +17,7 @@ import network.ServerQueue;
  * implementation as the queue onto which received objects are
  * placed.
  *
+ * TODO Mouse scroll to zoom in and out
  */
 public class DrawServer {
 
@@ -27,15 +28,25 @@ public class DrawServer {
 		StdDrawServer sdServer = new StdDrawServer(); //Create the draw server
 		
 		//create the queue onto which the network server will dump draw command lists
-		ServerQueue<DrawCommandList> drawQ = new ServerQueue<DrawCommandList>();
+		ServerQueue<DrawCommandList> drawQ = new ServerQueue<DrawCommandList>(20);
 		
-		//Create the network server to receive DrawCommandList
-		ObjectSocketServer<DrawCommandList> dclServer = ObjectSocketServer.createServer("55551", drawQ, DrawCommandList.class);
+		//Create the network servers to receive DrawCommandList
+		ObjectSocketServer<DrawCommandList> dclServer1 = ObjectSocketServer.createServer("55551", drawQ, DrawCommandList.class);
+		ObjectSocketServer<DrawCommandList> dclServer2 = ObjectSocketServer.createServer("55552", drawQ, DrawCommandList.class);
+		ObjectSocketServer<DrawCommandList> dclServer3 = ObjectSocketServer.createServer("55553", drawQ, DrawCommandList.class);
+		ObjectSocketServer<DrawCommandList> dclServer4 = ObjectSocketServer.createServer("55554", drawQ, DrawCommandList.class);
 		
-		//Start server
-		System.out.println("Starting Draw Server...");
-		Thread serverThread = new Thread(dclServer);
-		serverThread.start(); //this runs a while loop that never ends
+		//Start servers
+		//Note: each server runs an infinite while loop
+		System.out.println("Starting draw server threads...");
+		Thread serverThread1 = new Thread(dclServer1);
+		Thread serverThread2 = new Thread(dclServer2);
+		Thread serverThread3 = new Thread(dclServer3);
+		Thread serverThread4 = new Thread(dclServer4);
+		serverThread1.start(); 
+		serverThread2.start();
+		serverThread3.start();
+		serverThread4.start(); //this runs a while loop that never ends
 		
 		//fetch items from the queue and draw them
 		for (;;) {
