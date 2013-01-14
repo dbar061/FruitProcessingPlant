@@ -36,6 +36,16 @@ public class ServerQueue<E> {
 	public ServerQueue() {
 		q = new ArrayBlockingQueue<E>(10);
 	}
+	
+	//This constructor allows the use of queues larger than 10
+	public ServerQueue(int qSize) {
+		if (qSize < 10) {
+			q = new ArrayBlockingQueue<E>(10);
+		}
+		else {
+			q = new ArrayBlockingQueue<E>(qSize);
+		}
+	}
 
 	/**
 	 * This get method gets an object from the Queue.
