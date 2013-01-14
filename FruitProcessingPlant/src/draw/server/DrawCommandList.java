@@ -10,11 +10,14 @@ import java.io.Serializable;
  * 
  * @author:			Devin Barry
  * @date:			15.12.2012
- * @lastModified: 	08.01.2013
+ * @lastModified: 	14.01.2013
  *
  * This class represents a list of draw commands for the draw server.
  * Draw commands are ordered in the order in which they are put into
- * the command list
+ * the command list.
+ * 
+ * There are a variety of "addCommand" methods that allow easy addition
+ * of draw commands in all the various forms that the come in.
  * 
  */
 public class DrawCommandList implements Serializable {
@@ -32,6 +35,11 @@ public class DrawCommandList implements Serializable {
 	//========================================
 	public void addCommand(DrawCommand dc) {
 		commands.add(dc);
+	}
+	
+	//This method is used for commands like "show" or "clear"
+	public void addCommand(String command) {
+		commands.add(new DrawCommand(command));
 	}
 	
 	public void addCommand(String command, Object... arguments) {
