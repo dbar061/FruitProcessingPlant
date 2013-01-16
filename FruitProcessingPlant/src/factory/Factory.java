@@ -59,11 +59,10 @@ public class Factory {
 	public static final PointXY base = new PointXY(0, 0);
 	
 	private DrawCommandList dcl;
-	//private InetSocketAddress drawServerAddress;
+	private InetSocketAddress drawServerAddress;
 	
-	public Factory() {
-	//public Factory(InetSocketAddress drawServerAddress) {
-		//this.drawServerAddress = drawServerAddress;
+	public Factory(InetSocketAddress drawServerAddress) {
+		this.drawServerAddress = drawServerAddress;
 		this.createSegment1();
 		this.createSegment2();
 		this.createSegment3();
@@ -95,7 +94,8 @@ public class Factory {
 		//to the server
 		
 		//right now we will just send item straight to server
-		ObjectSocketClient osc = new ObjectSocketClient(new InetSocketAddress("localhost", 55551));
+		InetSocketAddress serverAddress = new InetSocketAddress(drawServerAddress.getAddress(), 55551);
+		ObjectSocketClient osc = new ObjectSocketClient(serverAddress);
 		osc.setSendObject(dcl);
 		
 		//start the ObjectSocketClient in a new thread
@@ -128,7 +128,8 @@ public class Factory {
 		//to the server
 		
 		//right now we will just send item straight to server
-		ObjectSocketClient osc = new ObjectSocketClient(new InetSocketAddress("localhost", 55552));
+		InetSocketAddress serverAddress = new InetSocketAddress(drawServerAddress.getAddress(), 55552);
+		ObjectSocketClient osc = new ObjectSocketClient(serverAddress);
 		osc.setSendObject(dcl);
 		
 		//start the ObjectSocketClient in a new thread
@@ -161,7 +162,8 @@ public class Factory {
 		//to the server
 		
 		//right now we will just send item straight to server
-		ObjectSocketClient osc = new ObjectSocketClient(new InetSocketAddress("localhost", 55553));
+		InetSocketAddress serverAddress = new InetSocketAddress(drawServerAddress.getAddress(), 55553);
+		ObjectSocketClient osc = new ObjectSocketClient(serverAddress);
 		osc.setSendObject(dcl);
 		
 		//start the ObjectSocketClient in a new thread
@@ -194,7 +196,8 @@ public class Factory {
 		//to the server
 		
 		//right now we will just send item straight to server
-		ObjectSocketClient osc = new ObjectSocketClient(new InetSocketAddress("localhost", 55554));
+		InetSocketAddress serverAddress = new InetSocketAddress(drawServerAddress.getAddress(), 55554);
+		ObjectSocketClient osc = new ObjectSocketClient(serverAddress);
 		osc.setSendObject(dcl);
 		
 		//start the ObjectSocketClient in a new thread

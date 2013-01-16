@@ -36,7 +36,7 @@ public class AllSegments {
 		t.start();
 		
 		//Create the factory and send all machine draw commands to server
-		Factory factory = new Factory();
+		Factory factory = new Factory(drawDestination);
 		factory.paint1(30);
 		factory.paint2(30);
 		factory.paint3(30);
