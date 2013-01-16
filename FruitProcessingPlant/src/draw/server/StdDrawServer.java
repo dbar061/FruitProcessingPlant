@@ -35,7 +35,7 @@ public class StdDrawServer {
 		final int WINDOW_LENGTH = 600;
 		final int WINDOW_HEIGHT = 1200; //sometimes 600
 		//zoom out to allow more draw space in the window
-		final double SCALE = 2.0; //how the factory dimensions relate to the window dimensions
+		final double SCALE = 2.2; //how the factory dimensions relate to the window dimensions
 		
 		final double FACTORY_LENGTH = WINDOW_LENGTH * SCALE;
 		final double FACTORY_HEIGHT = WINDOW_HEIGHT * SCALE; 
@@ -116,6 +116,7 @@ public class StdDrawServer {
 	//Iterates through all commands in the command list and draws them
 	public void drawItems(DrawCommandList commands) {
 		List<DrawCommand> ldc = commands.getAllCommands();
+		//System.out.println("Drawing item from list of size: " + ldc.size());
 		for (DrawCommand dc : ldc) {
 			if (dc.getIsList()) {
 				processDrawCommand(dc.getCommandString(), dc.getListArgs());
