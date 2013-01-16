@@ -42,8 +42,8 @@ public class CommandArguments implements Serializable {
 	//double, double, String, double
 	//double, double, String
 	
-	private int intarg;
-	private Color colorarg;
+	//private int intarg;
+	//private Color colorarg;
 	private int length = 0;
 	
 	public CommandArguments() {
@@ -54,11 +54,11 @@ public class CommandArguments implements Serializable {
 		
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].getClass().equals(Color.class)) {
-				colorarg = (Color)args[i];
+				//colorarg = (Color)args[i];
 				System.out.println("Color!");
 			}
 			else if (args[i].getClass().equals(int.class)) {
-				intarg = (int)args[i];
+				//intarg = (int)args[i];
 				System.out.println("int!");
 			}
 			else {
