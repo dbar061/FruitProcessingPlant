@@ -6,13 +6,14 @@ import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.net.Socket;
+import java.net.InetSocketAddress;
 
 /**
  * ObjectSocketClient.java
  * 
  * @author			Devin Barry
  * @date			31.12.2012
- * @lastModified	10.01.2013
+ * @lastModified	17.01.2013
  * 
  * This class is the network client used to send draw commands to
  * the draw server.
@@ -22,8 +23,7 @@ import java.net.Socket;
  */
 public class ObjectSocketClient implements Runnable {
 	
-	private String ipAddress;
-	private String port;
+	private InetSocketAddress serverAddress;
 	private Socket socket;
 	private Object sendObject;
 
@@ -32,19 +32,13 @@ public class ObjectSocketClient implements Runnable {
 		sendNetworkObject();
 	}
 	
-	public ObjectSocketClient(String ipAddress) {
-		this.ipAddress = ipAddress;
-		port = "0";
+	public ObjectSocketClient(InetSocketAddress serverAddress) {
+		this.serverAddress = serverAddress;
 		sendObject = null;
 	}
 	
-	public ObjectSocketClient(String ipAddress, String port) {
-		this(ipAddress);
-		this.port = port;
-	}
-	
-	public void setPortNumber(String port) {
-		this.port = port;
+	public void setServerAddress(InetSocketAddress serverAddress) {
+		this.serverAddress = serverAddress;
 	}
 	
 	public void setSendObject(Object sendObject) {
@@ -52,8 +46,6 @@ public class ObjectSocketClient implements Runnable {
 	}
 	
 	private void sendNetworkObject() {
-		Integer portNum = Integer.parseInt(port);
-		
 		//Class<?> objectClass = sendObject.getClass();
 		//String outString = new String("Sending " + objectClass.toString() + " to " + ipAddress + ":" + portNum.intValue());
 		//System.out.println(outString);
@@ -64,10 +56,10 @@ public class ObjectSocketClient implements Runnable {
 			//This call should be wrapped in some kind of timeout method
 			//or maybe it has a default timeout built in that were not using?
 			//If no port is available to listen this method takes forever
-			socket = new Socket(ipAddress, portNum.intValue());
+			socket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
 		}
 		catch (UnknownHostException uhe) {
-			System.out.println("Host IP address is unknown: " + ipAddress);
+			System.out.println("Host IP address is unknown: " + serverAddress.getAddress());
 			System.out.println("Aborting send...");
 			System.out.println(uhe);
 			//No stack trace printed here
@@ -111,7 +103,7 @@ public class ObjectSocketClient implements Runnable {
 			socket.close();
 		}
 		catch (IOException ioe) {
-			System.out.println("Error occured when sending to " + ipAddress + ":" + port);
+			System.out.println("Error occured when sending to " + serverAddress);
 			System.out.println("Aborting send...");
 			ioe.printStackTrace();
 			return;
@@ -127,8 +119,9 @@ public class ObjectSocketClient implements Runnable {
 	public static void main(String[] args) {
 		System.out.println("Starting Client Test");
 		String testString = new String("Oh hai from Devin!!");
-				
-		ObjectSocketClient osc = new ObjectSocketClient("localhost", "55551");
+		
+		InetSocketAddress serverAddress = new InetSocketAddress("localhost", 55551);
+		ObjectSocketClient osc = new ObjectSocketClient(serverAddress);
 		osc.setSendObject(testString);
 		//start the ObjectSocketClient in a new thread
 		Thread t = new Thread(osc);

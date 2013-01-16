@@ -1,5 +1,6 @@
 package draw.client;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import network.ObjectSocketClient;
  * 
  * @author:			Devin Barry
  * @date:			29.12.2012
- * @lastModified: 	09.01.2013
+ * @lastModified: 	17.01.2013
  *
  * This class is based from code in factory.Factory.java
  * 
@@ -36,9 +37,12 @@ public class FactoryClient {
 	
 	public static List<Machine> productionLine = new ArrayList<Machine>(20); //initial capacity of 20
 	private static final PointXY base = new PointXY(0, 0);
-	private DrawCommandList dcl;
 	
-	public FactoryClient() {
+	private DrawCommandList dcl;
+	private InetSocketAddress drawServerAddress;
+	
+	public FactoryClient(InetSocketAddress drawServerAddress) {
+		this.drawServerAddress = drawServerAddress;
 	}
 	
 	public void paint() {
@@ -74,7 +78,7 @@ public class FactoryClient {
 		//to the server
 		
 		//right now we will just send item straight to server
-		ObjectSocketClient osc = new ObjectSocketClient("localhost", "55551");
+		ObjectSocketClient osc = new ObjectSocketClient(drawServerAddress);
 		osc.setSendObject(dcl);
 		//start the ObjectSocketClient in a new thread
 		Thread t = new Thread(osc);
@@ -85,7 +89,8 @@ public class FactoryClient {
 	 * a test client for the factory
 	 */
 	public static void main(String[] args) {
-		final FactoryClient c = new FactoryClient();
+		InetSocketAddress drawDestination = new InetSocketAddress("localhost", 55551);
+		final FactoryClient c = new FactoryClient(drawDestination);
 		c.testFactory();
 		c.addTestFruits();
 		c.paint();
