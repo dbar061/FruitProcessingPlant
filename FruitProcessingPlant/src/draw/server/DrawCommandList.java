@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 
  * @author:			Devin Barry
  * @date:			15.12.2012
- * @lastModified: 	14.01.2013
+ * @lastModified: 	17.01.2013
  *
  * This class represents a list of draw commands for the draw server.
  * Draw commands are ordered in the order in which they are put into
@@ -18,6 +18,10 @@ import java.io.Serializable;
  * 
  * There are a variety of "addCommand" methods that allow easy addition
  * of draw commands in all the various forms that the come in.
+ * 
+ * The list size of 50 is quite moderate. A single section can easily
+ * have 200 or 300 commands.
+ * TODO lookup how quickly the list expands itself
  * 
  */
 public class DrawCommandList implements Serializable {
@@ -27,7 +31,7 @@ public class DrawCommandList implements Serializable {
 	private List<DrawCommand> commands;
 	
 	public DrawCommandList() {
-		commands = new ArrayList<DrawCommand>(); //list is size 10 i think
+		commands = new ArrayList<DrawCommand>(50); //start with a list of size 50
 	}
 	
 	//========================================
