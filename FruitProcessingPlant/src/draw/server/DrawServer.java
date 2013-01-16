@@ -26,16 +26,16 @@ public class DrawServer {
 	 */
 	public static void main(String[] args) {
 		StdDrawServer sdServer = new StdDrawServer(); //Create the draw server
-		
+
 		//create the queue onto which the network server will dump draw command lists
 		ServerQueue<DrawCommandList> drawQ = new ServerQueue<DrawCommandList>(20);
-		
+
 		//Create the network servers to receive DrawCommandList
 		ObjectSocketServer<DrawCommandList> dclServer1 = ObjectSocketServer.createServer("55551", drawQ, DrawCommandList.class);
 		ObjectSocketServer<DrawCommandList> dclServer2 = ObjectSocketServer.createServer("55552", drawQ, DrawCommandList.class);
 		ObjectSocketServer<DrawCommandList> dclServer3 = ObjectSocketServer.createServer("55553", drawQ, DrawCommandList.class);
 		ObjectSocketServer<DrawCommandList> dclServer4 = ObjectSocketServer.createServer("55554", drawQ, DrawCommandList.class);
-		
+
 		//Start servers
 		//Note: each server runs an infinite while loop
 		System.out.println("Starting draw server threads...");
@@ -47,7 +47,7 @@ public class DrawServer {
 		serverThread2.start();
 		serverThread3.start();
 		serverThread4.start(); //this runs a while loop that never ends
-		
+
 		//fetch items from the queue and draw them
 		for (;;) {
 			DrawCommandList commands = drawQ.get();
