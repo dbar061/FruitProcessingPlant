@@ -18,7 +18,7 @@ import inventory.fruit.*;
  * @file Console.java
  * @author				Devin Barry
  * @date 				14/10/2012
- * @lastModification 	30/10/2012
+ * @lastModification 	19/01/2013
  *
  * This code is based upon recent versions of Devin's code from
  * from console.Console
@@ -28,12 +28,14 @@ import inventory.fruit.*;
  */
 public class Controller extends JPanel implements ActionListener, Runnable {
 
-	// All serializable objects need a serialVersionUID
-	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * Serializable objects need a serialVersionUID
+	 */
+	private static final long serialVersionUID = 3289962282589315969L;
+
 	private String ipAddress = "192.168.252.110"; //Default IP Address
 	//black laptop 192.168.252.110
-	private String redLaptopIP =  "192.168.252.104";
+	//private String redLaptopIP =  "192.168.252.109";
 	
 	private String defaultPort = "44442";
 	private String integerPort = "44442";
@@ -170,7 +172,7 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 		if (e.getSource() == emptyWasteButton) {
 			local.println("Emptying waste bin...");
 			log.setCaretPosition(log.getDocument().getLength());
-			sendNetworkStringIP("emptyWaste", redLaptopIP, "44474");
+			sendNetworkString("emptyWaste", ipAddress, "44474");
 			//sendNetworkString("emptyWaste", "44474"); //44474 is the waste port
 			
 		}
@@ -289,7 +291,7 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 		t.start();
 	}
 	
-	private void sendNetworkStringIP(String string, String ip, String port) {
+	private void sendNetworkString(String string, String ip, String port) {
 		NetworkConnection network = new NetworkConnection(ip);
 		network.setMessageType(MessageType.STRING);
 		network.setPortNumber(port);

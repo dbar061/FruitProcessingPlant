@@ -23,7 +23,7 @@ public class AllSegments {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		drawDestination = new InetSocketAddress("localhost", 55551);
+		drawDestination = new InetSocketAddress("192.168.252.109", 55551);
 		
 		//create a new draw command list
 		DrawCommandList dcl = new DrawCommandList();
