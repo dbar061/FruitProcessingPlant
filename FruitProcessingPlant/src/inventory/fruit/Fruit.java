@@ -9,7 +9,7 @@ import buffer.BufferSlot;
  * 
  * @author:			Devin Barry
  * @date:			09.10.2012
- * @lastModified: 	30.10.2012
+ * @lastModified: 	20.01.2013
  * 
  * This is the superclass for all fruit in the fruit production line
  */
@@ -59,7 +59,7 @@ public abstract class Fruit implements Inventory, BufferSlot {
 		cut = true; //all fruit gets cut
 		//some gets cut incorrectly
 		double random = Math.random();
-		if(random < 0.1) {
+		if(random < 0.4) { //probability is especially modified here for the demo
 			cutCorrect = false;
 		}
 		else{
