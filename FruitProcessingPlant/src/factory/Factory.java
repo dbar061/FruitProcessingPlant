@@ -9,6 +9,7 @@ import network.ObjectSocketClient;
 
 import factory.machine.Machine;
 import factory.plant.*;
+import factory.dimension.BasicDimension;
 import factory.dimension.ConveyorBeltDimension;
 import factory.dimension.ExtendedPlatformDimension;
 import factory.dimension.HoldingBayDimension;
@@ -455,7 +456,8 @@ public class Factory {
 		machines4.put("ep2", extendedPlatformTwo);
 		
 		//Conveyor Eight
-		PointXY startPointCEight = new PointXY(extendedPlatformTwo.nextMachineStartPoint());
+		double cb8_y = extendedPlatformTwo.nextMachineStartPoint().getY() + (ConveyorBeltDimension.WIDTH / 2);
+		PointXY startPointCEight = new PointXY(extendedPlatformTwo.nextMachineStartPoint().getX(), cb8_y);
 		ConveyorBelt conveyorEight = new ConveyorBelt(startPointCEight, 8, 0);
 		machines4.put("cb8", conveyorEight);
 		
@@ -481,9 +483,10 @@ public class Factory {
 		machines4.put("ep5", extendedPlatformFive);
 		
 		//Conveyor Seventeen
-		double cb17_y = extendedPlatformFour.nextMachineStartPoint().getY() + ConveyorBeltDimension.WIDTH;
-		PointXY startPointCSeventeen = new PointXY(extendedPlatformFour.nextMachineStartPoint().getX(), cb17_y);
-		ConveyorBelt conveyorSeventeen = new ConveyorBelt(startPointCSeventeen, 8, 0);
+		double cb17_y = extendedPlatformFive.nextMachineStartPoint().getY() - (ConveyorBeltDimension.WIDTH / 2);
+		double cb17_x = extendedPlatformFive.nextMachineStartPoint().getX() - (2 * ExtendedPlatformDimension.RADIUS + 2 * BasicDimension.SPACING);
+		PointXY startPointCSeventeen = new PointXY(cb17_x, cb17_y);
+		ConveyorBelt conveyorSeventeen = new ConveyorBelt(startPointCSeventeen, 8, 180);
 		machines4.put("cb17", conveyorSeventeen);
 		
 		//System.out.println("Machines in segment4: " + machines4.size());
