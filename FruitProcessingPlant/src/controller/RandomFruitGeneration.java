@@ -102,7 +102,7 @@ public class RandomFruitGeneration extends JPanel implements ActionListener, Run
 		if (e.getSource() == fruitButton) {
 			local.println("Sending random fruit...");
 			log.setCaretPosition(log.getDocument().getLength());
-			RandomFruitGenerator rfg = new RandomFruitGenerator(serverAddress);
+			RandomFruitGenerator rfg = new RandomFruitGenerator(serverAddress, local);
 			Thread fruitGen = new Thread(rfg);
 			fruitGen.start();
 		}
@@ -122,7 +122,7 @@ public class RandomFruitGeneration extends JPanel implements ActionListener, Run
 	 */
 	private void createAndShowGUI() {
 		// Create and set up the window.
-		JFrame frame = new JFrame("Production Line Controller");
+		JFrame frame = new JFrame("Random Fruit Generator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Add content to the window.

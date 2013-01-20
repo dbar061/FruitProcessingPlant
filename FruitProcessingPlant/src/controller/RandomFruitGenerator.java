@@ -4,6 +4,7 @@ import inventory.fruit.Apple;
 import inventory.fruit.Banana;
 import inventory.fruit.Pear;
 
+import java.io.PrintStream;
 import java.net.InetSocketAddress;
 
 import controller.NetworkConnection.MessageType;
@@ -20,9 +21,11 @@ import controller.NetworkConnection.MessageType;
 public class RandomFruitGenerator implements Runnable {
 	
 	private InetSocketAddress serverAddress;
+	private PrintStream windowOut;
 	private Integer port;
 	
-	public RandomFruitGenerator(InetSocketAddress serverAddress) {
+	public RandomFruitGenerator(InetSocketAddress serverAddress, PrintStream windowOut) {
+		this.windowOut = windowOut;
 		this.serverAddress = serverAddress;
 		port = new Integer(serverAddress.getPort());
 	}
@@ -32,7 +35,7 @@ public class RandomFruitGenerator implements Runnable {
 		for (;;) {
 			sendFruit();
 			try {
-				Thread.sleep(1200);
+				Thread.sleep(2000);
 			}
 			catch (InterruptedException ie) {
 				System.err.println(ie);
@@ -46,13 +49,19 @@ public class RandomFruitGenerator implements Runnable {
 	private void sendFruit() {
 		double select = Math.random();
 		if (select < 0.3333) {
-			sendNetworkObject(new Apple());
+			Apple toSend = new Apple();
+			windowOut.println("Sending: " + toSend);
+			sendNetworkObject(toSend);
 		}
 		else if (select < 0.6666) {
-			sendNetworkObject(new Pear());
+			Pear toSend = new Pear();
+			windowOut.println("Sending: " + toSend);
+			sendNetworkObject(toSend);
 		}
 		else {
-			sendNetworkObject(new Banana());
+			Banana toSend = new Banana();
+			windowOut.println("Sending: " + toSend);
+			sendNetworkObject(toSend);
 		}
 	}
 	
