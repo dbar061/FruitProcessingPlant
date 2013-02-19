@@ -28,7 +28,7 @@ public class ObjectSocketServer<T> implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Starting ObjectSocketServer...");
+		System.out.println("Starting ObjectSocketServer on port " + port);
 		createObjectReceiveServer();
 	}
 	
