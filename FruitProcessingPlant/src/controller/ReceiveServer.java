@@ -77,7 +77,7 @@ public class ReceiveServer {
 		
 		for (int i = 0; i < 999; i++) {
 			String nextString = stringQ.get();
-			System.out.println("Number: " + i + " :We got a String from server: " + nextString);
+			System.out.println("Number: " + i + ": We got a String from server: " + nextString);
 		}
 	}
 	
