@@ -8,6 +8,7 @@ import java.io.PrintStream;
 
 import javax.swing.*;
 
+import network.ObjectSocketServer;
 import network.ServerQueue;
 
 import console.TextAreaOutputStream;
@@ -18,7 +19,7 @@ import inventory.fruit.*;
  * @file Console.java
  * @author				Devin Barry
  * @date 				14/10/2012
- * @lastModification 	19/01/2013
+ * @lastModification 	20/02/2013
  *
  * This code is based upon recent versions of Devin's code from
  * from console.Console
@@ -250,21 +251,20 @@ public class Controller extends JPanel implements ActionListener, Runnable {
 	public static void main(String[] args) {
 		//Shared object for producer/consumer queue
 		//This allows the use of wait and notify
-		ServerQueue<String> bq = new ServerQueue<String>();
+		ServerQueue<String> stringQ = new ServerQueue<String>();
 				
-		Controller sjc = new Controller(bq);
+		Controller sjc = new Controller(stringQ);
 		sjc.createConsole();
 				
 		//Start server (producer1)
-		StringReceiveServer srs1 = new StringReceiveServer("55580", bq);
-		Thread producer1 = new Thread(srs1);
+		ObjectSocketServer<String> stringOSS1 = ObjectSocketServer.createServer("55580", stringQ, String.class);
+		Thread producer1 = new Thread(stringOSS1);
 		producer1.start();
 		
 		//Start server (producer1)
-		StringReceiveServer srs2 = new StringReceiveServer("55570", bq);
-		Thread producer2 = new Thread(srs2);
+		ObjectSocketServer<String> stringOSS2 = ObjectSocketServer.createServer("55570", stringQ, String.class);
+		Thread producer2 = new Thread(stringOSS2);
 		producer2.start();
-		
 		
 		//Start the consumer thread
 		Thread serverUpdate = new Thread(sjc);
