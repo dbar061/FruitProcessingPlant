@@ -10,13 +10,17 @@ import java.net.Socket;
  * 
  * @author			Devin Barry
  * @date			06.01.2013
- * @lastModified	10.01.2013
+ * @lastModified	20.02.2013
  * 
  * This server listens on a port and expects to receive a Java Object
  * over the socket.
  * 
  * The server is parameterized and is setup at creation time to
  * receive objects of a specific type.
+ * 
+ * Note: This class now replaces the old "StringReceiveServer" class
+ * To create a server that listens for String, simply pass String as
+ * the type when creating an ObjectSocketServer.
  *
  */
 
