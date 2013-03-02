@@ -59,7 +59,7 @@ public abstract class Fruit implements Inventory, BufferSlot {
 		cut = true; //all fruit gets cut
 		//some gets cut incorrectly
 		double random = Math.random();
-		if(random < 0.4) { //probability is especially modified here for the demo
+		if(random < 0.1) { //probability is especially modified here for the demo
 			cutCorrect = false;
 		}
 		else{
@@ -74,7 +74,7 @@ public abstract class Fruit implements Inventory, BufferSlot {
 	 */
 	private void generateBadness() {
 		double random = Math.random();
-		if (random < 0.4) { //probability is especially modified here for the demo
+		if (random < 0.1) { //probability is especially modified here for the demo
 			bad = true;
 		}
 		else {
