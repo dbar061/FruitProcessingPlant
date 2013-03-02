@@ -24,6 +24,10 @@ public class RandomFruitGenerator implements Runnable {
 	private PrintStream windowOut;
 	private Integer port;
 	
+	//these variables are used to stop and suspend the current thread
+	private volatile Thread generator = null;
+	private volatile boolean threadSuspended = false;
+	
 	public RandomFruitGenerator(InetSocketAddress serverAddress, PrintStream windowOut) {
 		this.windowOut = windowOut;
 		this.serverAddress = serverAddress;
@@ -32,14 +36,49 @@ public class RandomFruitGenerator implements Runnable {
 	
 	@Override
 	public void run() {
-		for (;;) {
+		Thread thisThread = Thread.currentThread(); //allows testing for the stop condition
+		while (generator == thisThread) { //test here for the stop condition
 			sendFruit();
 			try {
 				Thread.sleep(1000);
+				
+				synchronized(this) {
+					while (threadSuspended) {
+						wait();
+					}
+				}
 			}
 			catch (InterruptedException ie) {
 				System.err.println(ie);
+				//We have been interrupted, terminate the thread
+				return;
 			}
+		}
+	}
+	
+	//Creates a new thread and invokes the run() method from it
+	public void start() {
+		if (generator == null) {
+			generator = new Thread(this);
+			generator.start();
+		}
+		else {
+			windowOut.println("Generator is already running!");
+		}
+	}
+	
+	//Activates the thread stop condition inside run()
+	public synchronized void stop() {
+		generator = null;
+		notify(); //in case the thread is suspended
+	}
+	
+	//Suspends the running thread, causing it to wait on the current object
+	//If already paused then this method unpauses the run thread
+	public synchronized void pause() {
+		threadSuspended = !threadSuspended;
+		if (!threadSuspended) {
+			notify();
 		}
 	}
 	

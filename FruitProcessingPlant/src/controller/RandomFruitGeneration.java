@@ -30,18 +30,17 @@ public class RandomFruitGeneration extends JPanel implements ActionListener, Run
 	private static final long serialVersionUID = -7606337001834860495L;
 
 	private int defaultPort = 44442;
-	//private String integerPort = "44442";
-	//private String test1Port = "44441";
-	//private String test2Port = "6665";
-	
 	private InetSocketAddress serverAddress;
 	private PrintStream local;
+	private RandomFruitGenerator generator = null;
 	
 	//For ip address
 	private JLabel ipLabel;
 	private JTextField ipField;
 	private JButton ipSetButton;
-	private JButton fruitButton;
+	private JButton startButton;
+	private JButton pauseButton;
+	private JButton stopButton;
 	
 	JTextArea log;
 	
@@ -64,32 +63,38 @@ public class RandomFruitGeneration extends JPanel implements ActionListener, Run
 		ipSetButton.addActionListener(this);
 
 		//Create all the buttons
-		fruitButton = new JButton("Start sending random fruit");
-		fruitButton.addActionListener(this);
+		startButton = new JButton("Start sending random fruit");
+		startButton.addActionListener(this);
+		pauseButton = new JButton("Pause");
+		pauseButton.addActionListener(this);
+		stopButton = new JButton("Stop");
+		stopButton.addActionListener(this);
 		
 		// For layout purposes, put the buttons in a separate panel
-		// which consists of three children panels in BoxLayout
+		// which consists of two children panels in BoxLayout
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 		
 		//These children panels each hold a row of buttons or labels
 		JPanel ipChildPanel = new JPanel(); // use FlowLayout
 		JPanel topChildPanel = new JPanel(); // use FlowLayout
-		buttonPanel.add(ipChildPanel);
-		buttonPanel.add(topChildPanel);
 		
+		//Add buttons and labels to the child panels
 		ipChildPanel.add(ipLabel);
 		ipChildPanel.add(ipField);
 		ipChildPanel.add(ipSetButton);
-		topChildPanel.add(fruitButton);
-
+		topChildPanel.add(startButton);
+		topChildPanel.add(pauseButton);
+		topChildPanel.add(stopButton);
+		//add child panels to the buttonPanel
+		buttonPanel.add(ipChildPanel);
+		buttonPanel.add(topChildPanel);
 		// Add the buttons and the log to the main panel.
 		add(buttonPanel, BorderLayout.PAGE_START);
 		add(logScrollPane, BorderLayout.CENTER);
 	}
 
-	// When the user clicks on the various buttons, these events are handled
-	// here
+	// When the user clicks on the various buttons, these events are handled here
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//Set ip address
@@ -98,13 +103,31 @@ public class RandomFruitGeneration extends JPanel implements ActionListener, Run
 			local.println("IP Address set to: " + serverAddress);
 			log.setCaretPosition(log.getDocument().getLength());
 		}
-		// Handle appleButton action.
-		if (e.getSource() == fruitButton) {
+		//Start sending random fruit
+		if (e.getSource() == startButton) {
 			local.println("Sending random fruit...");
 			log.setCaretPosition(log.getDocument().getLength());
-			RandomFruitGenerator rfg = new RandomFruitGenerator(serverAddress, local);
-			Thread fruitGen = new Thread(rfg);
-			fruitGen.start();
+			if (generator == null) {
+				generator = new RandomFruitGenerator(serverAddress, local);
+			}
+			generator.start();
+		}
+		//Pause sending random fruit
+		if (e.getSource() == pauseButton) {
+			if (generator != null) {
+				generator.pause();
+				local.println("Paused");
+				log.setCaretPosition(log.getDocument().getLength());
+			}
+		}
+		//Stop sending random fruit
+		if (e.getSource() == stopButton) {
+			if (generator != null) {
+				generator.stop();	
+				local.println("Stopping fruit sending thread");
+				log.setCaretPosition(log.getDocument().getLength());
+			}
+			generator = null;
 		}
 		log.setCaretPosition(log.getDocument().getLength());
 	}
