@@ -13,10 +13,11 @@ import controller.NetworkConnection.MessageType;
  * @file RandomFruitGeneratoin.java
  * @author				Devin Barry
  * @date 				19/01/2013
- * @lastModification 	20/01/2013
+ * @lastModification 	03/03/2013
  *
- * This class randomly generates fruit every 1.2 seconds
- * and sends it over the network.
+ * This class randomly generates fruit every second
+ * and sends it over the network. The run thread has
+ * the ability to stop or pause/resume.
  */
 public class RandomFruitGenerator implements Runnable {
 	

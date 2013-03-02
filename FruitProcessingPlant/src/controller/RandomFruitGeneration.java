@@ -15,13 +15,13 @@ import console.TextAreaOutputStream;
  * @file RandomFruitGeneratoin.java
  * @author				Devin Barry
  * @date 				19/01/2013
- * @lastModification 	19/01/2013
+ * @lastModification 	03/03/2013
  *
  * This code is based upon recent versions of Devin's code from
  * from controller.Controller
  * 
  * This code creates a window with buttons and an output console.
- * It is used to start the random fruit generator for Devins 
+ * It is used to start and stop the random fruit generator for Devins 
  * SystemJ FruitProductionLine.
  */
 public class RandomFruitGeneration extends JPanel implements ActionListener, Runnable {
