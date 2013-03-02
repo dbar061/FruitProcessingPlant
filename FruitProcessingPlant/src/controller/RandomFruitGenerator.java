@@ -35,7 +35,7 @@ public class RandomFruitGenerator implements Runnable {
 		for (;;) {
 			sendFruit();
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			}
 			catch (InterruptedException ie) {
 				System.err.println(ie);
