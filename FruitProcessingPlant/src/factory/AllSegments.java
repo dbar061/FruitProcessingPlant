@@ -10,10 +10,14 @@ import draw.server.DrawCommandList;
  * 
  * @author:			Devin Barry
  * @date:			15.01.2013
- * @lastModified: 	17.01.2013
+ * @lastModified: 	09.04.2013
  *
  * This class calls and draws all segments on the production line
  * first clearing anything already drawn to the server.
+ * 
+ * Update: 09.04.2013
+ * Devin believes that this class is not used at all in the SJ FPL software
+ * However it is a useful class for test purposes
  */
 public class AllSegments {
 	
@@ -23,7 +27,7 @@ public class AllSegments {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		drawDestination = new InetSocketAddress("192.168.252.109", 55551);
+		drawDestination = new InetSocketAddress("192.168.252.108", 55551);
 		
 		//create a new draw command list
 		DrawCommandList dcl = new DrawCommandList();
@@ -37,10 +41,11 @@ public class AllSegments {
 		
 		//Create the factory and send all machine draw commands to server
 		Factory factory = new Factory(drawDestination);
+		Factory factory2 = new Factory(drawDestination);
 		factory.paint1(30);
 		factory.paint2(30);
-		factory.paint3(30);
-		factory.paint4(30);
+		factory2.paint3(30);
+		factory2.paint4(30);
 	}
 
 }
