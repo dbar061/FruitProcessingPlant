@@ -46,7 +46,7 @@ public class DrawServer {
 		serverThread1.start(); 
 		serverThread2.start();
 		serverThread3.start();
-		serverThread4.start(); //this runs a while loop that never ends
+		serverThread4.start(); //this runs a while loop that never ends.
 
 		//fetch items from the queue and draw them
 		for (;;) {
