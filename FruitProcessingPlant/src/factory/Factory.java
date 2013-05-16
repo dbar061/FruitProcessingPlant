@@ -19,17 +19,11 @@ import factory.dimension.SorterDimension;
 import draw.server.DrawCommandList;
 
 /**
- * Factory.java
- * 
- * @author:			Devin Barry
- * @date:			01.10.2012
- * @lastModified: 	23.10.2012
- * 
  * Factory.java - rewritten in 2013
  * 
  * @author:			Devin Barry
  * @date:			16.01.2013
- * @lastModified: 	17.01.2013
+ * @lastModified: 	16.04.2013
  *
  * This class contains all the machines required on the entire
  * production line. It is a merge of
@@ -37,6 +31,13 @@ import draw.server.DrawCommandList;
  *  Segment2.java
  *  Segment3.java
  *  Segment4.java
+ * 
+ * It is based upon code from the original Factory.java with
+ * the following signature:
+ * 
+ * @author:			Devin Barry
+ * @date:			01.10.2012
+ * @lastModified: 	23.10.2012
  *  
  * Now all the classes are stored here and there is a single static
  * map from which all machines can be accessed.
@@ -52,22 +53,25 @@ import draw.server.DrawCommandList;
 
 public class Factory {
 	
-	public static Map<String,Machine> machines1 = new HashMap<String,Machine>(15);
-	public static Map<String,Machine> machines2 = new HashMap<String,Machine>(15);
-	public static Map<String,Machine> machines3 = new HashMap<String,Machine>(15);
-	public static Map<String,Machine> machines4 = new HashMap<String,Machine>(15);
+	public static Map<String,Machine> machines1 = new HashMap<String,Machine>(10);
+	public static Map<String,Machine> machines2 = new HashMap<String,Machine>(10);
+	public static Map<String,Machine> machines3 = new HashMap<String,Machine>(30);
+	public static Map<String,Machine> machines4 = new HashMap<String,Machine>(10);
 	
 	public static final PointXY base = new PointXY(0, 0);
 	
+	//Initialize static part of class during class loading 
+	static {
+		createAllSegments();
+	}
+	
+	
+	//Instance variables and class constructor
 	private DrawCommandList dcl;
 	private InetSocketAddress drawServerAddress;
 	
 	public Factory(InetSocketAddress drawServerAddress) {
 		this.drawServerAddress = drawServerAddress;
-		this.createSegment1();
-		this.createSegment2();
-		this.createSegment3();
-		this.createSegment4();
 	}
 	
 	/**
@@ -209,7 +213,12 @@ public class Factory {
 	/**
 	 * Create the components in their correct locations
 	 */
-	private void createSegment1() {
+	private static void createAllSegments() {
+		//-----------------------------
+		//         "Segment1"
+		//-----------------------------
+		
+		
 		//Sorter Eight
 		PointXY s8_Pos = new PointXY(0,600);
 		Sorter s8 = new Sorter(s8_Pos);
@@ -278,13 +287,11 @@ public class Factory {
 		ConveyorBelt conveyor3 = new ConveyorBelt(cbl2_2Pos, 10, 60); //size 10, 60 angle
 		machines1.put("cb3", conveyor3);
 		
-		//System.out.println("Machines in segment1: " + machines1.size());
-	}
-	
-	/**
-	 * Create the components in their correct locations
-	 */
-	private void createSegment2() {
+		//-----------------------------
+		//         "Segment2"
+		//-----------------------------
+		
+		
 		ConveyorBelt cb2 = (ConveyorBelt)machines1.get("cb2");
 		ConveyorBelt cb15 = (ConveyorBelt)machines1.get("cb15");
 		//================= TOP ROW =================
@@ -348,13 +355,12 @@ public class Factory {
 		HoldingBay holdingBaySeven = new HoldingBay(startPointHBSeven);
 		machines2.put("hb7", holdingBaySeven);
 		
-		//System.out.println("Machines in segment2: " + machines2.size());
-	}
+		
+		//-----------------------------
+		//         "Segment3"
+		//-----------------------------
+		
 	
-	/**
-	 * Create the components in their correct locations
-	 */
-	private void createSegment3() {
 		HoldingBay hb3 = (HoldingBay)machines2.get("hb3");
 		HoldingBay hb7 = (HoldingBay)machines2.get("hb7");
 		//================= TOP ROW =================
@@ -439,13 +445,12 @@ public class Factory {
 		HoldingBay holdingBayFive = new HoldingBay(startPointHBFive);
 		machines3.put("hb5", holdingBayFive);
 		
-		//System.out.println("Machines in segment3: " + machines3.size());
-	}
-	
-	/**
-	 * Create the components in their correct locations
-	 */
-	private void createSegment4() {
+		
+		//-----------------------------
+		//         "Segment4"
+		//-----------------------------
+		
+		
 		ConveyorBelt cb3 = (ConveyorBelt)machines1.get("cb3");
 		ConveyorBelt cb7 = (ConveyorBelt)machines3.get("cb7");
 		
@@ -489,6 +494,9 @@ public class Factory {
 		ConveyorBelt conveyorSeventeen = new ConveyorBelt(startPointCSeventeen, 8, 180);
 		machines4.put("cb17", conveyorSeventeen);
 		
+		//System.out.println("Machines in segment1: " + machines1.size());
+		//System.out.println("Machines in segment2: " + machines2.size());
+		//System.out.println("Machines in segment3: " + machines3.size());
 		//System.out.println("Machines in segment4: " + machines4.size());
 	}
 }
